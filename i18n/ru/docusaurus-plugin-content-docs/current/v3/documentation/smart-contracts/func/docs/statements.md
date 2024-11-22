@@ -1,16 +1,16 @@
-# Statements
+# Заявления
 
-This section briefly discusses FunC statements, constituting the code of ordinary function bodies.
+В этом разделе кратко рассматриваются заявления FunC, составляющие кодекс обычных функциональных органов.
 
-## Expression statements
+## Выражения
 
-The most common type of a statement is the expression statement. It's an expression followed by `;`. Expression's description would be quite complicated, so only a sketch is presented here. As a rule all sub-expressions are computed left to right with one exception of [asm stack rearrangement](/v3/documentation/smart-contracts/func/docs/functions#rearranging-stack-entries) which may define order manually.
+Наиболее распространенным типом выписки является заявление выражения. Это выражение после `;`. Описание выражения будет достаточно сложным, поэтому здесь представлен только эскиз. Как правило, все субвыражения вычисляются слева направо, за исключением [перестановки стека asm](/v3/documentation/smart-contracts/func/docs/functions#rearranging-stack-entries), которые могут определять порядок вручную.
 
-### Variable declaration
+### Объявление переменной
 
-It is not possible to declare a local variable without defining its initial value.
+Невозможно объявить локальную переменную без определения ее начального значения.
 
-Here are some examples of variables declarations:
+Вот несколько примеров декларирования переменных:
 
 ```func
 int x = 2;
@@ -26,7 +26,7 @@ var (x, y, z) = (1, 2, 3);
 var [x, y, z] = [1, 2, 3];
 ```
 
-Variable can be "redeclared" in the same scope. For example, this is a correct code:
+Переменная может быть "переобъявлено" в той же области. Например, это правильный код:
 
 ```func
 int x = 2;
@@ -34,84 +34,84 @@ int y = x + 1;
 int x = 3;
 ```
 
-In fact, the second occurrence of `int x` is not a declaration, but just a compile-time insurance that `x` has type `int`. So the third line is essentially equivalent to a simple assignment `x = 3;`.
+На самом деле, второе вхождение `int x` является не декларацией, а лишь компилируемым страхованием времени, которое у `x` есть тип `int`. Таким образом, третья строка по сути эквивалентна простому присвоению `x = 3;`.
 
-In nested scopes, a variable can be truly redeclared just like in the C language. For example, consider the code:
+В вложенных областях переменная может быть по-настоящему перезаявлена так же, как и в языке С. Например, рассмотреть код:
 
 ```func
 int x = 0;
 int i = 0;
 while (i < 10) {
   (int, int) x = (i, i + 1);
-  ;; here x is a variable of type (int, int)
+  ;; здесь x - переменная типа (int, int)
   i += 1;
 }
-;; here x is a (different) variable of type int
+;; здесь x - (иная) переменная типа int
 ```
 
-But as mentioned in the global variables [section](/v3/documentation/smart-contracts/func/docs/global_variables), a global variable cannot be redeclared.
+Однако, как указано в глобальных переменных [section](/v3/documentation/smart-contracts/func/docs/global_variables) глобальная переменная не может быть объявлена.
 
-Note that a variable declaration **is** an expression statement, so actually constructions like `int x = 2` are full-fledged expressions. For example, this is a correct code:
+Обратите внимание, что объявление переменной **является** оператором выражения, поэтому конструкции, такие как `int x = 2`, являются полноценными выражениями. Например, это правильный код:
 
 ```func
 int y = (int x = 3) + 1;
 ```
 
-It is a declaration of two variables `x` and `y` equal to `3` and `4` correspondingly.
+Это определение двух переменных `x` и `y` равное `3` и `4` соответственно.
 
-#### Underscore
+#### Подчёркивание
 
-Underscore `_` is used when a value is not needed. For example, suppose a function `foo` has type `int -> (int, int, int)`. We can get the first returned value and ignore the second and third like this:
+Подчёркивание `_` используется, когда значение не требуется. Например, предположим, что функция `foo` имеет тип `int -> (int, int, int)`. Мы можем получить первое возвращаемое значение и проигнорировать второе и третье так:
 
 ```func
-(int fst, _, _) = foo(42);
+(int fst, _) = фун(42);
 ```
 
-### Function application
+### Приложение функции
 
-A call of a function looks like as such in a conventional language. The arguments of the function call are listed after the function name, separated by commas.
+Вызов функции выглядит как таковой в обычном языке. Аргументы вызова функции перечислены после имени функции, разделённого запятыми.
 
 ```func
-;; suppose foo has type (int, int, int) -> int
+;; suppose foo имеет тип (int, int, int) -> int
 int x = foo(1, 2, 3);
 ```
 
-But notice that `foo` is actually a function of **one** argument of type `(int, int, int)`. To see the difference, suppose `bar` is a function of type `int -> (int, int, int)`. Unlike in conventional languages, you can compose the functions like that:
+Но обратите внимание, что `foo` на самом деле является функцией **one** аргумента типа `(int, int, int)`. Чтобы увидеть разницу, предположим, что `bar` является функцией типа `int -> (int, int, int)`. В отличие от обычных языков, вы можете составить следующие функции:
 
 ```func
 int x = foo(bar(42));
 ```
 
-instead of the similar but longer form:
+вместо похожной, но более длинной формы:
 
 ```func
 (int a, int b, int c) = bar(42);
 int x = foo(a, b, c);
 ```
 
-Also Haskell-style calls are possible, but not always (to be fixed later):
+Также возможны звонки в стиле Haskell, но не всегда (будет исправлено позднее):
 
 ```func
-;; suppose foo has type int -> int -> int -> int
-;; i.e. it's carried
+;; suppose foo имеет тип int -> int -> int -> int
+;; т.е. is carried
 (int a, int b, int c) = (1, 2, 3);
 int x = foo a b c; ;; ok
-;; int y = foo 1 2 3; wouldn't compile
-int y = foo (1) (2) (3); ;; ok
+;; int y = foo 1 2 3; не компилировать
+int y = foo (1) (2) (3); ;; Ok
 ```
 
-### Lambda expressions
+### Выражения Lambda
 
-Lambda expressions are not supported yet.
+Выражения Lambda пока не поддерживаются.
 
-### Methods calls
+### Методы вызовов
 
-#### Non-modifying methods
+#### Неизменяемые методы
 
-If a function has at least one argument, it can be called as a non-modifying method. For example, `store_uint` has type `(builder, int, int) -> builder` (the second argument is the value to store, and the third is the bit length). `begin_cell` is a function that creates a new builder. The following codes are equivalent:
+Если у функции есть хотя бы один аргумент, то она может быть вызвана как метод немодификации. Например, у `store_uint` есть тип `(builder, int, int) -> builder` (второй аргумент должен храниться, а третий — битовая длина). `begin_cell` - это функция, создающая нового конструктора. Следующие коды эквивалентны:
 
 ```func
-builder b = begin_cell();
+строитель b = begin_cell();
 b = store_uint(b, 239, 8);
 ```
 
@@ -120,13 +120,13 @@ builder b = begin_cell();
 b = b.store_uint(239, 8);
 ```
 
-So the first argument of a function can be passed to it being located before the function name, if separated by `.`. The code can be further simplified:
+Таким образом, первый аргумент функции может быть передан ей перед именем функции, если она разделена `.`. Код можно дополнительно упростить:
 
 ```func
 builder b = begin_cell().store_uint(239, 8);
 ```
 
-Multiple calls of methods are also possible:
+Возможны также несколько вызовов методов:
 
 ```func
 builder b = begin_cell().store_uint(239, 8)
@@ -134,23 +134,23 @@ builder b = begin_cell().store_uint(239, 8)
                         .store_uint(0xff, 10);
 ```
 
-#### Modifying methods
+#### Изменение методов
 
-If the first argument of a function has type `A` and the return value of the function has the shape of `(A, B)` where `B` is some arbitrary type, then the function can be called as a modifying method. Modifying method calls may take some arguments and return some values, but they modify their first argument, that is, assign the first component of the returned value to the variable from the first argument. For example, suppose `cs` is a cell slice and `load_uint` has type `(slice, int) -> (slice, int)`: it takes a cell slice and number of bits to load and returns the remainder of the slice and the loaded value. The following codes are equivalent:
+Если первый аргумент функции имеет тип «A», а возвращаемое значение функции имеет форму «(A, B)`, где `B`- некоторый произвольный тип, то функция может быть вызвана в качестве модификационного метода. Изменение вызовов метода может принять некоторые аргументы и вернуть некоторые значения, но они изменяют их первый аргумент, то есть назначить первую часть возвращаемого значения переменной из первого аргумента. Например, предположим, что`cs`является частью ячейки, а`load_uint`имеет тип`(slice, int) -> (slice, int)\`: требуется кусочек ячеек и количество битов для загрузки и возвращает оставшуюся часть маски и загруженное значение. Следующие коды эквивалентны:
 
 ```func
-(cs, int x) = load_uint(cs, 8);
+сс, int x) = load_uint(сs, 8);
 ```
 
 ```func
-(cs, int x) = cs.load_uint(8);
+сс, int x) = cs.load_uint(8);
 ```
 
 ```func
 int x = cs~load_uint(8);
 ```
 
-In some cases we want to use a function as a modifying method that doesn't return any value and only modifies the first argument. It can be done using unit types as follows: Suppose we want to define function `inc` of type `int -> int`, which increments an integer, and use it as a modifying method. Then we should define `inc` as a function of type `int -> (int, ())`:
+В некоторых случаях мы хотим использовать функцию в качестве модификационного метода, который не возвращает ни одно значение и только изменяет первый аргумент. Это может быть сделано с помощью типов единиц следующим образом: Предположим, мы хотим определить функцию `inc` типа `int -> int`, , который увеличивает целое число, и использовать его в качестве модификационного метода. Затем мы должны определить «inc» как функцию типа «int -> (int, ()»:
 
 ```func
 (int, ()) inc(int x) {
@@ -158,21 +158,21 @@ In some cases we want to use a function as a modifying method that doesn't retur
 }
 ```
 
-When defined like that, it can be used as a modifying method. The following will increment `x`.
+При таком определении он может быть использован в качестве модификационного метода. Ниже будет прибавлено значение `x`.
 
 ```func
 x~inc();
 ```
 
-#### `.` and `~` in function names
+#### `.` и `~` в именах функций
 
-Suppose we want to use `inc` as a non-modifying method too. We can write something like that:
+Предположим, мы хотим использовать «inc» в качестве немодифицирующего метода. Мы можем написать что-то вроде следующего:
 
 ```func
 (int y, _) = inc(x);
 ```
 
-But it is possible to override the definition of `inc` as a modifying method.
+Но можно переопределить определение «inc» как модификационный метод.
 
 ```func
 int inc(int x) {
@@ -183,7 +183,7 @@ int inc(int x) {
 }
 ```
 
-And then call it like that:
+А затем именуйте это так:
 
 ```func
 x~inc();
@@ -191,98 +191,98 @@ int y = inc(x);
 int z = x.inc();
 ```
 
-The first call will modify x; the second and third won't.
+Первый вызов будет модифицировать x; второй и третий не будут.
 
-In summary, when a function with the name `foo` is called as a non-modifying or modifying method (i.e. with `.foo` or `~foo` syntax), the FunC compiler uses the definition of `.foo` or `~foo` correspondingly if such a definition is presented, and if not, it uses the definition of `foo`.
+Короче говоря, когда функция с именем «foo» называется методом немодификации или изменения (i). с синтаксисом `.foo` или `~foo`), компилятор FunC использует определение `. oo` или `~foo` соответственно, если такое определение представлено, а если нет, то оно использует определение `foo`.
 
-### Operators
+### Операторы
 
-Note that currently all of the unary and binary operators are integer operators. Logical operators are represented as bitwise integer operators  (cf. [absence of boolean type](/v3/documentation/smart-contracts/func/docs/types#absence-of-boolean-type)).
+Обратите внимание, что в настоящее время все unary и двоичные операторы являются целочисленными операторами. Логические операторы представлены как побитные целочисленные операторы (см. [отсутствие логического типа](/v3/documentation/smart-contracts/func/docs/types#absence-of-boolean-type)).
 
-#### Unary operators
+#### Операторы Unary
 
-There are two unary operators:
+Существует два унитарных оператора:
 
-- `~` is bitwise not (priority 75)
-- `-` is integer negation (priority 20)
+- `~` побито не (приоритет 75)
+- `-` является целым отрицанием (приоритет 20)
 
-They should be separated from the argument:
+Они должны быть отделены от аргумента:
 
-- `- x` is ok.
-- `-x` is not ok (it's a single identifier)
+- `- x` в порядке.
+- `-x` не подходит (это один идентификатор)
 
-#### Binary operators
+#### Двоичные операторы
 
-With priority 30 (left-associative):
+С приоритетом 30 (левая ассоциация):
 
-- `*` is integer multiplication
-- `/` is integer division (floor)
-- `~/` is integer division (round)
-- `^/` is integer division (ceil)
-- `%` is integer reduction by modulo (floor)
-- `~%` is integer reduction by modulo (round)
-- `^%` is integer reduction by modulo (ceil)
-- `/%` returns the quotient and the remainder
-- `&` is bitwise AND
+- `*` — умножение целого числа
+- `/` — целое деление (этаж)
+- `~/` — целое деление (округл)
+- `^/` — целое деление (потолк)
+- `%` — целое сокращение на modulo (этаж)
+- `~%` — целое сокращение на modulo (округл)
+- `^%` — сокращение целого числа на modulo (потолк)
+- `/%` возвращает частный, а остаток
+- `&` побито И
 
-With priority 20 (left-associative):
+С приоритетом 20 (левая ассоциация):
 
-- `+` is integer addition
-- `-` is integer subtraction
-- `|` is bitwise OR
-- `^` is bitwise XOR
+- `+` — целочисленное дополнение
+- `-` — вычитание целого числа
+- `|` побито ИЛИ
+- `^` — это битум XOR
 
-With priority 17 (left-associative):
+С приоритетом 17 (левая ассоциация):
 
-- `<<` is bitwise left shift
-- `>>` is bitwise right shift
-- `~>>` is bitwise right shift (round)
-- `^>>` is bitwise right shift (ceil)
+- `<<` побито левый сдвиг
+- `>>` — это побитый правый сдвиг
+- `~>>` — правый битрейный сдвиг (раунд)
+- `^>>` — это побитовый правый сдвиг (поток)
 
-With priority 15 (left-associative):
+С приоритетом 15 (левая ассоциация):
 
-- `==` is integer equality check
-- `!=` is integer inequality check
-- `<` is integer comparison
-- `<=` is integer comparison
-- `>` is integer comparison
-- `>=` is integer comparison
-- `<=>` is integer comparison (returns -1, 0 or 1)
+- `==` это целочисленная проверка равенства
+- `!=` это целочисленное неравенство
+- `<` — сравнение целого числа
+- `<=` — числовое сравнение
+- `>` — это сравнение целого числа
+- `>=` — числовое сравнение
+- `<=>` является целочисленным сравнением (возвращает -1, 0 или 1)
 
-They also should be separated from the argument:
+Они также должны быть отделены от этого аргумента:
 
-- `x + y` is ok
-- `x+y` is not ok (it's a single identifier)
+- `x + y` нормально
+- `x+y` не в состоянии (это один идентификатор)
 
-#### Conditional operator
+#### Условный оператор
 
-It has the usual syntax.
+Он имеет обычный синтаксис.
 
 ```func
 <condition> ? <consequence> : <alternative>
 ```
 
-For example:
+Например:
 
 ```func
 x > 0 ? x * fac(x - 1) : 1;
 ```
 
-It has priority 13.
+Она имеет приоритет 13.
 
-#### Assignments
+#### Задания
 
-Priority 10.
+Приоритет 10.
 
-Simple assignment `=` and counterparts of the binary operations: `+=`, `-=`, `*=`, `/=`, `~/=`, `^/=`, `%=`, `~%=`, `^%=`, `<<=`, `>>=`, `~>>=`, `^>>=`, `&=`, `|=`, `^=`.
+Простое назначение `=` и аналогов бинарных операций: `+=`, `-=`, `*=`, `/=`, `~/=`, `^/=`, `%=`, `~%=`, `^%=`, `<=`, `>=`, `~>=`, `^>>=`, `^>=`, `&=`, `|=`, `^=`.
 
-## Loops
+## Циклы
 
-FunC supports `repeat`, `while`, and `do { ... } until` loops. The `for` loop is not supported.
+FunC поддерживает `repeat`, `while`, и `do { ... } циклов until. Цикл `for\` не поддерживается.
 
-### Repeat loop
+### Повторить цикл
 
-The syntax is a `repeat` keyword followed by an expression of type `int`. Repeats the code for the specified number of times. Examples:
+Синтаксис — это ключевое слово «повторить», за которым следует выражение типа «int». Повторяет код за указанное количество раз. Примеры:
 
 ```func
 int x = 1;
@@ -308,47 +308,47 @@ repeat(-1) {
 ;; x = 1
 ```
 
-If the number of times is less than `-2^31` or greater than `2^31 - 1`, range check exception is thrown.
+Если количество раз меньше `-2^31` или больше `2^31 - 1`, то проверяется исключение диапазона.
 
-### While loop
+### Цикл "пока"
 
-Has the usual syntax. Example:
+Имеет обычный синтаксис. Например:
 
 ```func
 int x = 2;
-while (x < 100) {
+в то время как (x < 100) {
   x = x * x;
 }
 ;; x = 256
 ```
 
-Note that the truth value of condition `x < 100` is of type `int` (cf. [absence of boolean type](/v3/documentation/smart-contracts/func/docs/types#absence-of-boolean-type)).
+Заметим, что значение истины условия `x < 100` является типом `int` (см. [отсутствие логического типа](/v3/documentation/smart-contracts/func/docs/types#absence-of-boolean-type)).
 
-### Until loop
+### До цикла
 
-Has the following syntax:
+Имеет следующий синтаксис:
 
 ```func
 int x = 0;
 do {
   x += 3;
-} until (x % 17 == 0);
+} до (x % 17 == 0);
 ;; x = 51
 ```
 
-## If statements
+## Операторы если
 
-Examples:
+Примеры:
 
 ```func
-;; usual if
+;; обычно, если
 if (flag) {
   do_something();
 }
 ```
 
 ```func
-;; equivalent to if (~ flag)
+;; эквивалент if (~ flag)
 ifnot (flag) {
   do_something();
 }
@@ -365,7 +365,7 @@ else {
 ```
 
 ```func
-;; Some specific features
+;; Некоторые специфические функции
 if (flag1) {
   do_something1();
 } else {
@@ -373,24 +373,24 @@ if (flag1) {
 }
 ```
 
-The curly brackets are necessary. That code wouldn't be compiled:
+Необходимы фигурные скобки. Этот код не будет скомпилирован:
 
 ```func
-if (flag1)
+если (flag1)
   do_something();
 ```
 
-## Try-Catch statements
+## Пытаться уловить заявления
 
-_Available in func since v0.4.0_
+_Доступно в func начиная с версии 0.4.0_
 
-Executes the code in `try` block. If it fails, completely rolls back changes made in `try` block and executes `catch` block instead; `catch` receives two arguments: the exception parameter of any type (`x`) and the error code (`n`, integer).
+Выполняет код в блоке `try`. Если это не удалось, полностью откатится изменения, внесенные в блок «try» и вместо этого выполняет блок «catch»; `catch` получает два аргумента: параметр исключения любого типа (`x`) и код ошибки (`n`, integer).
 
-Unlike many other languages in the FunC try-catch statement, the changes made in the try block, in particular the modification of local and global variables, all registers' changes (i.e. `c4` storage register, `c5` action/message register, `c7` context register and others) **are discarded** if there is an error in the try block and consequently all contract storage updates and message sending will be reverted. It is important to note that some TVM state parameters such as _codepage_ and gas counters will not be rolled back. This means, in particular, that all gas spent in the try block will be taken into account, and the effects of OPs that change the gas limit (`accept_message` and `set_gas_limit`) will be preserved.
+В отличие от многих других языков в заявлении FunC о попытке вылова, изменения, внесенные в блоке try block, в частности, изменения локальных и глобальных переменных, все изменения регистров (т.е. `c4` регистр хранения, `c5` action/message register, Контекстный регистр `c7` и другие) **удаляются** если в блоке try есть ошибка, и поэтому все обновления хранилища контракта и отправка сообщений будут отменены. Важно отметить, что некоторые параметры состояния TVM, такие как _codepage_ и счетчики газов не будут откатиться. Это означает, в частности, что будет учтено весь газ, израсходованный в блоке проверки, и будут сохранены эффекты OP, изменяющих лимит газа (`accept_message` и `set_gas_limit`).
 
-Note that exception parameter can be of any type (possibly different in case of different exceptions) and thus funC can not predict it on compile time. That means that developer need to "help" compiler by casting exception parameter to some type (see Example 2 below):
+Обратите внимание, что параметр исключения может иметь любой тип (возможно другой в случае различных исключений) и поэтому funC не может предсказать его на время компиляции. Это означает, что разработчику нужно "помочь" компилятору путем наложения параметра исключения к какому-либо типу (см. Пример 2 ниже):
 
-Examples:
+Примеры:
 
 ```func
 try {
@@ -406,7 +406,7 @@ forall X -> int cast_to_int(X x) asm "NOP";
 try {
   throw_arg(-1, 100);
 } catch (x, n) {
-  x.cast_to_int();
+  x. ast_to_int();
   ;; x = -1, n = 100
   return x + 1;
 }
@@ -416,22 +416,22 @@ try {
 int x = 0;
 try {
   x += 1;
-  throw(100);
+  бросок (100);
 } catch (_, _) {
 }
-;; x = 0 (not 1)
+;; x = 0 (не 1)
 ```
 
-## Block statements
+## Выписки блока
 
-Block statements are also allowed. They open a new nested scope:
+Также разрешены операторы блоков. Они открывают новую вложенную область:
 
 ```func
 int x = 1;
 builder b = begin_cell();
 {
-  builder x = begin_cell().store_uint(0, 8);
+  builder x = begin_cell(). tore_uint(0, 8);
   b = x;
 }
-x += 1;
+x = 1;
 ```
