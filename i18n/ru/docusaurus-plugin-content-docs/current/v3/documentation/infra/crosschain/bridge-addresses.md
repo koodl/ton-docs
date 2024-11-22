@@ -1,32 +1,32 @@
-# Bridges Addresses
+# Адреса мостов
 
 :::caution
-To accurately get the current addresses of bridge smart contracts, see them directly in the [blockchain config](/v3/documentation/infra/crosschain/overview#blockchain-configs). It's the most secure way.
+Чтобы точно получить текущие адреса смарт-контрактов моста, просмотрите их непосредственно в [blockchain config](/v3/documentation/infra/crosschain/overview#blockchain-configs). Это самый безопасный способ.
 :::
 
-## Toncoin Mainnet
+## Тонкон мейннет
 
-### Mainnet TON-Ethereum Toncoin Bridge
+### Мост Mainnet TON-Ethereum Toncoin
 
-Wrapped TONCOIN Address - [0x582d872a1b094fc48f5de31d3b73f2d9be47def1](https://etherscan.io/token/0x582d872a1b094fc48f5de31d3b73f2d9be47def1)
+Обнаружен адрес TONCOIN - [0x582d872a1b094fc48f5de31d3b73f2d9be47def1](https://etherscan.io/token/0x582d872a1b094fc48f5de31d3b73f2d9be47def1)
 
-Bridge Address - [Ef_dJMSh8riPi3BTUTtcxsWjG8RLKnLctNjAM4rw8NN-xWdr](https://tonscan.org/address/Ef_dJMSh8riPi3BTUTtcxsWjG8RLKnLctNjAM4rw8NN-xWdr)
+Адрес моста - [Ef_dJMSh8riPi3BTUTtcxsWjG8RLKnLctNjAM4rw8NN-xWdr](https://tonscan.org/address/Ef_dJMSh8riPi3BTUTtcxsWjG8RLKnLctNjAM4rw8N-xWdr)
 
-Collector Address - [EQCuzvIOXLjH2tv35gY4tzhIvXCqZWDuK9kUhFGXKLImgxT5](https://tonscan.org/address/EQCuzvIOXLjH2tv35gY4tzhIvXCqZWDuK9kUhFGXKLImgxT5)
+Адрес коллектора - [EQCuzvIOXLjH2tv35gY4tzhIvXCqZWDuK9kUhFGXKLImgxT5](https://tonscan.org/address/EQCuzvIOXLjH2tv35gY4tzhIvXCqZWDuK9kUhFGXKLImgxT5)
 
-Governance Address - [Ef87m7_QrVM4uXAPCDM4DuF9Rj5Rwa5nHubwiQG96JmyAjQY](https://tonscan.org/address/Ef87m7_QrVM4uXAPCDM4DuF9Rj5Rwa5nHubwiQG96JmyAjQY)
+Адрес управления - [Ef87m7_QrVM4uXAPCDM4DuF9Rj5Rwa5nHubwiQG96JmyAjQY](https://tonscan.org/address/Ef87m7_QrVM4uXAPCDM4DuF9Rj5Rwa5nHubwiQG96JmyAjQY)
 
-### Mainnet TON-BSC Toncoin Bridge
+### Мост Тонкоин Тонкон мейннет
 
-Wrapped TONCOIN Address - [0x76A797A59Ba2C17726896976B7B3747BfD1d220f](https://bscscan.com/token/0x76A797A59Ba2C17726896976B7B3747BfD1d220f)
+Завершенный адрес TONCOIN - [0x76A797A59Ba2C17726896976B7B3747BfD1d220f](https://bscscan.com/token/0x76A797A59Ba2C17726896976B7B3747BfD1d220f)
 
-Bridge Address - [Ef9NXAIQs12t2qIZ-sRZ26D977H65Ol6DQeXc5_gUNaUys5r](https://tonscan.org/address/Ef9NXAIQs12t2qIZ-sRZ26D977H65Ol6DQeXc5_gUNaUys5r)
+Адрес моста - [Ef9NXAIQs12t2qIZ-sRZ26D977H65Ol6DQeXc5_gUNaUys5r](https://tonscan.org/address/Ef9NXAIQs12t2qIZ-sRZ26D977H65Ol6DQeXc5_gUNaUys5r)
 
-Collector Address - [EQAHI1vGuw7d4WG-CtfDrWqEPNtmUuKjKFEFeJmZaqqfWTvW](https://tonscan.org/address/EQAHI1vGuw7d4WG-CtfDrWqEPNtmUuKjKFEFeJmZaqqfWTvW)
+Адрес коллектора - [EQAHI1vGuw7d4WG-CtfDrWqEPNtmUuKjKFEFeJmZaqqfWTvW](https://tonscan.org/address/EQAHI1vGuw7d4WG-CtfDrWqEPNtmUuKjKFEFeJmZaqqfWTvW)
 
-Governance Address - [Ef8OvX_5ynDgbp4iqJIvWudSEanWo0qAlOjhWHtga9u2YjVp](https://tonscan.org/address/Ef8OvX_5ynDgbp4iqJIvWudSEanWo0qAlOjhWHtga9u2YjVp)
+Адрес управления - [Ef8OvX_5ynDgbp4iqJIvWudSEanWo0qAlOjhWHtga9u2YjVp](https://tonscan.org/address/Ef8OvX_5ynDgbp4iqJIvWudSEanWo0qAlOjhWHtga9u2YjVp)
 
-### Mainnet Toncoin Oracles
+### Тонкон Оракл Mainnet
 
 Oracle 0 - [Ef_P2CJw784O1qVd8Qbn8RCQc4EgxAs8Ra-M3bDhZn3OfzRb](https://tonscan.org/address/Ef_P2CJw784O1qVd8Qbn8RCQc4EgxAs8Ra-M3bDhZn3OfzRb)
 
@@ -110,102 +110,102 @@ Governance Address - [Ef8hHxV0v2I9FHh3CMX91WXjKaJav6SQlemEQm8ZvPBJdLde](https://
 
   TON Address - [Ef8WxwYOyAk-H0YGBc70gZFJc6oqUvcHywU-yJNBfSNh-GW9](https://tonscan.org/address/Ef8WxwYOyAk-H0YGBc70gZFJc6oqUvcHywU-yJNBfSNh-GW9)
 
-  ETH Address - 0x3154E640c56D023a98890426A24D1A772f5A38B2
+  ETH Адрес - 0x3154E640c56D023a98890426A24D1A772f5A38B2
 
-- Oracle 1
+- Оракл 1
 
   TON Public Key = fe0a78726a82754b62517e4b7a492e1b1a8d4c9014955d2fa8f1345f1a3eafba
 
   TON Address = [Ef8CbgwhUMYn2yHU343dcezKkvme3cyFJB7SHVY3FXhU9jqj](https://tonscan.org/address/Ef8CbgwhUMYn2yHU343dcezKkvme3cyFJB7SHVY3FXhU9jqj)
 
-  ETH Address = 0x8B06A5D37625F41eE9D9F543482b6562C657EA6F
+  ETH Адрес = 0x8B06A5D37625F41eE9D9F543482b6562C657EA6F
 
-- Oracle 2
+- Оракл 2
 
   TON Public Key = 00164233e111509b0486df85d2743defd6e2525820ee7d341c8ad92ee68d41a6
 
   TON Address = [Ef-n3Vdme6nSe4FBDb3inTRF9B6lh3BbIwGlk0dDpUO5oFmH](https://tonscan.org/address/Ef-n3Vdme6nSe4FBDb3inTRF9B6lh3BbIwGlk0dDpUO5oFmH)
 
-  ETH Address = 0x6D5E361F7E15ebA73e41904F4fB2A7d2ca045162
+  ETH Адрес = 0x6D5E361F7E15ebA73e41904F4fB2A7d2ca045162
 
-- Oracle 3
+- Оракл 3
 
   TON Public Key = 9af68ce3c030e8d21aae582a155a6f5c41ad006f9f3e4aacbb0ce579982b9ebb
 
   TON Address = [Ef9D1-FOb82pREFPgW7AlzNlZ7f0XnvmGakW23wpWeILAum9](https://tonscan.org/address/Ef9D1-FOb82pREFPgW7AlzNlZ7f0XnvmGakW23wpWeILAum9)
 
-  ETH Address = 0x43931B8c29e34a8C16695408CD56327F511Cf086
+  ETH Адрес = 0x43931B8c29e34a8C16695408CD56327F511Cf086
 
-- Oracle 4
+- Оракл 4
 
   TON Public Key = a4fef528b1e841f5fce752feeac0971f7df909e37ffeb3fab71c5ce8deb9f7d4
 
   TON Address = [Ef8TBPHHIowG5pGgSVX8n4KmOaX-EEjvnOSBRlQvVsJWP_WJ](https://tonscan.org/address/Ef8TBPHHIowG5pGgSVX8n4KmOaX-EEjvnOSBRlQvVsJWP_WJ)
 
-  ETH Address = 0x7a0d3C42f795BA2dB707D421Add31deda9F1fEc1
+  ETH Адрес = 0x7a0d3C42f795BA2dB707D421Add31deda9F1fEc1
 
-- Oracle 5
+- Оракл 5
 
   TON Public Key = 58a7ab3e3ff8281b668a86ad9fe8b72f2d14df5dcc711937915dacca1b94c07d
 
   TON Address = [Ef8ceN7cTemTe4ZV6AIbg5f8LsHZsYV1UaiGntvkME0KtP45](https://tonscan.org/address/Ef8ceN7cTemTe4ZV6AIbg5f8LsHZsYV1UaiGntvkME0KtP45)
 
-  ETH Address = 0x88352632350690EF22F9a580e6B413c747c01FB2
+  ETH Адрес = 0x88352632350690EF22F9a580e6B413c747c01FB2
 
-- Oracle 6
+- Оракл 6
 
   TON Public Key = db60c3f50cb0302b516cd42833c7e8cad8097ad94306564b057b16ace486fb07
 
   TON Address = [Ef8uDTu2WCcJdtuKmkDmC1yRKVxZrTp83ke5PnMECOccg3w4](https://tonscan.org/address/Ef8uDTu2WCcJdtuKmkDmC1yRKVxZrTp83ke5PnMECOccg3w4)
 
-  ETH Address = 0xeB8975966dAF0C86721C14b8Bb7DFb89FCBB99cA
+  ETH Адрес = 0xeB8975966dAF0C86721C14b8Bb7DFb89FCBB99cA
 
-- Oracle 7
+- Оракл 7
 
   TON Public Key = 98c037c6d3a92d9467dc62c0e3da9bb0ad08c6b3d1284d4a37c1c5c0c081c7df
 
   TON Address = [Ef905jDDX87nPDbTSMqFB9ILVGX1zWc66PPrNhkjHrWxAnZZ](https://tonscan.org/address/Ef905jDDX87nPDbTSMqFB9ILVGX1zWc66PPrNhkjHrWxAnZZ)
 
-  ETH Address = 0x48Bf4a783ECFb7f9AACab68d28B06fDafF37ac43
+  ETH Адрес = 0x48Bf4a783ECFb7f9AACab68d28B06fDafF37ac43
 
-- Oracle 8
+- Оракл 8
 
   TON Public Key = 5503c54a1b27525376e83d6fc326090c7d9d03079f400071b8bf05de5fbba48d
 
-  TON Address = [Ef9Ubg96xQ8jVKbl7QQJ1k8pClQLmO1Ci68nuNfbLdm9uS-x](https://tonscan.org/address/Ef9Ubg96xQ8jVKbl7QQJ1k8pClQLmO1Ci68nuNfbLdm9uS-x)
+  TON Address = [Ef9Ubg96xQ8jVKbl7QQJ1k8pClQLmO1Ci68nuNfbLdm9uS-x](https://tonscan.org/address/Ef9Ubg96xQ8jVKbl7QJ1k8pClQLmO1Ci68nuNfbLdm9uS-x)
 
-  ETH Address = 0x954AE64BB0268b06ffEFbb6f454867a5F2CB3177
+  ETH Адрес = 0x954AE64BB0268b06ffEFbb6f454867a5F2CB3177
 
-## Token Testnet
+## Токен тест
 
-### Testnet TON-Ethereum Token Bridge
+### Мост TON-Ethereum Ttestnet
 
-Ethereum Bridge Address - [0x4Efd8f04B6fb4CFAF0cfaAC11Fb489b97DBebB60](https://goerli.etherscan.io/address/0x4Efd8f04B6fb4CFAF0cfaAC11Fb489b97DBebB60)
+Адрес моста Ethereum - [0x4Efd8f04B6fb4CFAF0cfaAC11Fb489b97DBebB60](https://goerli.etherscan.io/address/0x4Efd8f04B6fb4CFAF0cfaAC11Fb489b97DBebB60)
 
-Bridge Address - [Ef-lJBALjXSSwSKiedKzriSHixwQUxJ1BxTE05Ur5AXwZVjp](https://testnet.tonscan.org/address/Ef-lJBALjXSSwSKiedKzriSHixwQUxJ1BxTE05Ur5AXwZVjp)
+Адрес моста - [Ef-lJBALjXSSwSKiedKzriSHixwQUxJ1BxTE05Ur5AXwZVjp](https://testnet.tonscan.org/address/Ef-lJBALjXSSwSKiedKzriSHixwQUxJ1BxTE05Ur5AXwZVjp)
 
-Collector Address - [EQC1ZeKX1LNrlQ4bwi3je3KVM1AoZ3rkeyHM5hv9pYzmIh4v](https://testnet.tonscan.org/address/EQC1ZeKX1LNrlQ4bwi3je3KVM1AoZ3rkeyHM5hv9pYzmIh4v)
+Адрес коллектора - [EQC1ZeKX1LNrlQ4bwi3je3KVM1AoZ3rkeyHM5hv9pYzmIh4v](https://testnet.tonscan.org/address/EQC1ZeKX1LNrlQ4bwi3je3KVM1AoZ3rkeyHM5hv9pYzmIh4v)
 
-Governance Address - [kf9NLH8CsGUkEKGYzCxaLd9Th6T5YkO-MXsCEU9Rw1fiRhf9](https://testnet.tonscan.org/address/kf9NLH8CsGUkEKGYzCxaLd9Th6T5YkO-MXsCEU9Rw1fiRhf9)
+Адрес управления - [kf9NLH8CsGUkEKGYzCxaLd9Th6T5YkO-MXsCEU9Rw1fiRhf9](https://testnet.tonscan.org/address/kf9NLH8CsGUkEKGYzCxaLd9Th6T5YkO-MXsCEU9Rw1fiRhf9)
 
-### Testnet Token Oracles
+### Тестовый токен Oracles
 
-> Same with Toncoin Testnet Bridge
+> То же самое с мостом Тонкон Тестон
 
-- Oracle 0
+- Оракл 0
 
-  TON Address - [Ef9fwskZLEuGDfYTRAtvt9k-mEdkaIskkUOsEwPw1wzXk7zR](https://testnet.tonscan.org/address/Ef9fwskZLEuGDfYTRAtvt9k-mEdkaIskkUOsEwPw1wzXk7zR)
+  TON Address - [Ef9fwskZLEuGDfYTRAtvt9k-mEdkaIskkUOsEwPw1wzXk7zR](https://testnet.tonscan.org/address/Ef9fwskZLEuGDfYTRAtvt9k-mEdkaIskUOsEwPw1wzXk7zR)
 
-  EVM Address - 0xe54cd631c97be0767172ad16904688962d09d2fe
+  EVM Адрес - 0xe54cd631c97be0767172ad16904688962d09d2fe
 
-- Oracle 1
+- Оракл 1
 
-  TON Address - [Ef8jPzrhTYloKgTCsGgEFNx7OdH-sJ98etJnwrIVSsFxH9mu](https://testnet.tonscan.org/address/Ef8jPzrhTYloKgTCsGgEFNx7OdH-sJ98etJnwrIVSsFxH9mu)
+  TON Address - [Ef8jPzrhTYloKgTCsGgEFNx7OdH-sJ98etJnwrIVSsFxH9mu](https://testnet.tonscan.org/address/Ef8jPzrhTYloKgTCsGEFNx7OdH-sJ98etJnwrIVSsFxH9mu)
 
-  EVM Address - 0xeb05E1B6AC0d574eF2CF29FDf01cC0bA3D8F9Bf1
+  EVM Адрес - 0xeb05E1B6AC0d574eF2CF29FDf01cC0bA3D8F9Bf1
 
-- Oracle 2
+- Оракл 2
 
   TON Address - [Ef-fxGCPuPKNR6T4GcFxNQuLU5TykLKEAtkxWEfA1wBWy6JE](https://testnet.tonscan.org/address/Ef-fxGCPuPKNR6T4GcFxNQuLU5TykLKEAtkxWEfA1wBWy6JE)
 
-  EVM Address - 0xF636f40Ebe17Fb2A1343e5EEee9D13AA90888b51
+  EVM Адрес - 0xF636f40Ebe17Fb2A1343e5EEee9D13AA90888b51
