@@ -1,64 +1,64 @@
-# Экзотические Гены
+# Exotic Cells
 
-Каждая ячейка имеет свой тип, кодируемый целым числом от 1 до 255.
-Ячейка с типом -1 - это "обычная" ячейка, а также все остальные ячейки, называемые "экзотический" или "особый".
-Тип экзотической ячейки хранится в виде первых восьми бит данных. Если экзотическая ячейка имеет менее восьми битов данных, она является недействительной.
-В настоящее время существует 4 экзотических ячейки:
+Every Cell has its own type encoded by an integer from -1 to 255.
+Cell with type -1 is an `ordinary` Cell, and all others Cells called `exotic` or `special`.
+The type of an exotic cell is stored as the first eight bits of its data. If an exotic cell has less than eight data bits, it is invalid.
+Currently, there are 4 exotic Cell types:
 
 ```json
 {
-  Перезволенный Филанш: 1,
-  Справочник Библиотеки: 2,
-  Комплее: 3,
-  Обновление Merkle: 4
+  Prunned Branch: 1,
+  Library Reference: 2,
+  Merkle Proof: 3,
+  Merkle Update: 4
 }
 ```
 
-### Отрезанная ветка
+### Pruned Branch
 
-Ветви - это ячейки, которые представляют удаленные поддеревья клеток.
+Pruned branches are Cells that represent deleted subtrees of Cells.
 
-Они могут иметь уровень `1 <= l <= 3` и содержать ровно `8 + 8 + 256 * l + 16 * l` бит.
+They can have level `1 <= l <= 3` and contain exactly `8 + 8 + 256 * l + 16 * l` bits.
 
-Первый байт - это всегда `01` - тип ячейки. Второй - это маска, на уровне сплетенной ветви. Затем идет хэш `l * 32` байт удаленных поддеревьев и после этого `l * 2` байт глубины удаленных поддеревьев.
+First byte is always `01` - Cell type. The second one is the Pruned Branch level mask. Then goes `l * 32` bytes hashes of deleted subtrees and after that `l * 2` bytes depths of deleted subtrees.
 
-Уровень 'l' утопленной ячейки можно назвать его индексом De Bruijn, потому что он определяет внешнее подтверждение Меркла или обновление Merkle в ходе строительства, из которого была выведена ветка.
+The level `l` of a Pruned branch Cell may be called its De Bruijn index, because it determines the outer Merkle proof or Merkle update during the construction of which the branch has been pruned.
 
-Более высокие хэши урезанных ветвей хранятся в их данных и могут быть получены следующим образом:
+Higher hashes of Pruned branches are stored in their data and can be obtained like this:
 
 ```cpp
-Hash_i = CellData[2 + (i * 32) : 2 + (i + 1) * 32)]
+Hash_i = CellData[2 + (i * 32) : 2 + ((i + 1) * 32)]
 ```
 
-### Ссылка на библиотеку
+### Library Reference
 
-Библиотечные справочные ячейки используются для использования библиотек в смарт-контрактах.
+Library reference cells are used for using libraries in smart contracts.
 
-Они всегда имеют уровень 0, и содержат `8 + 256` биты.
+They always have level 0, and contain `8 + 256` bits.
 
-Первый байт всегда `02` - тип ячейки. Следующими 32 байтами являются [Хэш представления](/v3/documentation/data-formats/tlb/cell-boc#standard-cell-representation-hash-calculation) ссылки на библиотечную ячейку.
+First byte is always `02` - Cell type. Next 32 bytes are [Representation hash](/v3/documentation/data-formats/tlb/cell-boc#standard-cell-representation-hash-calculation) of the library cell being referred to.
 
-### Доказательство Меркле
+### Merkle Proof
 
-Ячейки Merkle Proof используются для проверки того, что часть данных дерева ячейки принадлежит полному дереву. Этот дизайн позволяет верификатору не хранить весь контент дерева, но при этом он по-прежнему способен проверять содержимое корневым хэшам.
+Merkle Proof cells are used to verify that a portion of the Cell tree data belongs to the full tree. This design allows the verifier to not store the whole content of the tree, while still being able to verify the content by root hash.
 
-Merkle Proof имеет ровно одну ссылку, а ее уровень `0 <= l <= 3` должен быть `max(Lvl(ref) - 1, 0)`. Эти ячейки содержат ровно `8 + 256 + 16 = 280` бит.
+Merkle Proof has exactly one reference and its level `0 <= l <= 3` must be `max(Lvl(ref) - 1, 0)`. These cells contain exactly `8 + 256 + 16 = 280` bits.
 
-Первый байт - это всегда `03` - тип ячейки. Следующие 32 байта - `Hash_1(ref)` (или `ReprHash(ref)`, если уровень ссылки 0). Следующие 2 байта - глубина удаленного субдерева, который был заменен ссылкой.
+First byte is always `03` - Cell type. Next 32 bytes are `Hash_1(ref)` (or `ReprHash(ref)` if reference level is 0). The next 2 bytes are depth of the deleted subtree, which was replaced by the reference.
 
-Чем выше хэши `Hash_i` из Merkle Proof Cell вычисляются аналогично более высоким хэшам обычной ячейки, но с помощью `Hash_i+1(ref)` используется вместо `Hash_i(ref)`.
+The higher hashes `Hash_i` of Merkle Proof Cell are computed similarly to the higher hashes of an ordinary cell, but with `Hash_i+1(ref)` used instead of `Hash_i(ref)`.
 
-### Обновление Merkle
+### Merkle Update
 
-Обновительные ячейки Меркля всегда имеют 2 рефлекса и ведут себя как доказательство для обоих этих ячеек.
+Merkle update cells are always have 2 refs and behave like a Merkle proof for both of them.
 
-Обновление Merkle уровня `0 <= l <= 3` это `max(Lvl(ref1) - 1, Lvl(ref2) - 1, 0)`. Они содержат точно `8 + 256 + 256 + 16 + 16 = 552` биты.
+Merkle Update level `0 <= l <= 3` is `max(Lvl(ref1) − 1, Lvl(ref2) − 1, 0)`. They contain exactly `8 + 256 + 256 + 16 + 16 = 552` bits.
 
-Первый байт всегда `04` - тип ячейки. Следующие 64 байта — `Hash_1(ref1)` и `Hash_2(ref2)` — старый хэш и новый хэш. Затем идет 4 байта с фактической глубиной удаления старого поддерева и удаляет новое поддерево.
+First byte is always `04` - Cell type. Next 64 bytes are `Hash_1(ref1)` and `Hash_2(ref2)` - called old hash and new hash. Then goes 4 bytes with actual depth of deleted old subtree and deleted new subtree.
 
-## Простой пример проверки проверки
+## Simple Proof verifying example
 
-Давайте предположим, что есть ячейка `c`:
+Let's assume there is a Cell `c`:
 
 ```json
 24[000078] -> {
@@ -79,10 +79,10 @@ Merkle Proof имеет ровно одну ссылку, а ее уровень
 }
 ```
 
-Но мы знаем только его хэш `44efd0fdfffa8f152339a0191de1e1c5901fdcfe13798af443640af99616b977`, и мы хотим доказать, что ячейка `a` `267[800DEB78CF30DC0C8612C3B3BE0086724D499B25CB2FBBB154C086C8B58417A2F040]на самом деле является частью `c`без получения целого`c\`.
-Поэтому мы просим доктора создать Merkle Proof, заменив все ветки, которые нам не интересны с утопленными ветвями ячеек.
+But we know only its hash `44efd0fdfffa8f152339a0191de1e1c5901fdcfe13798af443640af99616b977`, and we want to prove that cell `a` `267[800DEB78CF30DC0C8612C3B3BE0086724D499B25CB2FBBB154C086C8B58417A2F040]` is actually a part of the `c`, without receiving the whole `c`.
+So we ask the prover to create a Merkle Proof, replacing all branches that we are not interested in with Pruned branch cells.
 
-Первый потомок `c`, из которого невозможно попасть в `a`, это `ref1`:
+The first `c` descendant from which there is no way to get to `a` is `ref1`:
 
 ```json
 32[0000000F] -> {
@@ -95,9 +95,9 @@ Merkle Proof имеет ровно одну ссылку, а ее уровень
 }
 ```
 
-Таким образом, проповедник вычисляет свой хэш (`ec7c1379618703592804d3a33f7e120cebe946fa78a6775f6ee2e28d80ddb7dc`), создает утопленную ветку `288[0101EC7C1379618703592804D3A33F7E120CEBE946FA78A6775F6EE2E28D80DDB7DC0002]и заменяет `ref1\` на эту утопленную ветку.
+So the prover computes its hash (`ec7c1379618703592804d3a33f7e120cebe946fa78a6775f6ee2e28d80ddb7dc`), creates a Pruned Branch `288[0101EC7C1379618703592804D3A33F7E120CEBE946FA78A6775F6EE2E28D80DDB7DC0002]` and replaces `ref1` with this Pruned Branch.
 
-Второй является `512[0000000...00000000064]`, поэтому прослушиватель создает утопленную ветку для замены этой ячейки:
+The second one is `512[0000000...00000000064]`, so the prover creates Pruned branch to replace this Cell as well:
 
 ```json
 24[000078] -> {
@@ -111,7 +111,7 @@ Merkle Proof имеет ровно одну ссылку, а ее уровень
 }
 ```
 
-Результат Merkle Proof который доказывает, посылает верификатору (нас в этом примере) выглядит так:
+The result Merkle Proof which prover sends to verifier (us in this example) looks like this:
 
 ```json
 280[0344EFD0FDFFFA8F152339A0191DE1E1C5901FDCFE13798AF443640AF99616B9770003] -> {
@@ -127,12 +127,12 @@ Merkle Proof имеет ровно одну ссылку, а ее уровень
 }
 ```
 
-Когда мы (верификаторы) поймаем ячейку Proof Cell, мы убедимся в том, что ее данные содержат хэш `c`, а затем вычислим `Hash_1` из единственного механизма справки: `44efd0fdfffa8f152339a0191de1e1c5901fdcfe13798af443640af99616b977`, и сравните его с хэшем `c`.
+When we (verifier) get the Proof Cell we make sure that its data contains the `c` hash and then compute `Hash_1` from the only Proof reference: `44efd0fdfffa8f152339a0191de1e1c5901fdcfe13798af443640af99616b977`, and compare it to the `c` hash.
 
-Теперь, когда мы проверили, что хэши совпадают, нам нужно глубоко вглубь ячейки и убедиться, что есть ячейка "а" (мы были заинтересованы).
+Now, when we've checked that hashes are match, we need to go deep in the Cell and verify that there is a Cell `a` (we were interested in).
 
-Такие доказательства многократно снижают вычислительную нагрузку и количество данных, которые необходимо послать или хранить в верификаторе.
+Such proofs repeatedly reduce the computational load and the amount of data that needs to be sent to or stored in the verifier.
 
-## Смотреть также
+## See Also
 
-- [Расширенные проверки примеров](/v3/documentation/data-formats/tlb/proofs)
+- [Advanced Proofs verifying examples](/v3/documentation/data-formats/tlb/proofs)
