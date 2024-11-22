@@ -1,60 +1,60 @@
-# О Oracles
+# About Oracles
 
-Блокчейн оракулы - это сущности, которые соединяют блокчейн с внешними системами, позволяя выполнение смарт-контрактов на основе реальных входных данных.
+Blockchain oracles are entities that connect the blockchain to external systems, allowing smart contracts to be executed based on real-world inputs.
 
-## Как работают блокчейн оракулы
+## How blockchain oracles work
 
-Blockchain oracles – это специализированные услуги, которые выступают в качестве мостов между реальным миром и блокчейн-технологией. Они предоставляют смарт-контракты с актуальной и необходимой информацией из внешнего мира, например, обменные курсы, платежные статусы и даже погодные условия. Эти данные позволяют автоматизировать и выполнять условия контрактов без непосредственного вмешательства человека.
+Blockchain oracles are specialized services that act as bridges between the real world and blockchain technology. They provide smart contracts with relevant and necessary information from the outside world, such as exchange rates, payment statuses or even weather conditions. This data helps to automate and fulfill the terms of contracts without direct human intervention.
 
-Основным принципом оракулов является их способность функционировать вне блокчейна путем подключения к различным сетевым источникам для сбора данных. Хотя оракулы не являются частью самого блокчейна, они играют ключевую роль в том, чтобы сделать его функциональным, действуя в качестве надежного посредника, надежно передающего внешние данные в систему.
+The basic principle behind oracles is their ability to function outside of the blockchain by connecting to various online sources to collect data. Although oracles are not part of the blockchain itself, they play a key role in making it functional by acting as a trusted intermediary that reliably feeds external data into the system.
 
-Большинство оракулов обычно носят децентрализованный характер, избегая рисков, связанных с зависимостью от единого источника данных. Это обеспечивает большую безопасность и надежность системы, поскольку данные проверяются и проверяются через сеть узлов до их использования в смарт-контрактах. Такой подход минимизирует риск манипуляций и ошибок, обеспечивая точность и актуальность предоставленной информации.
+Most oracles tend to be decentralized, avoiding the risks associated with dependence on a single source of data. This provides greater security and reliability to the system as data is verified and validated through a network of nodes before it is used in smart contracts. This approach minimizes the risk of manipulation and errors, ensuring that the information provided is accurate and up-to-date.
 
-## Разновидности блокчейн оракулов
+## Varieties of blockchain oracles
 
-Блокчейн оракулы классифицируются по различным аспектам: механизм работы, источники данных, направление данных и структура управления. Давайте посмотрим на наиболее распространенные типы оракулов.
+Blockchain oracles are categorized according to various aspects: mechanism of operation, data sources, data direction, and governance structure. Let's take a look at the most common types of oracles.
 
-### Программное и аппаратное обеспечение
+### Software and hardware oracles
 
-Программные оракулы работают с онлайновыми данными, хранящимися в различных цифровых источниках, таких как базы данных, серверы, облачное хранилище. Аппаратные оракулы соединяют физический мир с цифровым миром, используя датчики и сканеры для передачи данных о событиях реального мира в блокчейн.
+Software oracles work with online data that is stored in various digital sources such as databases, servers, cloud storage. Hardware oracles connect the physical world to the digital world, using sensors and scanners to transfer data about real-world events to the blockchain.
 
-### Входящие и исходящие оракулы
+### Incoming and outgoing oracles
 
-Входящие оракулы передают информацию в блокчейн, например, данные погоды для страховых контрактов. Исходящие оракулы, в свою очередь, отправляют данные из блокчейна во внешний мир, например, уведомления о транзакциях. Использование обоих типов оракулов повышает общую надежность системы, обеспечивая непрерывный и точный поток данных в обоих направлениях. Это также снижает вероятность возникновения единой проблемы сбоев за счет диверсификации источников и мест назначения критических данных, снижение риска того, что неудача в одном из компонентов может поставить под угрозу всю систему.
+Inbound oracles feed information into the blockchain, such as weather data for insurance contracts. Outbound oracles, in turn, send data from the blockchain to the outside world, such as transaction notifications. Using both types of oracles improves the overall reliability of the system by ensuring a continuous and accurate flow of data in both directions. It also reduces the likelihood of a single point of failure problem by diversifying the sources and destinations of critical data, reducing the risk that a failure in one component could jeopardize the entire system.
 
-### Централизованные и децентрализованные оракулы
+### Centralized and decentralized oracles
 
-Централизованные оракулы контролируются одной стороной, что создает риски безопасности и надежности. Децентрализованные оракулы используют несколько узлов для проверки данных, что делает их более безопасными и надежными.
+Centralized oracles are controlled by a single party, which creates security and reliability risks. Decentralized oracles use multiple nodes to verify data, making them more secure and reliable.
 
-### Oracles для конкретных смарт-контрактов
+### Oracles for specific smart-contracts
 
-Эти оракулы разрабатываются индивидуально для некоторых смарт-контрактов и не могут быть столь популярны из-за их специфики и высоких затрат на разработку.
+These oracles are developed individually for certain smart contracts and may not be as popular due to their specificity and high development costs.
 
-### Кросшейные оракулы
+### Crosschain oracles
 
-Эти оракулы используются для передачи данных между различными блокчейнами и являются критическим компонентом мостов. Они используются для децентрализованных приложений, использующих кросс-цепные сделки, такие как кроссцепная передача криптовалютных активов из одной сети в другую.
+These oracles are used to transfer data between different blockchains and are a critical component of bridges. They are used for decentralized applications that use cross-chain transactions, such as cross-chain transfer of crypto assets from one network to another.
 
-## Применение оракулов блокчейна
+## Application of blockchain oracles
 
-Blockchain oracles строят мосты между цифровым миром блокчейнов и реальной жизнью, открывая широкий спектр применений. Давайте посмотрим на некоторые из самых популярных видов использования оракулов.
+Blockchain oracles build bridges between the digital world of blockchains and real life, opening up a wide range of applications. Let's take a look at some of the most popular uses of oracles.
 
-### ДеФИ (децентрализованное финансирование)
+### DeFi (decentralized finance)
 
-Oracles играют важнейшую роль в экосистеме DeFi, предоставляя рыночную цену и данные о криптовалюте. Ценовые оракулы позволяют платформам DeFi связывать токены с реальными активами, что необходимо для контроля ликвидности и обеспечения позиций пользователей. Кроме того, оракулы имеют жизненно важное значение для платформ кредитования, где точные данные о ценах обеспечивают надлежащую залоговую оценку и управление рисками, гарантируя как кредиторам, так и заемщикам. Это делает транзакции более прозрачными и безопасными, что способствует стабильности и надежности финансовых операций.
+Oracles play a critical role in the DeFi ecosystem by providing market price and cryptocurrency data. Price oracles allow DeFi platforms to link token values to real assets, which is essential for controlling liquidity and securing users' positions. Additionally, oracles are vital for lending platforms, where accurate price data ensures proper collateral valuation and risk management, safeguarding both lenders and borrowers. This makes transactions more transparent and secure, contributing to the stability and reliability of financial transactions.
 
-### Страхование
+### Insurance
 
-Oracles могут автоматически считывать и анализировать данные из различных источников, чтобы определить наличие страховых случаев. Это позволяет договорам страхования автоматически выплачивать претензии, уменьшая необходимость вручную обрабатывать каждый случай и ускорять время реагирования на страховые случаи.
+Oracles can automatically read and analyze data from a variety of sources to determine the occurrence of insurance events. This allows insurance contracts to pay claims automatically, reducing the need to manually process each case and speeding up response times to insurance events.
 
-### Логистика
+### Logistics
 
-Использование оракулов в логистике позволяет смарт-контрактам автоматически производить платежи и другие действия на основе данных, полученных от штрих-кодов сканеров или датчиков на автомобилях. Это повышает точность и эффективность доставки за счет минимизации ошибок и задержек.
+The use of oracles in logistics allows smart contracts to automatically perform payments and other actions based on data received from barcode scanners or sensors on vehicles. This improves delivery accuracy and efficiency by minimizing errors and delays.
 
-### Генерация случайных чисел
+### Random number generation
 
-Сложно создавать случайные числа в смарт-контрактах, поскольку все операции должны быть воспроизводимыми и предсказуемыми, что противоречит концепции случайности. Коммутационные оракулы решают эту проблему, внося данные из внешнего мира в контракты. Они могут генерировать проверяемые случайные числа для игр и лотерей, обеспечивая честность и прозрачность результатов.
+It is difficult to generate random numbers in smart contracts because all operations must be reproducible and predictable, which contradicts the concept of randomness. Computational oracles solve this problem by bringing data from the outside world into contracts. They can generate verifiable random numbers for games and lotteries, ensuring fairness and transparency of results.
 
-## Список оракулов в TON
+## List of oracles in TON
 
 - [Pyth Oracles](/v3/documentation/dapps/oracles/pyth)
-- [Орклы редстоуна](/v3/documentation/dapps/oracles/red_stone)
+- [RedStone Oracles](/v3/documentation/dapps/oracles/red_stone)
