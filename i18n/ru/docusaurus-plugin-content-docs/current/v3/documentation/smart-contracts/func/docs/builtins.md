@@ -1,31 +1,31 @@
-# Встроенные
+# Built-ins
 
-Этот раздел описывает некоторые языковые конструкции, которые менее фундаментальны, чем те, которые описаны в предыдущих статьях. Они могут быть определены в [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib), но оставляют меньше места для оптимизатора FunC.
+This section describes some language constructions which are less fundamental than the ones described in previous articles. They could be defined in [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib) but it would leave less room for the FunC optimizer.
 
-## Метание исключений
+## Throwing exceptions
 
-Исключения могут быть выгружены условными примитивами `throw_if` и `throw_unless` и при условии безусловного `throw`. Первый аргумент - это код ошибки; второй - это условие (`throw` имеет только один аргумент). Эти примитивы имеют параметризованные версии `throw_arg_if`, `throw_arg_unless` и `throw_arg`. Первым аргументом является параметр исключения любого типа, второй - код ошибки; Третий — это условие («throw_arg» имеет только два аргумента).
+Exceptions can be thrown by conditional primitives `throw_if`, and `throw_unless`, and by unconditional `throw`. The first argument is the error code; the second is the condition (`throw` has only one argument). These primitives have parametrized versions `throw_arg_if`, `throw_arg_unless`, and `throw_arg`. The first argument is the exception parameter of any type; the second is the error code; the third is the condition (`throw_arg` has only two arguments).
 
-## Логические значения
+## Booleans
 
-- `true` псевдоним для `-1`
-- `false` является псевдоним для `0`
+- `true` is alias for `-1`
+- `false` is alias for `0`
 
-## Переменная дампа
+## Dump variable
 
-Переменная может быть перенесена в журнал отладки с помощью функции `~dump`.
+A variable can be dumped to the debug log by the `~dump` function.
 
-## Строка дампа
+## Dump string
 
-Строка может быть перенесена в журнал отладки с помощью функции `~strdump`.
+A string can be dumped to the debug log by the `~strdump` function.
 
-## Целое число операций
+## Integer operations
 
-- «мульдив» — операция с разделением на несколько частей. Промежуточный результат хранится в 513-битном целочисленном числе, поэтому он не будет переполнен, если фактический результат вписывается в 257-битное целое.
-- `divmod` — это операция, занимающая два числа в качестве параметров и дающая частную и оставшуюся часть их деформации.
+- `muldiv` is a multiple-then-divide operation. The intermediate result is stored in 513-bit integer, so it won't overflow if the actual result fits into a 257-bit integer.
+- `divmod` is a operation that takes two numbers as parameters and gives the quotient and remainder of their division.
 
-## Другие примитивы
+## Other primitives
 
-- `null?` проверяет, является ли аргумент `null`. По значению «null» типа TVM «Null» FunC означает отсутствие значения какого-либо атомарного типа; см. [null values](/v3/documentation/smart-contracts/func/docs/types#null-values).
-- `touch` и `~touch` перемещают переменную вверху стека
-- `at` получает значение компонента трубки в указанной позиции
+- `null?` checks whether the argument is `null`. By the value `null` of a TVM type, `Null` FunC represents absence of a value of some atomic type; see [null values](/v3/documentation/smart-contracts/func/docs/types#null-values).
+- `touch` and `~touch` move a variable to the top of the stack
+- `at` gets the value of a tuple component on the specified position
