@@ -1,1 +1,1 @@
-../../v3/guidelines/dapps/asset-processing/jettons.md
+../../../v3/guidelines/dapps/asset-processing/jettons.md
