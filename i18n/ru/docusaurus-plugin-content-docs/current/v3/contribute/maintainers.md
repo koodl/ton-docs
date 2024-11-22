@@ -1,51 +1,51 @@
-# Сопровождающие
+# Maintainers
 
-## Активная команда
+## Active Team
 
-Ниже приведен алфавитный список участников команды TON Docs.
+Below is an alphabetical list of the current members on the TON Docs team.
 
-### Алекс Голев
+### Alex Golev
 
-Сопровождающий TON Docs и DevRel в TON Foundation
+TON Docs maintainer and DevRel at TON Foundation
 
-- Телеграмма: [@alexgton](https://t.me/alexgton)
+- Telegram: [@alexgton](https://t.me/alexgton)
 - GitHub: [Reveloper](https://github.com/Reveloper)
 
 ### Gusarich
 
-Разработчик Web3, [сообщество TON Dev](https://github.com/ton-community), автор [Footsteps](https://github.com/ton-society/ton-footsteps) и сопровождающий TON Docs
+Web3 Developer, [TON Dev community](https://github.com/ton-community) contributor, [TON Footsteps](https://github.com/ton-society/ton-footsteps) and TON Docs maintainer
 
-- Телеграмма: [@Gusarich](https://t.me/Gusarich)
+- Telegram: [@Gusarich](https://t.me/Gusarich)
 - GitHub: [Gusarich](https://github.com/Gusarich)
 
 ### SwiftAdviser
 
-Менеджер по работе с разработчиками в Фонде TON
+Developer Onboarding Manager at TON Foundation
 
-- Телеграмма: [@SwiftAdviser](https://t.me/SwiftAdviser)
+- Telegram: [@SwiftAdviser](https://t.me/SwiftAdviser)
 - GitHub: [SwiftAdviser](https://github.com/SwiftAdviser)
 
-## Выражение признательности
+## Acknowledgements
 
 TON Docs was originally created by [tolya-yanot](https://github.com/tolya-yanot) and [EmelyanenkoK](https://github.com/EmelyanenkoK).
 
-Со временем TON Docs выигрывает от интеллекта и самоотверженности [многочисленных внешних разработчиков](https://github.com/ton-community/ton-docs/graphs/contributors). Мы выражаем каждой из них искреннюю признательность.
+Over time, TON Docs has benefitted from the intellect and dedication of [numerous external contributors](https://github.com/ton-community/ton-docs/graphs/contributors). We extend our heartfelt gratitude to each of them.
 
-Тем не менее, мы хотели бы особо отметить существенный вклад, внесенный следующими лицами. Их соответствующий вклад значительно обогатил качество и глубину нашей документации:
+However, we would like to specially acknowledge the substantial contributions made by the following individuals. Their respective contributions have greatly enriched the quality and depth of our documentation:
 
-- [akifoq](https://github.com/akifoq): ранний вклад
-- [amnch1](https://github.com/amnch1): исправления
+- [akifoq](https://github.com/akifoq): early contributions
+- [amnch1](https://github.com/amnch1): fixes
 - [aSpite](https://github.com/aSpite): content
 - [awesome-doge](https://github.com/awesome-doge): early contributions
 - [coalus](https://github.com/coalus): content
 - [delovoyhomie](https://github.com/delovoyhomie): content
 - [krau5](https://github.com/krau5): improvements
-- [LevZed](https://github.com/LevZed): содержание
+- [LevZed](https://github.com/LevZed): content
 - [ProgramCrafter](https://github.com/ProgramCrafter): content
 - [siandreev](https://github.com/siandreev): content
-- [SpyCheese](https://github.com/SpyCheese): ранний вклад
-- [Tal Kol](https://github.com/talkol): ранний вклад
+- [SpyCheese](https://github.com/SpyCheese): early contributions
+- [Tal Kol](https://github.com/talkol): early contributions
 - [TrueCarry](https://github.com/TrueCarry): content
 - [xssnick](https://github.com/xssnick): content
 
-Мы искренне признательны каждому участнику, который помог сделать TON Docs богатым и надежным ресурсом.
+Our sincere appreciation to each and every contributor who has aided in making TON Docs a rich and reliable resource.
