@@ -1,51 +1,51 @@
-# Overlay subnetworks
+# Наложение подсетей
 
-Implementation:
+Осуществление:
 
 - https://github.com/ton-blockchain/ton/tree/master/overlay
 
-## Overview
+## Общий обзор
 
-The architecture of TON is built in such a way that a lot of chains can exist simultaneously and independently in it - they can be both private or public.
-Nodes have the ability to choose which shards and chains they store and process.
-At the same time, the communication protocol remains unchanged due to its universality. Protocols such as DHT, RLDP and Overlays allow this to be achieved.
-We are already familiar with the first two, in this section we will learn what Overlay is.
+Архитектура TON построена таким образом, что множество цепей может существовать одновременно и независимо в ней - они могут быть как частными, так и публичными.
+Узлы имеют возможность выбирать, какие осколки и цепочки они хранят и обрабатывают.
+В то же время благодаря своей универсальности протокол по коммуникациям остается неизменным. Такие протоколы, как DHT, RLDP и Overlays позволяют это достичь.
+Мы уже знакомы с первыми двуми, в этом разделе мы узнаем, что такое Накладываемое изображение.
 
-Overlays are responsible for dividing a single network into additional subnetworks. Overlays can be both public, to which anyone can connect, and private, where additional credentials is needed for entry, known only to a certain amount of people.
+Наслоения отвечают за деление одной сети на дополнительные подсети. Наслоения могут быть публичными, к которым каждый может подключаться, и приватными, где для входа необходимы дополнительные учетные данные, известно только определенному количеству людей.
 
-All chains in TON, including the masterchain, communicate using their own overlay.
-To join it, you need to find the nodes that are already in it, and start exchanging data with them.
-For the public overlays you can find nodes using DHT.
+Все цепочки TON, включая шедевры, общаются с помощью собственного наслоения.
+Чтобы присоединиться к нему, вам нужно найти уже присутствующие в нем узлы и начать обмен данными с ними.
+Для публичных наслоений вы можете найти узлы с помощью DHT.
 
-## ADNL vs Overlay networks
+## ADNL против сетей наслоений
 
 In contrast to ADNL, the TON overlay networks usually do not support
-sending datagrams to other arbitrary nodes. Instead, some “semi-permanent
-links” are established between certain nodes (called “neighbors” with respect to
-the overlay network under consideration) and messages are usually forwarded
-along these links (i.e. from a node to one of its neighbors).
+sending datagrams to other arbitrary nodes. Вместо этого некоторые “полупостоянные
+ссылки” устанавливаются между определенными узлами (называемыми “соседи” по отношению к
+сети оверлеев, которые рассматриваются), и сообщения, как правило, пересылаются
+по этим ссылкам (i. , от узла до одного из его соседей).
 
-Each overlay subnetwork has a 256-bit network identifier usually equal
-to a SHA256 of the description of the overlay network—a TL-serialized object.
+Каждая подсеть оверлея имеет 256-разрядный сетевой идентификатор, обычно равный
+SHA256 описанию сети оверлеев – сериализованной TL.
 
-Overlay subnetworks can be public or private.
+Подсети наслоений могут быть публичными или приватными.
 
-Overlay subnetworks work according to a special [gossip](https://en.wikipedia.org/wiki/Gossip_protocol) protocol.
+Подсети оверлея работают согласно специальному протоколу [gossip](https://en.wikipedia.org/wiki/Gossip_protocol).
 
-## Interaction with overlay nodes
+## Взаимодействие с узлами оверлея
 
 We have already analyzed an example with finding overlay nodes in an article about DHT,
 in the section [Search for nodes that store the state of the blockchain](/v3/documentation/network/protocols/dht/dht-deep-dive#search-for-nodes-that-store-the-state-of-the-blockchain).
-In this section, we will focus on interacting with them.
+В этом разделе мы сосредоточимся на взаимодействии с ними.
 
-When querying the DHT, we will get the addresses of the overlay nodes, from which we can find out the addresses of other nodes of this overlay using [overlay.getRandomPeers](https://github.com/ton-blockchain/ton/blob/ad736c6bc3c06ad54dc6e40d62acbaf5dae41584/tl/generate/scheme/ton_api.tl#L237) query.
-Once we connect to a sufficient number of nodes, we can receive all blocks information and other chain events from them, as well as send our transactions to them for processing.
+При запросе DHT, мы получим адреса узлов накладываемого изображения, с которого мы можем найти адреса других узлов этого оверлея с помощью [overlay.getRandomPeers](https://github. om/ton-blockchain/ton/blob/ad736c6bc3c06ad54dc6e40d62acbaf5dae41584/tl/generate/scheme/ton_api.tl#L237) запрос.
+Как только мы подключимся к достаточному количеству узлов, мы можем получать от них информацию обо всех блоках и другие события цепи, а также отправить нам наши транзакции для обработки.
 
-### Find more neighbors
+### Найти соседей
 
-Let's look at an example of getting nodes in an overlay.
+Давайте рассмотрим пример получения узлов в накладываемом изображении.
 
-To do this, send a request `overlay.getRandomPeers` to any known node of the overlay, serialize the TL schema:
+Для этого отправьте запрос `overlay.getRandomPeers` на любой известный узел оверлея, сериализуйте схему TL:
 
 ```tlb
 overlay.node id:PublicKey overlay:int256 version:int signature:bytes = overlay.Node;
@@ -54,49 +54,49 @@ overlay.nodes nodes:(vector overlay.node) = overlay.Nodes;
 overlay.getRandomPeers peers:overlay.nodes = overlay.Nodes;
 ```
 
-`peers` - should contain the peers we know, so we don't get them back, but since we don't know any yet, `peers.nodes` will be an empty array.
+`peers` - должны содержать узлов, которых мы знаем, поэтому мы не возвращаем их назад, но поскольку мы пока не знаем ни одного узла, `пиров. odes` будет пустым массивом.
 
-In case if we want to not just get some information, but participate in overlay and get broadcasts, we should also add in `peers` information about our node, from which we're doing request.
-When peers will get info about us - they will start to send us broadcasts using ADNL or RLDP.
+В случае, если мы хотим не просто получить некоторую информацию, а участвовать в оверлеи и получать трансляции, также следует добавить в `peers` информацию о нашем узле, из которого мы запрашиваем.
+Когда пиры будут получать информацию о нас - они начнут отправлять нам трансляции с помощью ADNL или RLDP.
 
-Each request inside the overlay must be prefixed with the TL schema:
+Каждый запрос внутри наслоения должен быть префиксом TL схемы:
 
 ```tlb
 overlay.query overlay:int256 = True;
 ```
 
-The `overlay` should be the id of the overlay - the id of the `tonNode.ShardPublicOverlayId` schema key - the same one we used to search the DHT.
+Поле «overlay» должно быть id накладываемого изображения - id «tonNode». hardPublicOverlayId\` ключ схемы - тот же самый ключ для поиска DHT.
 
-We need to concat 2 serialized schemas by simply concatenating 2 serialized byte arrays, `overlay.query` will come first, `overlay.getRandomPeers` second.
+Нам нужно совмещать сериализованные схемы сериализации 2 сериализованных массивов байтов, `overlay.query` сначала придет `overlay.getRandomPeers` сек.
 
-We wrap the resulting array in the `adnl.message.query` schema and send it via ADNL. In response, we are waiting for `overlay.nodes` - this will be a list of overlay nodes to which we can connect and, if necessary, repeat the same request to new of them until we get enough connections.
+Мы поместим результирующий массив в схеме `adnl.message.query` и отправим его через ADNL. В ответ мы ожидаем "наложения". odes\` - это список узлов, к которым мы можем подключаться и при необходимости повторять тот же самый запрос к новым из них, пока мы не получим достаточно соединений.
 
-### Functional requests
+### Функциональные запросы
 
-Once the connection is established, we can access the overlay nodes using [requests](https://github.com/ton-blockchain/ton/blob/ad736c6bc3c06ad54dc6e40d62acbaf5dae41584/tl/generate/scheme/ton_api.tl#L413) `tonNode.*`.
+После установления соединения мы можем получить доступ к узлам накладываемого изображения с помощью [requests](https://github.com/ton-blockchain/ton/blob/ad736c6bc3c06ad54dc6e40d62acbaf5dae41584/tl/generate/scheme/ton_api.tl#L413) `tonNode.*`.
 
-For requests of this kind, the RLDP protocol is used. And it's important not to forget the `overlay.query` prefix - it must be used for every query in the overlay.
+Для такого рода запросов используется протокол RLDP. И важно не забывать префикс `overlay.query` - он должен использоваться для каждого запроса в оверлее.
 
-There is nothing unusual about the requests themselves, they are very similar to what we [did in the article about ADNL TCP](/v3/documentation/network/protocols/adnl/adnl-tcp#getmasterchaininfo).
+Нет ничего необычного в отношении самих запросов, они очень похожи на то, что мы [делали в статье о ADNL TCP](/v3/documentation/network/protocols/adnl/adnl-tcp#getmasterchaininfo).
 
-For example, the `downloadBlockFull` request uses the already familiar schema of block id:
+Например, в запросе `downloadBlockFull` используется уже знакомый код блока:
 
 ```tlb
 tonNode.downloadBlockFull block:tonNode.blockIdExt = tonNode.DataFull;
 ```
 
-By passing it, we will be able to download the full information about the block, in response we will receive:
+Пройдя его, мы сможем загрузить полную информацию о блоке, в ответ мы получим:
 
 ```tlb
-tonNode.dataFull id:tonNode.blockIdExt proof:bytes block:bytes is_link:Bool = tonNode.DataFull;
-  or
+tonNode.dataПолный id:tonNode.blockIdExt proof:bytes block:bytes is_link:Bool = tonNode.DataFull;
+  или
 tonNode.dataFullEmpty = tonNode.DataFull;
 ```
 
-If present, the `block` field will contain data in TL-B format.
+Если присутствует, поле `block` будет содержать данные в формате TL-B.
 
-Thus, we can receive information directly from the nodes.
+Таким образом, мы можем получать информацию непосредственно от узлов.
 
-## References
+## Справочная литература
 
-_Here a [link to the original article](https://github.com/xssnick/ton-deep-doc/blob/master/Overlay-Network.md) by [Oleg Baranov](https://github.com/xssnick)._
+_Здесь [ссылка на оригинальную статью](https://github.com/xssnick/ton-deep-doc/blob/master/Overlay-Network.md) от [Oleg Baranov](https://github.com/xssnick)._
