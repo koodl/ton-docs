@@ -1,31 +1,31 @@
-# IDE plugins
+# Плагины IDE
 
-## IntelliJ IDEs Plugin
+## Плагин IntelliJ IDEs
 
 ![](/img/docs/ton-jetbrains-plugin.png)
 
 :::info
-This plugin can be used with any JetBrains product.
-(IntelliJ IDEA, WebStorm, PyCharm, CLion, etc.)
+Этот плагин может быть использован с любым продуктом JetBrains.
+(IntelliJ IDEA, WebStorm, PyCharm, CLion и т. д.)
 :::
 
-There are several ways to install a plugin:
+Есть несколько способов установки плагина:
 
-- Find plugin directly in the IDE plugins section with "**TON**" keywords
-- [Marketplace link](https://plugins.jetbrains.com/plugin/23382-ton)
+- Найти плагин прямо в разделе IDE плагинов с ключом "**TON**"
+- [Ссылка на площадку](https://plugins.jetbrains.com/plugin/23382-тон)
 - [GitHub repository](https://github.com/ton-blockchain/intellij-ton)
 
-## VS Code plugin
+## Плагин VS Code
 
-Visual Studio Code is a free and popular IDE for developers.
+Visual Studio Code — бесплатный и популярный IDE для разработчиков.
 
-- [Marketplace link](https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode)
-- [GitHub repository](https://github.com/ton-foundation/vscode-func)
+- [Ссылка на площадку](https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode)
+- [GitHub репозиторий](https://github.com/ton-foundation/vscode-func)
 
-## FunC Sublime Text plugin
+## Плагин "FunC" Sublime Text плагин
 
-- [GitHub repository](https://github.com/savva425/func_plugin_sublimetext3)
+- [GitHub репозиторий](https://github.com/savva425/func_plugin_sublimetext3)
 
 ## Neovim
 
-To enable syntax highlighting in Neovim, follow the installation instructions in the [nvim-treesitter quickstart guide](https://github.com/nvim-treesitter/nvim-treesitter#quickstart).
+Чтобы включить подсветку синтаксиса в Neovim, следуйте инструкциям по установке в [nvim-treesitter quickstart (https://github.com/nvim-treesitter/nvim-treesitter#quickstart).
