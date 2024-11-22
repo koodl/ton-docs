@@ -1,153 +1,153 @@
 import ThemedImage from '@theme/ThemedImage';
 
-# Красный Оракл
+# RedStone Oracles
 
-## Как работают красные оракулы с TON
+## How RedStone oracles work with TON
 
-RedStone oracles используют альтернативный дизайн предоставления данных оракула для смарт-контрактов. Вместо постоянного хранения данных о договоре (поставщиками данных), информация передается в цепь только при необходимости (конечными пользователями). До этого момента данные остаются в децентрализованном слое кэша, который питается от шлюзов кэша RedStone и протоколом трансляции данных
-потоков. Data is transferred to the contract by end users, who should attach signed data
-packages to their function invocations. Целостность информации проверяется в цепочке через проверку подписи.
+RedStone oracles use an alternative design of providing oracle data to smart contracts. Instead of constantly persisting data on the contract's storage (by data providers), the information is brought on-chain only when needed (by end users). Until that moment data remains in the decentralized cache layer, which is powered by RedStone light cache gateways and
+streams data broadcasting protocol. Data is transferred to the contract by end users, who should attach signed data
+packages to their function invocations. The information integrity is verified on-chain through signature checking.
 
-Чтобы узнать больше о дизайне оракулов RedStone перейдите на [документы RedStone](https://docs.redstone.finance/docs/introduction)
+To learn more about RedStone oracles design go to the [RedStone docs](https://docs.redstone.finance/docs/introduction)
 
-## Ссылки на документацию
+## Documentation links
 
-- [Коннектор с редстоун](https://github.com/redstone-finance/redstone-oracles-monorepo/tree/main/packages/ton-connector)
+- [Redstone TON Connector](https://github.com/redstone-finance/redstone-oracles-monorepo/tree/main/packages/ton-connector)
 
-## Умные контракты
+## Smart Contracts
 
 ### price_manager.fc
 
-- Пример контракта на оракул, потребляющий данные об oracles RedStone [price_manager.fc](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/contracts/price_manager.fc) написано в
-  FunC. Требуется [Обновление TVM 2023.07](/v3/documentation/tvm/changelog/tvm-upgrade-2023-07).
+- Sample oracle contract that consumes RedStone oracles data [price_manager.fc](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/contracts/price_manager.fc) written in
+  FunC. It requires [TVM Upgrade 2023.07](/v3/documentation/tvm/changelog/tvm-upgrade-2023-07).
 
-#### начальные данные
+#### initial data
 
-Как уже упоминалось выше, комплекты данных, переданные к контракту, проверяются посредством проверки подписи.
-Для того, чтобы получить значение `signer_count_threshold`, подписавший передаваемые данные
-должен быть одним из `signer_count_threshold`, передаваемых в начальных данных. Для прохождения
-необходим `signer_count_threshold`.
+As mentioned above, the data packages transferred to the contract are being verified by signature checking.
+To be counted to achieve the `signer_count_threshold`, the signer signing the passed data
+should be one of the `signers` passed in the initial data. There is also needed `signer_count_threshold` to be
+passed.
 
-Из-за архитектуры контрактов TON, начальные данные должны созываться с структурой хранения контракта,
-который построен следующим образом:
+Due to the architecture of TON contracts, the initial data must convene with the contract's storage structure,
+which is constructed as below:
 
 ```ts
   begin_cell()
-    .store_uint(signer_count_threshold, 8) /// число, как передано ниже
-    . tore_uint(timestamp, TIMESTAMP_BITS) /// изначально 0 представляет эпоху 0
-    . tore_ref(signers) /// сериализованный трубок значений передаваемых ниже
-  . nd_cell();
+    .store_uint(signer_count_threshold, 8)  /// number as passed below
+    .store_uint(timestamp, TIMESTAMP_BITS)  /// initially 0 representing the epoch 0
+    .store_ref(signers)                     /// serialized tuple of values passed below
+  .end_cell();
 ```
 
-Значение `signers` должно быть передано в виде сериализованного `tuple` из `int`s.
+The value of `signers` should be passed as a serialized `tuple` of `int`s.
 See [tuple](https://github.com/ton-core/ton-core/blob/main/src/tuple/tuple.ts).
 
-<!-- Для определения первоначальных данных (хранилища) для заключения договора о ценах используйте предопределенный
-класс [PriceManagerInitData.ts](../src/price-manager/PriceManagerInitData.ts). -->
+<!-- To define the initial (storage) data for the Prices contract, use the predefined
+class [PriceManagerInitData.ts](../src/price-manager/PriceManagerInitData.ts). -->
 
 In the function parameters below, each `feed_id` is a string encoded to `int` which means, that's a value
-consisting of hex-values of the particular letters in the string. Например:
-`ETH'` как `int` — это `0x455448` в шестнадцатеричном режиме или `4543560` в десятичной, как `256*256*ord('E')+256*ord('T')+ord('H')`.
+consisting of hex-values of the particular letters in the string. For example:
+`'ETH'` as an `int` is `0x455448` in hex or `4543560` in decimal, as `256*256*ord('E')+256*ord('T')+ord('H')`.
 
-Вы можете использовать: `feed_id=hexlify(toUtf8Bytes(feed_string))` для преобразования конкретных значений или
- [endpoint](https://cairo-utils-web.vercel.app/)
+You can use: `feed_id=hexlify(toUtf8Bytes(feed_string))` to convert particular values or
+the [endpoint](https://cairo-utils-web.vercel.app/)
 
-Значение `feed_ids` должно быть передано в виде сериализованного `tuple` из `int`s.
+The value of `feed_ids`  should be passed as a serialized `tuple` of `int`s.
 
-Значение `payload` упаковано из массива байт, представляющих сериализованный RedStone полезный груз.
-См. раздел [TON RedStone payload-packing](#ton-redstone-payload-packing), а также файл [constants.fc](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/contracts/redstone/constants.fc), содержащий все необходимые константы `int`-длины.
+The value `payload` is packed from an array of bytes representing the serialized RedStone payload.
+See [TON RedStone payload packing](#ton-redstone-payload-packing) section below, as well as the file [constants.fc](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/contracts/redstone/constants.fc), containing all needed `int`-length constants.
 
-#### получить цены
+#### get_prices
 
 ```func
-(ячейка) get_prices_v2 (данные ячейки_feed_ids, полезная нагрузка) method_id;
+(cell) get_prices_v2(cell data_feed_ids, cell payload) method_id;
 ```
 
-Функция обрабатывает on-chain `payload` передается в качестве аргумента
-и возвращает `cell` агрегированных значений каждого канала, передаваемого как идентификатор внутри `feed_ids`.
+The function process on-chain the `payload` passed as an argument
+and returns a `cell` of aggregated values of each feed passed as an identifier inside `feed_ids`.
 
-Из-за ограничения длины метода HTTP GET в TON API v4, функция написана для TON API v2.
+Due to HTTP GET method length limitation in TON API v4, the function is written for TON API v2.
 
-Это всего лишь функции `method_id` - они не изменяют хранилище контракта и не потребляют TON.
+That are just a `method_id` functions - they don't modify the contract's storage and don't consume TONs.
 
-#### OP_REDSTON_WRITE_PLAYLIST
+#### OP_REDSTONE_WRITE_PRICES
 
-Независимо от процесса обработки на лете, существует также метод обработки цепочки `payload`, но
-сохранения/записи агрегированных значений на хранилище контракта. Значения сохраняются в хранилище контракта, а затем могут быть прочитаны с помощью функции `read_prices`. Дата последнего сохранения/написания в контракте может читать с помощью функции `read_timestamp`.
+Regardless of the on-fly processing, there also exists a method for processing the `payload` on-chain, but
+saving/writing the aggregated values to the contract's storage. The values persist in the contract's storage and then can be read by using `read_prices` function. The timestamp of data last saved/written to the contract is able to read by using the `read_timestamp` function.
 
-Метод должен быть использован как внутреннее сообщение TON. Аргументами сообщения являются:
+The method must be invoked as a TON internal message. The arguments of the message are:
 
-- `int`, представляющий имена RedStone_Write_Цены, хэшированные keccak256, как определено
-  в [constants.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/config/constants.ts)
-- `cell` - ссылка, представляющая `data_feed_ids` в виде сериализованного `tuple` из `int`s.\
-- `cell` - реф-файл, представляющий упакованную полезную нагрузку RedStone
+- an `int` representing RedStone_Write_Prices name hashed by keccak256 as defined
+  in [constants.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/config/constants.ts)
+- a `cell` - ref representing the `data_feed_ids` as a serialized `tuple` of `int`s.\
+- a `cell` - ref representing the packed RedStone payload
 
 ```func
     int op = in_msg_body~load_uint(OP_NUMBER_BITS);
 
     if (op == OP_REDSTONE_WRITE_PRICES) {
-        клеток data_feeds_cell = in_msg_body~load_ref();
-        клеток payload_cell = in_msg_body~load_ref();
+        cell data_feeds_cell = in_msg_body~load_ref();
+        cell payload_cell = in_msg_body~load_ref();
 
     // ...
-}
+    }
 ```
 
-Это внутреннее сообщение - оно потребляет ГАС и изменяет хранение договора, поэтому оплачивается TON.
+That's an internal message - it consumes GAS and modifies the contract's storage, so must be paid by TONs.
 
-Узнайте, как это работает: https://ton-showroom.redstone.finance/
+See how it works on: https://ton-showroom.redstone.finance/
 
-#### чита_цены
+#### read_prices
 
 ```func
 (tuple) read_prices(tuple data_feed_ids) method_id;
 ```
 
-Функция считывает значения, сохраняющиеся в хранилище контракта, и возвращает трубочку, соответствующий
-прошедшему `feed_ids`.
-Функция не изменяет хранилище и может читать только агрегированные значения `feed_ids`, сохраненные
-с помощью функции `write_prices`.
+The function reads the values persisting in the contract's storage and returns a tuple corresponding to the
+passed `feed_ids`.
+The function doesn't modify the storage and can read only aggregated values of the `feed_ids` saved by
+using `write_prices` function.
 
-Это всего лишь функция `method_id` - она не изменяет хранилища контракта и не потребляет TON.
+That's just a `method_id` function - it doesn't modify the contract's storage and don't consume TONs.
 
 #### read_timestamp
 
 ```func
-int) read_timestamp() method_id;
+(int) read_timestamp() method_id;
 ```
 
-Возвращает дату последнего сохранения/записи данных в хранилище контракта, используя сообщение `OP_REDSTONE_WRITE_PRICES`.
+Returns the timestamp of data last saved/written to the contract's storage by using `OP_REDSTONE_WRITE_PRICES` message.
 
-Это всего лишь функция `method_id` - она не изменяет хранилища контракта и не потребляет TON.
+That's just a `method_id` function - it doesn't modify the contract's storage and don't consume TONs.
 
 ### price_feed.fc
 
-Из-за архитектуры контрактов TON, начальные данные должны созываться с структурой хранения контракта,
-который построен следующим образом:
+Due to the architecture of TON contracts, the initial data must convene with the contract's storage structure,
+which is constructed as below:
 
 ```ts
 beginCell()
   .storeUint(BigInt(hexlify(toUtf8Bytes(this.feedId))), consts.DATA_FEED_ID_BS * 8)
   .storeAddress(Address.parse(this.managerAddress))
-  . toreUint(0, consts.DEFAULT_NUM_VALUE_BS * 8) /// изначально 0 представляющего эпоху 0
+  .storeUint(0, consts.DEFAULT_NUM_VALUE_BS * 8)  /// initially 0 representing the epoch 0
   .storeUint(0, consts.TIMESTAMP_BS * 8)
   .endCell();
 ```
 
-Для определения первоначальных данных (хранилища) для контракта о ценовом фиде, используйте предопределенные
-класса [PriceFeedInitData.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/price-feed/PriceFeedInitData.ts).
+To define the initial (storage) data for the Price feed contract, use the predefined
+class [PriceFeedInitData.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/price-feed/PriceFeedInitData.ts).
 
-#### OP_REDSTON_FETCH_DATA
+#### OP_REDSTONE_FETCH_DATA
 
-Независимо от того, читаются ли значения контракта сохраняются вне сети,
-существует возможность получения значения, хранимого в контракте для прямой цепочки `feed_id`.
-Необходимо вызвать внутреннее сообщение `OP_REDSTONE_FETCH_DATA`. Аргументами сообщения являются:
+Regardless of reading the values persisting in the contract's from outside the network,
+there is a possibility for fetching the value stored in the contract for a `feed_id` on-chain directly.
+There must be invoked an internal message `OP_REDSTONE_FETCH_DATA`. The arguments of the message are:
 
-- `int`, представляющий имя `RedStone_Fetch_Data`, хэшированное keccak256, как определено
-  в [constants.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/config/constants.ts)
-- `int` представляющий значение `feed_id`.
-- `slice`, представляющий сообщение `initial_sender`, чтобы позволить им перенести оставшийся баланс транзакций
-  при возвращении транзакции.
+- an `int` representing `RedStone_Fetch_Data` name hashed by keccak256 as defined
+  in [constants.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/config/constants.ts)
+- an `int` representing the `feed_id` value.
+- a `slice` representing the `initial_sender` of the message, to allow they carried the remaining transaction balance
+  when the returning transaction goes.
 
 ```func
     int op = in_msg_body~load_uint(OP_NUMBER_BITS);
@@ -157,11 +157,11 @@ beginCell()
         cell initial_payload = in_msg_body~load_ref();
 
         // ...
-}
+    }
 ```
 
-Сообщение `OP_REDSTONE_DATA_FETCHED` отправлено отправителю, содержащему `value` и
-сохраненный `timestamp` значения. The message can be then fetched in the sender and processed or saved in the
+The returning message `OP_REDSTONE_DATA_FETCHED` message is sent to the sender, containing the `value` and
+the `timestamp` of the value has saved. The message can be then fetched in the sender and processed or saved in the
 sender's storage.
 The initial payload's `ref` (`initial_payload`) is added as a ref - containing for example the first message's sender,
 to allow they carry the remaining transaction balance.
@@ -174,7 +174,7 @@ begin_cell()
   .end_cell()
 ```
 
-Это внутреннее сообщение - оно потребляет ГАС и изменяет хранение договора, поэтому оплачивается TON.
+That's an internal message - it consumes GAS and modifies the contract's storage, so must be paid by TONs.
 
 #### get_price_and_timestamp
 
@@ -182,15 +182,15 @@ begin_cell()
 (int, int) get_price_and_timestamp() method_id;
 ```
 
-Возвращает значение и дату последнего сохранения/записи данных в хранилище адаптера, отправив сообщение `OP_REDSTONE_FETCH_DATA` и получив возвращаемое значение сообщения `OP_REDSTONE_DATA_FETCHED`.
+Returns the value and timestamp of the last saved/written data to the adapter's storage by sending `OP_REDSTONE_FETCH_DATA` message and fetching the returned value of the `OP_REDSTONE_DATA_FETCHED` message.
 
-Это всего лишь функция `method_id` - она не изменяет хранилища контракта и не потребляет TON.
+That's just a `method_id` function - it doesn't modify the contract's storage and don't consume TONs.
 
 ### single_feed_man.fc
 
-#### начальные данные
+#### initial data
 
-Схожи с начальными ценами и "price_feed". В связи с архитектурой контрактов TON, первоначальные данные должны созываться с структурой хранения контракта, которая построена следующим образом:
+Similar to the `prices` and `price_feed` initial data. Due to the architecture of TON contracts, the initial data must convene with the contract's storage structure, which is constructed as below:
 
 ```ts
 beginCell()
@@ -198,15 +198,15 @@ beginCell()
   .storeUint(this.signerCountThreshold, SIGNER_COUNT_THRESHOLD_BITS)
   .storeUint(0, consts.DEFAULT_NUM_VALUE_BS * 8)
   .storeUint(0, consts.TIMESTAMP_BS * 8)
-  .storeRef(serializeTupleItems(this.signers)))
+  .storeRef(serializeTuple(createTupleItems(this.signers)))
   .endCell();
 ```
 
-Для определения первоначальных (хранилища) данных для контракта о ценах используйте предопределенные
-класса [SingleFeedManInitData.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/single-feed-man/SingleFeedManInitData.ts).
+To define the initial (storage) data for the Prices contract, use the predefined
+class [SingleFeedManInitData.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/single-feed-man/SingleFeedManInitData.ts).
 
-Контракт типа `price_manager`, но поддержка
-только одного канала, чтобы исключить потребности коммуникации между контрактами фида и менеджера.
+A contract like `price_manager`, but supporting
+the single feed only, to omit the communication needs between feed and manager contracts.
 
 #### get_price
 
@@ -214,8 +214,8 @@ beginCell()
 (int, int) get_price(cell payload) method_id;
 ```
 
-Как и в `get_prices`, но пропуская первый аргумент (`data_feed_ids`), он настроен во время
-инициализации. Возвращает также минимальную отметку времени для переданных пакетов данных.
+Similar to `get_prices`, but omitting the first (`data_feed_ids`) argument as have it configured during
+the initialization. Returns also the min timestamp of the passed data packages.
 
 #### read_price_and_timestamp
 
@@ -223,11 +223,11 @@ beginCell()
 (int, int) read_price_and_timestamp() method_id;
 ```
 
-Работает как функция `get_price_and_timestamp`.
+Works as the `get_price_and_timestamp` function.
 
-#### OP_REDSTON_WRITE_PLAYLIST
+#### OP_REDSTONE_WRITE_PRICE
 
-Подобно `OP_REDSTONE_WRITE_PRICES`, но не выполняя первый (`data_feed_ids`) `cell`-ref настроен во время инициализации.
+Similar to `OP_REDSTONE_WRITE_PRICES`, but omitting the first (`data_feed_ids`) `cell`-ref as have it configured during the initialization.
 
 ```func
     int op = in_msg_body~load_uint(OP_NUMBER_BITS);
@@ -236,17 +236,17 @@ beginCell()
         cell payload_cell = in_msg_body~load_ref();
 
         // ...
-}
+    }
 ```
 
 ### sample_consumer.fc
 
-Пример потребителя для данных, хранящихся в `price_feed`. Работает также с `single_feed_man`.
-Необходимо передать `price_feed`.
+A sample consumer for data stored in the `price_feed`. Works also with `single_feed_man`.
+The `price_feed` to be called needs to be passed.
 
-#### начальные данные
+#### initial data
 
-Подобно исходным данным `price_feed`. В связи с архитектурой контрактов TON, первоначальные данные должны созываться с структурой хранения контракта, которая построена следующим образом:
+Similar to the `price_feed` initial data. Due to the architecture of TON contracts, the initial data must convene with the contract's storage structure, which is constructed as below:
 
 ```ts
 beginCell()
@@ -254,18 +254,18 @@ beginCell()
   .endCell();
 ```
 
-Для определения первоначальных данных (хранилища) для договора о ценах используйте предопределенные
-класса [SampleConsumerInitData.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/sample-consumer/SampleConsumerInitData.ts).
+To define the initial (storage) data for the Prices contract, use the predefined
+class [SampleConsumerInitData.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/sample-consumer/SampleConsumerInitData.ts).
 
-Контракт называет один канал.
+The contract calls the single feed.
 
-#### OP_REDSTON_READ_DATA
+#### OP_REDSTONE_READ_DATA
 
-Существует возможность получения значения, хранящегося в контракте для цепочки `feed_id`.
-Необходимо вызвать внутреннее сообщение `OP_REDSTONE_READ_DATA`. Аргументами сообщения являются:
+There is a possibility for fetching the value stored in the contract for a `feed_id` on-chain directly.
+There must be invoked an internal message `OP_REDSTONE_READ_DATA`. The arguments of the message are:
 
-- `slice`, представляющий сообщение `initial_sender`, чтобы позволить им перенести оставшийся баланс транзакций
-  при возвращении транзакции.
+- a `slice` representing the `initial_sender` of the message, to allow they carried the remaining transaction balance
+  when the returning transaction goes.
 
 ```func
     int op = in_msg_body~load_uint(OP_NUMBER_BITS);
@@ -274,11 +274,11 @@ beginCell()
         cell initial_payload = in_msg_body~load_ref();
 
         // ...
-}
+    }
 ```
 
-Отправляющее сообщение `OP_REDSTONE_DATA_READ` отправляется отправителю, содержащему `feed_id`, `value` и
-сохранено значение `timestamp`. The message can be then fetched in the sender and processed or saved in the
+The returning message `OP_REDSTONE_DATA_READ` message is sent to the sender, containing the `feed_id`, `value` and
+the `timestamp` of the value has saved. The message can be then fetched in the sender and processed or saved in the
 sender's storage.
 The initial payload's `ref` (`initial_payload`) is added as a ref - containing for example the first message's sender,
 to allow they carry the remaining transaction balance.
@@ -291,65 +291,65 @@ begin_cell()
   .end_cell()
 ```
 
-Это внутреннее сообщение - оно потребляет ГАС и изменяет хранение договора, поэтому оплачивается TON.
+That's an internal message - it consumes GAS and modifies the contract's storage, so must be paid by TONs.
 
-## Упаковка на нагрузку TON RedStone
+## TON RedStone Payload packing
 
-Из-за ограничений размера сумки в TON [see](/v3/documentation/data-formats/tlb/cell-boc),
-данные полезной нагрузки RedStone - представляемые как шестнадцатеричная строка должны быть переданы контракту более сложным образом.
+Due to limitations of the Bag-size in TON [see](/v3/documentation/data-formats/tlb/cell-boc),
+the RedStone payload data - represented as a hex string - needed to be passed to a contract in a more complex way.
 
-Наличие нагрузки RedStone как определена [here](https://docs.redstone.finance/img/payload.png),
-данные должны передаваться в виде ячейки, построенной следующим образом.
+Having the RedStone payload as defined [here](https://docs.redstone.finance/img/payload.png),
+the data should be passed as a Cell built as follows.
 
-1. Главная _payload_ `cell` состоит из:
+1. The main _payload_ `cell` consists of:
 
-   1. метаданные в **битах уровня данных**, состоящих из частей, как на изображении:
-
-     ![payload-metadata.png](/img/docs/oracles/red-stone/payload-metadata.png)
-
-   1. **ref**, содержащий `udict`, индексированный последовательными природными числами (от 0), содержащими список **data_package** `cell`s.
-2. Каждый _пакет данных_ `cell` состоит из:
-
-   1. подпись пакета данных в **битах уровня данных**:
+   1. the metadata in the **data-level bits** consisting of the parts as on the image:
 
      ![payload-metadata.png](/img/docs/oracles/red-stone/payload-metadata.png)
 
-   1. один **ref** к «ячейке», содержащей данные остального пакета данных на его **уровне данных**:
+   1. a **ref** containing a `udict` indexed by consecutive natural numbers (beginning from 0) containing the list of **data_package** `cell`s.
+2. Each _data-package_ `cell` consists of:
+
+   1. the data package's signature in the **data-level bits**:
+
+     ![payload-metadata.png](/img/docs/oracles/red-stone/payload-metadata.png)
+
+   1. one **ref** to a `cell` containing the data of the rest of the data package on its **data-level**:
 
      ![payload-metadata.png](/img/docs/oracles/red-stone/data-package-data.png)
 
-#### Нынешние ограничения по реализации
+#### Current implementation limitations
 
 - The RedStone payload must be fetched by explicitly defining data feeds,
   which leads to **one data point** belonging to **one data package**.
-- Размер неподписанных метаданных не должен превышать `127 - (2 + 3 + 9) = 113` байт.
+- The unsigned metadata size must not be exceeding `127 - (2 + 3 + 9) = 113` bytes.
 
-#### Помощник
+#### Helper
 
 The `createPayloadCell` method in the [create-payload-cell.ts](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/create-payload-cell.ts) file
 checks the limitations and prepares the data to be sent to the contract as described above.
 
-#### Пример сериализации
+#### Sample serialization
 
-Изображение ниже содержит данные для `2` каналов умножения `2` уникальных знаков:
+The image below contains data for `2` feeds times `2` unique signers:
 ![payload-metadata.png](/img/docs/oracles/red-stone/sample-serialization.png)
 
-## Возможные ошибки транзакции
+## Possible transaction failures
 
-- Количество подписавших, воспроизведенных из подписей, совпадающих с `addresses` в инициализаторе
-  должно быть больше или равно тому, что `signer_count_threshold` в конструкторе, для каждой ленты.
-  - В противном случае паника при ошибке `300` увеличилась на первый индекс проданного канала
-    , который нарушил проверку.
-- Временная метка пакетов данных должна быть не старше 15 минут по отношению к \``block_timestamp`.
-  - В противном случае паники при ошибке `200` увеличились на первый индекс пакета данных полезной нагрузки
-    , который нарушил проверку, увеличивается дополнительно на `50`, если временная метка пакета слишком мала
-    .
-- Внутренние сообщения потребляют газ и должны оплачиваться ТОН. The data are available on the contract
+- The number of signers recovered from the signatures matched with `addresses` passed in the initializer
+  must be greater or equal that the `signer_count_threshold` in the constructor, for each feed.
+  - Otherwise, it panics then with the `300` error, increased by the first index of the passed
+    feed which has broken the validation.
+- The timestamp of data-packages must be not older than 15 minutes in relation to the `block_timestamp`.
+  - Otherwise, it panics then with the `200` error, increased by the first index of the payload's
+    data package which has broken the validation, increased additionally by `50` if the package's timestamp is too
+    future.
+- The internal messages consume gas and must be paid by TONs. The data are available on the contract
   just after the transaction successes.
-- Другие коды ошибок определены [here](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/config/constants.ts)
+- The other error codes are defined [here](https://github.com/redstone-finance/redstone-oracles-monorepo/blob/main/packages/ton-connector/src/config/constants.ts)
 
-## Смотреть также
+## See Also
 
-- [Документы внутренних сообщений](/v3/documentation/smart-contracts/message-management/internal-messages)
-- [Упаковка данных RedStone](https://docs.redstone.finance/docs/smart-contract-devs/how-it-works)
+- [Internal messages docs](/v3/documentation/smart-contracts/message-management/internal-messages)
+- [RedStone data-packing](https://docs.redstone.finance/docs/smart-contract-devs/how-it-works)
 - [RedStone oracles smart-contracts](https://github.com/redstone-finance/redstone-oracles-monorepo/tree/main/packages/ton-connector/contracts)
