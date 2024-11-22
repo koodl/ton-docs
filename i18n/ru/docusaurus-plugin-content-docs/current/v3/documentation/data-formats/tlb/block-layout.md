@@ -52,7 +52,7 @@ block_info#9bc7a987 version:uint32
     = BlockInfo;
 ```
 
-| Field                           | Type                                         | Description                                                                                                                                           |
+| Field                           | Type                                         | Описание                                                                                                                                              |
 | ------------------------------- | -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `version`                       | uint32                                       | The version of the block structure.                                                                                                   |
 | `not_master`                    | (## 1)                    | A flag indicating if this block is a masterchain block.                                                                               |
@@ -97,7 +97,7 @@ value_flow#b8e48dfb ^[ from_prev_blk:CurrencyCollection
     ] = ValueFlow;
 ```
 
-| Field            | Type                                                                                | Description                                                                                                      |
+| Field            | Type                                                                                | Описание                                                                                                         |
 | ---------------- | ----------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
 | `from_prev_blk`  | [CurrencyCollection](/v3/documentation/data-formats/tlb/msg-tlb#currencycollection) | Represents the flow of currencies from the previous block.                                       |
 | `to_next_blk`    | [CurrencyCollection](/v3/documentation/data-formats/tlb/msg-tlb#currencycollection) | Represents the flow of currencies to the next block.                                             |
@@ -118,7 +118,7 @@ This field represents the update of the shard state.
     old:^X new:^X = MERKLE_UPDATE X;
 ```
 
-| Field      | Type                      | Description                                                                        |
+| Field      | Type                      | Описание                                                                           |
 | ---------- | ------------------------- | ---------------------------------------------------------------------------------- |
 | `old_hash` | bits256                   | The old hash of the shard state.                                   |
 | `new_hash` | bits256                   | The new hash of the shard state.                                   |
@@ -154,7 +154,7 @@ shard_state#9023afe2 global_id:int32
     = ShardStateUnsplit;
 ```
 
-| Field                  | Type                                                                                | Required | Description                                                                                                                                                                                                 |
+| Field                  | Type                                                                                | Required | Описание                                                                                                                                                                                                    |
 | ---------------------- | ----------------------------------------------------------------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `global_id`            | int32                                                                               | Yes      | An ID of the network where this shard belongs. `-239` for mainnet and `-3` for testnet.                                                                                     |
 | `shard_id`             | ShardIdent                                                                          | Yes      | The identifier of the shard.                                                                                                                                                                |
@@ -176,7 +176,7 @@ shard_state#9023afe2 global_id:int32
 
 ### ShardState Splitted
 
-| Field   | Type                                        | Description                                                                                |
+| Field   | Type                                        | Описание                                                                                   |
 | ------- | ------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | `left`  | [ShardStateUnsplit](#shardstate-unsplitted) | The state of the left split shard. Stored in a reference.  |
 | `right` | [ShardStateUnsplit](#shardstate-unsplitted) | The state of the right split shard. Stored in a reference. |
@@ -194,7 +194,7 @@ block_extra in_msg_descr:^InMsgDescr
     custom:(Maybe ^McBlockExtra) = BlockExtra;
 ```
 
-| Field            | Type                          | Required | Description                                                                                                                                                                                           |
+| Field            | Type                          | Required | Описание                                                                                                                                                                                              |
 | ---------------- | ----------------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `in_msg_descr`   | InMsgDescr                    | Yes      | Descriptor of the incoming messages in the block. Stored in a reference.                                                                                              |
 | `out_msg_descr`  | OutMsgDescr                   | Yes      | Descriptor of the outgoing messages in the block. Stored in a reference.                                                                                              |
@@ -219,7 +219,7 @@ masterchain_block_extra#cca5
     = McBlockExtra;
 ```
 
-| Field                 | Type                            | Required | Description                                                                                                                           |
+| Field                 | Type                            | Required | Описание                                                                                                                              |
 | --------------------- | ------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | `key_block`           | ## 1                            | Yes      | Flag indicating whether the block is a key block.                                                                     |
 | `shard_hashes`        | ShardHashes                     | Yes      | The hashes of the latest blocks of the corresponding shardchains.                                                     |
