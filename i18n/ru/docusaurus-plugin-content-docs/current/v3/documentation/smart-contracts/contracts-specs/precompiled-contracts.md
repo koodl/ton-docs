@@ -1,12 +1,12 @@
-# Precompiled Contracts
+# Прекомпилированные контракты
 
-_Precompiled smart contract_ is a contract with a C++ implementation in node.
-When a validator runs a transaction on such smart contract, it can execute this implementation instead of TVM.
-This improves performance and allows to reduce computation fees.
+_Прекомпилированный умный контракт_ это контракт с реализацией C++ в узле.
+Когда валидатор запускает транзакцию по такому смарт-контракту, он может выполнить эту реализацию вместо ТВ.
+Это повышает производительность и позволяет снизить комиссионные за вычисление.
 
-## Config
+## Настройка
 
-The list of precompiled contracts is stored in the masterchain config:
+Список предварительно скомпилированных контрактов хранится в конфигурации мастер-чата:
 
 ```
 precompiled_smc#b0 gas_usage:uint64 = PrecompiledSmc;
@@ -14,33 +14,33 @@ precompiled_contracts_config#c0 list:(HashmapE 256 PrecompiledSmc) = Precompiled
 _ PrecompiledContractsConfig = ConfigParam 45;
 ```
 
-`list:(HashmapE 256 PrecompiledSmc)` is a map `(code_hash -> precomplied_smc)`.
-If the code hash of a contract is found in this map then the contract is considered _precompiled_.
+`list:(HashmapE 256 PrecompiledSmc)` — это карта `(code_hash -> precomplied_smc)`.
+Если хэш кода контракта найден на этой карте, то контракт считается _предварительным_.
 
-## Contract execution
+## Выполнение контракта
 
-Any transaction on a _precompiled smart contract_ (i.e. any contract with code hash found in `ConfigParam 45`) is executed in as follows:
+Любая транзакция на _предварительно скомпилированном смарт-контракте_ (т.е. контракт с хэшем кода, найденным в `ConfigParam 45`), выполняется следующим образом:
 
-1. Get `gas_usage` from the masterchain config.
-2. If the balance is not enough to pay for `gas_usage` gas then the compute phase fails with skip reason `cskip_no_gas`.
-3. Code can be executed in two ways:
-4. If the precompiled execution is disabled or the C++ implementation is not available in the current version of the node then TVM runs as usual. Gas limit for TVM is set to the transaction gas limit (1M gas).
-5. If the precompiled implementation is enabled and available then the C++ implementation is executed.
-6. Override [compute phase values](https://github.com/ton-blockchain/ton/blob/dd5540d69e25f08a1c63760d3afb033208d9c99b/crypto/block/block.tlb#L308): set `gas_used` to `gas_usage`; set `vm_steps`, `vm_init_state_hash`, `vm_final_state_hash` to zero.
-7. Computation fees are based on `gas_usage`, not the actual TVM gas usage.
+1. Получите `gas_usage` из конфигурации masterchain.
+2. Если баланса недостаточно для оплаты газа «gas_usage», то вычислительная фаза опускается по причине пропуска `cskip_no_gas`.
+3. Код может выполняться двумя способами:
+4. Если предварительно скомпилированное выполнение отключено или реализация C++ недоступна в текущей версии узла, то TVM работает как обычно. Газовый лимит для ТВМ установлен на лимит газа (1М газа).
+5. Если предварительно скомпилированная реализация включена и доступна, то выполняется реализация C++.
+6. Переопределение [вычислительных значений фазы](https://github.com/ton-blockchain/ton/blob/dd5540d69e25f08a1c63760d3afb033208d9c99b/crypto/block.tlb#L308): установите `gas_used` на `gas_usage`; установите `vm_steps`, `vm_init_state_hash`, `vm_final_state_hash` на нуль.
+7. Расчетная плата основана на газетах `gas_usage`, а не на фактическом использовании ТВМ.
 
-When precompiled contract is executed in TVM, the 17th element of `c7` is set to `gas_usage` and can be retrieved by `GETPRECOMPILEDGAS` instruction. For non-precompiled contracts this value is `null`.
+При выполнении предварительно скомпилированного контракта в TVM 17-й элемент «c7» имеет значение «gas_usage» и может быть получен инструкцией «GETPRECOMPILEDGAS». Для нескомпилированных контрактов эта стоимость является "нулевым".
 
-The execution of precompiled contracts is disabled by default. Run `validator-engine` with `--enable-precompiled-smc` flag to enable it.
+Выполнение предварительных контрактов по умолчанию отключено. Запустите `validator-engine` с флагом `--enable-precompiled-smc`, чтобы включить его.
 
-Note that both ways to execute a precompiled contract yield the same transaction.
-Therefore, validators with and without C++ implementation can safely co-exist in the network.
-This allows adding new entries to `ConfigParam 45` without requiring all validators to update node software immediately.
+Обратите внимание, что оба способа выполнения предварительно скомпилированного контракта дают одну и ту же транзакцию.
+Таким образом, валидаторы с реализацией C++ и без нее могут безопасно сосуществовать в сети.
+Это позволяет добавлять новые записи в `ConfigParam 45` без требования всех валидаторов немедленно обновить программное обеспечение узла.
 
-## Available implementations
+## Доступные реализации
 
 Hic sunt dracones.
 
-## See Also
+## Смотреть также
 
-- [Governance Contracts](/v3/documentation/smart-contracts/contracts-specs/governance)
+- [Управляющие договоры](/v3/documentation/smart-contracts/contracts-specs/governance)
