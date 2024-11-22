@@ -1,69 +1,69 @@
 # TON DHT Service
 
-Implementation:
+Осуществление:
 
 - https://github.com/ton-blockchain/ton/tree/master/dht
 - https://github.com/ton-blockchain/ton/tree/master/dht-server
 
-## Overview
+## Общий обзор
 
-The Kademlia-like Distributed Hash Table (DHT) plays a crucial role in the networking part of the TON project and is used to locate other nodes in the network.
+Распределённый хэш таблица Kademlia (DHT) играет решающую роль в сетевой части проекта TON и используется для нахождения других узлов в сети.
 
-The keys of the TON DHT are simply 256-bit integers. In most cases, they are computed as a SHA256 of a TL-serialized object.
+Ключи TON DHT - это просто 256-битные целые числа. В большинстве случаев они рассчитываются как SHA256 TL-сериализованный объект.
 
-The values assigned to these 256-bit keys are essentially arbitrary byte strings of limited length. The interpretation of
-such byte strings is determined by the preimage of the corresponding key; it
-is usually known both by the node that looks up the key and by the node
-that stores the key.
+Значения, присвоенные этим 256-битным ключам, по сути, являются произвольными байтовыми строками ограниченной длины. Толкование
+таких байтовых строк определяется предизображением соответствующего ключа; он
+обычно известен как узлом, который ищет ключ, так и узлом
+, который сохраняет ключ.
 
-In the simplest case, the key represents an ADNL Address of some node and the value can be its IP address and port.
+В простейшем случае ключ представляет ADNL адрес некоторого узла и значение может быть его IP-адресом и портом.
 
-The key-value mapping of the TON DHT is kept on the DHT nodes.
+Сопоставление ключевого значения TON DHT хранится на точках DHT.
 
 ## DHT nodes
 
-Each DHT Node has a 256-bit DHT address. Unlike an ADNL Address, a DHT Address should not change too often, otherwise other nodes would be unable to locate the keys they are looking for.
+Каждый DHT узел имеет 256-битный DHT адрес. В отличие от адреса ADNL, DHT адрес не должен изменяться слишком часто, иначе другие узлы не смогут найти ключи, которые они ищет.
 
-It is expected that the value of key `K` will be stored on `S` Kademlia-nearest nodes to `K`.
+Ожидается, что значение ключа `K` будет храниться на `S` Kademlia-ближайших узлах в `K`.
 
-Kademlia distance = 256-bit key `XOR` 256-bit DHT node address (it has nothing to do with geographic location).
+Расстояние от Kademlia = 256-битный ключ `XOR` 256-битный адрес DHT узла (он не имеет ничего общего с географическим расположением).
 
-`S` is a small parameter, for example `S = 7`, which is needed to improve reliability of
-the DHT (if we would keep the key only on one node, the nearest one to `K`,
-the value of that key would be lost if that single node goes offline).
+`S` — маленький параметр, например `S = 7`, что необходимо для повышения надежности
+DHT (если бы мы сохранили ключ только на одном узле, ближайший к `K`,
+значение этого ключа будет утеряно, если этот отдельный узел выходит из строки).
 
-## Kademlia routing table
+## Таблица маршрутизации Kademlia
 
-Any node participating in a DHT usually maintains a Kademlia routing table.
+Любой узел, участвующий в DHT, обычно поддерживает таблицу маршрутизации Kademlia.
 
-It consists of 256 buckets, numbered from 0 to 255. The `i`-th
+Он состоит из 256 ведров, пронумерованных от 0 до 255. The `i`-th
 bucket will contain information about some known nodes (a fixed number
 of the “best” nodes and maybe some extra candidates) that lie at a Kademlia
 distance from `2^i` to `2^(i+1) − 1` from the node’s address `a`.
 
-This information includes their DHT Addresses, IP Addresses and UDP Ports and
-some availability information such as the time and the delay of the last ping.
+Эта информация включает в себя их DHT адреса, IP адреса, UDP порты и
+некоторая информация о доступности, например, время и задержку последнего ping.
 
-When a Kademlia node learns about any other Kademlia node as a result
-of some query, it places it into a suitable bucket of its routing table, first
-as a candidate. Then, if some of the “best” nodes in that bucket fail (e.g., do
-not respond to ping queries for a long time), they can be replaced by some
-of these candidates. In this way the Kademlia routing table stays populated.
+Когда узел Kademlia узнает о любом другом узле Kademlia в результате
+некоторых запросов, он помещает его в подходящий ведро из своего таблицы маршрутизации, первый
+в качестве кандидата. Затем, если некоторые из "лучших" узлов в этом сегменте не выполняются (например,
+не отвечать на запросы ping длительное время), они могут быть заменены некоторыми
+из этих кандидатов. Таким образом остается заселенный маршрутизационный стол Kademlia.
 
-## Key-value pairs
+## Пара ключевого значения
 
-Key-value pairs can be added and updated in the TON DHT.
+Пара ключевого значения может быть добавлена и обновлена в TON DHT.
 
-The “update rules” can  differ. In some cases, they simply
-permit replacing the old value with the new value, provided that the new value
-is signed by the owner/creator (the signature must be kept as part of the value, to
-be checked later by any other nodes after they obtain the value of this key).
-In other cases, the old value somehow affects the new value. For example, it
-can contain a sequence number and the old value is overwritten only if the
-new sequence number is larger (to prevent replay attacks).
+"Правила обновления" могут отличаться. В некоторых случаях они просто
+позволяют заменить старое значение новым значением, при условии, что новое значение
+подписано владельцем/создателем (подпись должна храниться как часть значения, для
+будет проверяться позже любыми другими узлами после того, как они получат значение этого ключа).
+В других случаях старое значение как-то влияет на новое значение. Например, она
+может содержать порядковый номер, и старое значение перезаписывается только в том случае, если размер нового номера последовательности
+превышает (для предотвращения повторных атак).
 
-TON DHT is not only used to store the IP Addresses of ADNL Nodes, but is also used for other purposes - it can store a list of addresses of the nodes which are storing a specific torrent of TON Storage, a list of addresses of nodes included in an overlay subnetwork, ADNL Addresses of TON services or ADNL Addresses of accounts of TON Blockchain and so on.
+TON DHT не только используется для хранения IP адресов узлов ADNL, но также используется для других целей - он может хранить список адресов узлов, которые хранят конкретный торрент хранения TON, список адресов узлов, включенных в подсеть оверлея, Адреса ADNL сервисов TON или ADNL аккаунтов TON Blockchain и так далее.
 
 :::info
-Read more about TON DHT in [DHT](/v3/documentation/network/protocols/dht/dht-deep-dive) article, or in Chapter 3.2. of the [TON Whitepaper](https://docs.ton.org/ton.pdf).
+Подробнее о TON DHT читайте в статье [DHT](/v3/documentation/network/protocols/dht/dht-deep-dive) или в главе 3.2. из [Whitepaper](https://docs.ton.org/ton.pdf).
 :::
