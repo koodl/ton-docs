@@ -1,198 +1,198 @@
-# Translation Style Guide
+# Стиль руководства по переводу
 
-This translation style guide contains some of the most important guidelines, instructions, and tips for translators, helping us localize the website.
+Это руководство по стилю перевода содержит некоторые из наиболее важных руководств, инструкций и советов для переводчиков, помогая нам локализовать веб-сайт.
 
-This document serves as a general guide and is not specific to any one language.
+Этот документ служит общим руководством и не относится ни к одному языку.
 
-## Capturing the essence of the message
+## Захват сути сообщения
 
-When translating TON docs content, avoid literal translations.
+При переводе контента TON docs избегайте буквальных переводов.
 
-It is important that the translations capture the essence of the message. This could mean rephrasing certain phrases, or using descriptive translations instead of translating the content word for word.
+Важно, чтобы переводы отражали суть сообщения. Это может означать перефразу определенных фраз или использование описательных переводов вместо перевода содержимого слова на слово.
 
-Different languages have different grammar rules, conventions and word order. When translating, please be mindful of how sentences are structured in the target languages, and avoid literally translating the English source, as this can lead to poor sentence structure and readability.
+Различные языки имеют разные грамматические правила, соглашения и последовательность слов. При переводе, пожалуйста, помните о том, как предложения структурированы в целевых языках, and avoid literally translating the Russian source, as this can lead to poor sentence structure and readability.
 
-Instead of translating the source text word for word, it is recommended you read the entire sentence and adapt it to fit the conventions of the target language.
+Вместо перевода исходного текста для слова, рекомендуется прочитать все предложение и адаптировать его к условиям целевого языка.
 
-## Formal vs. informal
+## Формальный и неформальный
 
-We use the formal form of address, which is always polite and appropriate for all visitors.
+Мы используем формальную форму адреса, которая всегда вежливо и подходит всем посетителям.
 
-Using the formal address allows us to avoid sounding unofficial or offensive, and works regardless of the visitor’s age and gender.
+Использование официального адреса позволяет нам избегать звука неофициального или оскорбительного и работает независимо от возраста и пола посетителя.
 
-Most Indo-European and Afro-Asiatic languages use gender-specific second-person personal pronouns, which distinguish between male and female. When addressing the user or using possessive pronouns, we can avoid assuming the visitor’s gender, as the formal form of address is generally applicable and consistent, regardless of how they identify.
+Большинство индоевропейских и афро-азиатских языков употребляют выражения, характерные для полов второй личности, которые различают между мужчинами и женщинами. При обращении к пользователю или использовании послесессионных высказываний, мы можем избежать принятия пола посетителя, поскольку формальная форма адреса является общеприменимой и согласованной, независимо от того, как они определяют.
 
-## Simple and clear vocabulary and meaning
+## Простой и понятный словарь и смысл
 
-Our goal is to make content on the website understandable to as many people as possible.
+Наша цель - сделать содержание сайта понятным как можно большему количеству людей.
 
-In most cases, this can be easily achieved by using short and simple words that are easily understandable. If there are multiple possible translations for a certain word in your language with the same meaning, the best option is most often the shortest word that clearly reflects the meaning.
+В большинстве случаев это можно легко сделать, используя короткие и простые слова, которые легко понятны. Если есть несколько возможных переводов для определенного слова на вашем языке с одинаковым значением, Лучшим вариантом является наиболее часто краткое слово, которое явно отражает смысл.
 
-## Writing system
+## Система записи
 
-All of the content should be translated using the correct writing system for your language, and should not include any words, written using Latin characters.
+Весь контент должен быть переведен с использованием правильной системы написания на вашем языке, и не должен содержать никаких слов, написанных с использованием латинских символов.
 
-When translating the content, you should ensure that the translations are consistent and do not include any Latin characters.
+При переводе контента вы должны убедиться, что переводы являются последовательными и не содержат латинских символов.
 
-**The above doesn’t apply to languages, where proper names shouldn’t be translated as a rule.**
+**Вышеуказанное не относится к языкам, в которых правильное название не должно быть переведено как правило.**
 
-## Translating page metadata
+## Перевод метаданных страницы
 
-Some pages contain metadata on the page, like 'title', 'lang', 'description', 'sidebar', etc.
+Некоторые страницы содержат метаданные на странице, такие как 'title', 'lang', 'description', 'sidebar' и т.д.
 
-We hide the content that translators should never translate when uploading new pages to Crowdin, meaning that all the metadata visible to translators in Crowdin should get translated.
+Мы скрываем контент, который никогда не должны переводиться переводчиками при загрузке новых страниц в Crowdin, означает, что все метаданные, видимые для переводчиков в Crowdin, должны быть переведены.
 
-Please be especially mindful when translating any strings where the source text is 'en'. This represents the language that the page is available in and should be translated to the [ISO language code for your language](https://www.andiamo.co.uk/resources/iso-language-codes/). These strings should always be translated using Latin characters, not the writing script, native to the target language.
+Будьте особенно внимательны при переводе строк, в которых исходный текст является 'ru'. Это значит, что страница доступна и должна быть переведена в [ISO язык вашего языка](https://www.andiamo.co.uk/resources/iso-language-codes/). Эти строки всегда должны быть переведены латинскими буквами, а не скриптами, родными для целевого языка.
 
-If you are unsure which language code to use, you can check the translation memory in Crowdin or find the language code for your language in the URL of the page in the Crowdin online editor.
+Если вы не уверены, какой язык использовать вы можете проверить память переводов в Crowdin или найти код языка для вашего языка в URL страницы в онлайн-редакторе Crowdin.
 
-Some examples of language codes for the most widely spoken languages:
+Некоторые примеры языковых кодов для наиболее распространенных языков:
 
-- English - en
-- Chinese Simplified - zh-CN
 - Russian - ru
-- Korean - ko
-- Polish - pl
-- Ukrainian - uk
+- Китайская упрощенная - zh-CN
+- Русский - ru
+- Корейский - ko
+- Польский - пл
+- Украинский - uk
 
-## Titles of external articles
+## Названия внешних статей
 
-Some strings contain titles of external articles. Most of our developer documentation pages contain links to external articles for further reading. The strings containing titles of articles need to be translated, regardless of the article's language, to ensure a more consistent user experience for the visitors viewing the page in their language.
+Некоторые строки содержат названия внешних статей. Большинство страниц нашей документации для разработчиков содержат ссылки на внешние статьи для дальнейшего чтения. Строки, содержащие заголовки статей, должны быть переведены, независимо от языка статьи для обеспечения более последовательного использования посетителями, просматривающими страницу на их языке.
 
-## Crowdin warnings
+## Предупреждения Crowdin
 
-Crowdin has a built-in feature that warns translators when they are about to make a mistake. Crowdin will automatically warn you of this before saving your translation if you forget to include a tag from the source, translate elements that should not be translated, add several consecutive spaces, forget end punctuation, etc. If you see a warning like this, please go back and double-check the suggested translation.
+Crowdin имеет встроенную функцию, которая предупреждает переводчиков, когда они собираются ошибиться. Crowdin автоматически предупредит вас об этом перед сохранением перевода, если вы забыли включить тег из исходного кода, переводить элементы, которые не должны быть переведены, добавить несколько последовательных пробелов, забыть знаки окончания и т.д. Если вы видите такое предупреждение, пожалуйста, вернитесь назад и дважды проверьте предложенный перевод.
 
 :::warning
-Never ignore these warnings, as they usually mean that something is wrong, or that the translation is missing a key part of the source text.
+Никогда не игнорируйте эти предупреждения, как правило, это означает, что что-то неправильно, или что перевод пропущен ключевой части исходного текста.
 :::
 
-## Short vs. full forms/abbreviations
+## Короткие и полные формы/сокращения
 
-There are a lot of abbreviations used on the website, e.g. dapps, NFT, DAO, DeFi, etc. These abbreviations are commonly used in English and most visitors to the website are familiar with them.
+На этом сайте используется много сокращений, например даппы, NFT, DAO, DeFi, и т.д. Эти сокращения обычно используются на английском языке, и большинство посетителей сайта знакомы с ними.
 
-Since they usually don’t have established translations in other languages, the best way to approach these and similar terms is to provide a descriptive translation of the full form, and add the English abbreviation in brackets.
+Поскольку в них обычно нет переводов на других языках, наилучшим способом подхода к этим и подобным терминам является предоставление описательного перевода полной формы, и добавить аббревиатуру английского языка в скобки.
 
-Do not translate these abbreviations, since most people wouldn’t be familiar with them, and the localized versions would not make much sense to most visitors.
+Не переводить эти аббревиатуры, поскольку большинство людей не были бы знакомы с ними, а локализованные версии не имели бы большого смысла для большинства посетителей.
 
-Example of how to translate dapps:
+Пример того, как переводить приложения:
 
-- Decentralized applications (dapps) → Translated full form (English abbreviation in brackets)
+- Децентрализованные приложения (приложения) → Переведённая полная форма (Английская аббревиатура в скобках)
 
-## Terms without established translations
+## Условия без установленных переводов
 
-Some terms might not have established translations in other languages, and are widely known by the original English term. Such terms mostly include newer concepts, like proof-of-work, proof-of-stake, Beacon Chain, staking, etc.
+Some terms may not have established translations in other languages, and are widely known by the original Russian term. Такие термины, в основном, включают более новые концепции, такие как доказательство труда, доказательства ставок, Beacon Chain, ставки и т.д.
 
-While translating these terms can sound unnatural, since the English version is commonly used in other languages as well, it is highly recommended that they are translated.
+While translating these terms can sound unnatural, since the Russian version is usually used as well as in other languages. Мы настоятельно рекомендуем их переводить.
 
-When translating them, feel free to get creative, use descriptive translations, or simply translate them literally.
+При переводе они не стесняйтесь получить креативные, использовать описательные переводы или просто переводить их буквально.
 
-The reason why most terms should be translated, instead of leaving some in English, is the fact that this new terminology will become more widespread in the future, as more people start using TON and related technologies. If we want to onboard more people from all over the world to this space, we need to provide understandable terminology in as many languages as possible, even if we need to create it ourselves.
+Причина, по которой большинство терминов должны быть переведены, а не оставлять некоторые на английском языке, Тот факт, что эта новая терминология станет более широко распространенной в будущем, когда все больше людей начнут использовать TON и связанные с ним технологии. Если мы хотим, чтобы на борту больше людей со всего мира в это пространство, мы должны обеспечить понятную терминологию на возможно большем количестве языков, даже если нам нужно создать ее самостоятельно.
 
-## Buttons & CTAs
+## Кнопки и CTA
 
-The website contains numerous buttons, which should be translated differently than other content.
+Сайт содержит множество кнопок, которые должны быть переведены по-разному, чем другие содержания.
 
-Button text can be identified by viewing the context screenshots, connected with most strings, or by checking the context in the editor, which includes the phrase ‘’button’’.
+Текст кнопки может быть определен путем просмотра скриншотов контекста, связанных с большинством строк, или проверяя контекст в редакторе, который включает фразу «’».
 
-The translations for buttons should be as short as possible, to prevent formatting mismatches. Additionally, button translations should be imperative, i.e. present a command or request.
+Переводы кнопок должны быть как можно короче, чтобы предотвратить несоответствие форматирования. Переводы кнопок должны быть обязательными, то есть представляют команду или запрос.
 
-## Translating for inclusivity
+## Перевод для включения
 
-TON docs visitors come from all over the world and from different backgrounds. The language on the website should therefore be neutral, welcoming to everyone and not exclusive.
+TON документирует посетителей со всего мира и из разных фонов. Поэтому язык на сайте должен быть нейтральным, приветственным для всех, а не исключительным.
 
-An important aspect of this is gender neutrality. This can be easily achieved by using the formal form of address, and avoiding any gender-specific words in the translations.
+Важным аспектом этого является гендерная нейтральность. Этого можно легко добиться за счет использования формальной формы адреса и недопущения любых гендерных слов в переводах.
 
-Another form of inclusivity is trying to translate for a global audience, not specific to any country, race or region.
+Другая форма инклюзивности — это перевод для глобальной аудитории, а не для какой-либо страны, расы или региона.
 
-Finally, the language should be suitable for all audiences and ages.
+И наконец, язык должен быть подходящим для любой аудитории и возраста.
 
-## Language-specific translations
+## Языковые переводы
 
-When translating, it is important to follow the grammar rules, conventions and formatting, used in your language, as opposed to copying from the source. The source text follows English grammar rules and conventions, which is not applicable to many other languages.
+При переводе важно следовать грамматическим правилам, соглашениям и форматированию, используемым на вашем языке, а не копировать из исходного текста. The Russian language is one of the six official languages of the United Nations .
 
-You should be aware of the rules for your language and translate accordingly. If you need help, reach out to us and we will help you find some resources on how these elements should be used in your language.
+Вы должны быть осведомлены о правилах для вашего языка и переведены соответствующим образом. Если вам нужна помощь, свяжитесь с нами, и мы поможем вам найти ресурсы на том, как эти элементы должны быть использованы на вашем языке.
 
-Some examples of what to be particularly mindful of:
+Некоторые примеры того, что следует особо учитывать:
 
-### Punctuation, formatting
+### Знаки пунктуации, форматирование
 
-#### Capitalization
+#### Капитализация
 
-- There are vast differences in capitalization in different languages.
-- In English, it is common to capitalize all words in titles and names, months and days, language names, holidays, etc. In many other languages, this is grammatically incorrect, as they have different capitalization rules.
-- Some languages also have rules about capitalizing personal pronouns, nouns, and certain adjectives, which are not capitalized in English.
+- Крупные различия в капитализации на разных языках.
+- На английском языке обычная заглавная буква всех слов в названиях и именах, месяцах и днях, языковых названиях, праздниках и т.д. На многих других языках это контекстуально, грамматически неправильно, так как они имеют различные правила капитализации.
+- Некоторые языки также имеют правила капитализации личных произношений, существительных и некоторых прилагательных, которые не заглавные на английском языке.
 
-#### Spacing
+#### Расстояние
 
-- Orthography rules define the use of spaces for each language. Because spaces are used everywhere, these rules are some of the most distinct, and spaces are some of the most mistranslated elements.
-- Some common differences in spacing between English and other languages:
-  - Space before units of measure and currencies (e.g. USD, EUR, kB, MB)
-  - Space before degree signs (e.g. °C, ℉)
-  - Space before some punctuation marks, especially the ellipsis (…)
-  - Space before and after slashes (/)
+- Правила ортографии определяют использование пробелов для каждого языка. Так как пробелы используются повсюду, эти правила являются одними из наиболее отличающихся друг от друга элементов, а пробелы - одни из самых неправильно переводимых элементов.
+- Некоторые общие различия в интервале между английскими и другими языками:
+  - Пространство перед единицами измерения и валют (например, USD, EUR, kB, MB)
+  - Пространство перед знаками градусов (например, °C, °F)
+  - Пробел перед некоторыми знаками пунктуации, особенно эллипсисом (…)
+  - Пробел до и после слэша (/)
 
-#### Lists
+#### Списки
 
-- Every language has a diverse and complex set of rules for writing lists. These can be significantly different to English.
-- In some languages, the first word of each new line needs to be capitalized, while in others, new lines should start with lower-case letters. Many languages also have different rules about capitalization in lists, depending on the length of each line.
-- The same applies to punctuation of line items. The end punctuation in lists can be a period (.), comma (,), or semicolon (;), depending on the language.
+- Каждый язык имеет разнообразный и сложный набор правил для написания списков. These can be significantly different to Russian.
+- В одних языках первое слово каждой новой строки должно быть заглавным, в других новые строки должны начинаться с строчных букв. Многие языки также имеют разные правила относительно заглавной буквы в списках в зависимости от длины каждой строки.
+- То же самое относится и к пунктуации строк. Конечная пунктуация в списках может быть периодом (.), запятой (,) или точкой с запятой (;), в зависимости от языка.
 
-#### Quotation marks
+#### Котировки
 
-- Languages use many different quotation marks. Simply copying the English quotation marks from the source is often incorrect.
-- Some of the most common types of quotation marks include:
-  - „example text“
-  - ‚example text’
-  - »example text«
-  - “example text”
-  - ‘example text’
-  - «example text»
+- Языки используют множество различных кавычек. Просто копирование английских котировок из исходника часто некорректно.
+- К числу наиболее распространенных типов кавычек относятся:
+  - «пример текста»
+  - ‚пример текста
+  - «пример текста»
+  - "примерный текст"
+  - «пример текста»
+  - «пример текста»
 
-#### Hyphens and dashes
+#### Дефисы и дефисы
 
-- In English, a hyphen (-) is used to join words or different parts of a word, while a dash (–) is used to indicate a range or a pause.
-- Many languages have different rules for using hyphens and dashes that should be observed.
+- На английском языке дефис (-) используется для объединения слов или различных частей слова, в то время как тире (–) используется для обозначения диапазона или паузы.
+- Многие языки имеют разные правила использования дефиса и тире, которые следует соблюдать.
 
-### Formats
+### Форматы
 
-#### Numbers
+#### Числа
 
-- The main difference in writing numbers in different languages is the separator used for decimals and thousands. For thousands, this can be a period, comma or space. Similarly, some languages use a decimal point, while others use a decimal comma.
-  - Some examples of large numbers:
-    - English – **1,000.50**
-    - Spanish – **1.000,50**
-    - French – **1 000,50**
-- Another important consideration when translating numbers is the percent sign. It can be written in different ways: **100%**, **100 %** or **%100**.
-- Finally, negative numbers can be displayed differently, depending on the language: -100, 100-, (100) or [100].
+- Основное различие в написании чисел на разных языках - это разделитель, используемый для десятичных и тысяч. На тысячах это может быть время, запятая или пространство. Аналогичным образом, некоторые языки используют десятичную точку, а другие - десятичную запятую.
+  - Некоторые примеры больших чисел:
+    - Английский – **1,000.50**
+    - Испанский – **1.000,50**
+    - Французский – **1 000,50**
+- Другим важным аспектом при переводе чисел является знак процента. Он может быть написан по-разному: **100%**, **100 %** или **%100**.
+- Наконец, отрицательные числа отображаются по-разному, в зависимости от языка: -100, 100-, (100) или [100].
 
-#### Dates
+#### Даты
 
-- When translating dates, there are a number of considerations and differences based on the language. These include the date format, separator, capitalization and leading zeros. There are also differences between full-length and numerical dates.
-  - Some examples of different date formats:
-    - English UK (dd/mm/yyyy) – 1st January, 2022
-    - English US (mm/dd/yyyy) – January 1st, 2022
-    - Chinese (yyyy-mm-dd) – 2022 年 1 月 1 日
-    - French (dd/mm/yyyy) – 1er janvier 2022
-    - Italian (dd/mm/yyyy) – 1º gennaio 2022
-    - German (dd/mm/yyyy) – 1. Januar 2022
+- При переводе дат существует ряд соображений и различий по языку. К ним относятся формат даты, разделитель, заглавные нули. Существуют также различия между полномасштабными и числовыми датами.
+  - Некоторые примеры различных форматов даты:
+    - Английская Англия (дд/мм/гггг) – 1 января 2022 года
+    - Русский США (мм/дд/гггг) – 1 января 2022 года
+    - Китайский (гггг-мм-дд) – 2022 <unk> 1 <unk> 1 <unk> 1 <unk>
+    - Французский (дд/мм/гггг) – 1er janvier 2022
+    - Italian (dd/mm/yyyy) – 1o gennaio 2022
+    - Немецкий (дд/мм/гггг) – 1. Январь 2022
 
-#### Currencies
+#### Валюты
 
-- Translating currencies can be challenging, due to the different formats, conventions and conversions. As a general rule, please keep currencies the same as the source. You can add your local currency and conversion in brackets, for the benefit of the reader.
-- The main differences in writing currencies in different languages include symbol placement, decimal commas vs. decimal points, spacing, and abbreviations vs. symbols.
-  - Symbol placement: $100 or 100$
-  - Decimal commas vs. decimal points: 100,50$ or 100.50$
-  - Spacing: 100$ or 100 $
-  - Abbreviations vs. symbols: 100 $ or 100 USD
+- Перевод валют может быть сложным из-за различных форматов, конвенций и конверсий. Как правило, пожалуйста, сохраните валюту той же, что и в исходном коде. Вы можете добавить вашу валюту и конверсию в скобки, в пользу читателя.
+- Russian is the most widely spoken language of Eurasia and the most widely spoken of the Slavic languages .
+  - Размещение символа: $100 или 100$
+  - Десятичные запятые или десятичные точки: 100,50$ или 100,50$
+  - Пробел: 100$ или 100 $
+  - Сокращения и символы: 100 $ или 100 USD
 
-#### Units of measure
+#### Единицы измерения
 
-- As a general rule, please keep the units of measure as per the source. If your country uses a different system, you can include the conversion in brackets.
-- Aside from the localization of units of measure, it is also important to note the differences in how languages approach these units. The main difference is the spacing between the number and unit, which can be different, based on the language. Examples of this include 100kB vs. 100 kB or 50ºF vs. 50 ºF.
+- Как правило, пожалуйста, храните единицы измерения по источнику. Если ваша страна использует другую систему, вы можете включить конверсию в скобки.
+- Помимо локализации единиц измерения, важно также отметить различия в подходах к языкам этих единиц. Основное отличие — интервал между числом и единицей, который может быть разным, в зависимости от языка. Примерами этого являются 100 кБ против 100 кБ или 50oF против 50 oF.
 
-## Conclusion
+## Заключение
 
-When translating, try not to rush. Take it easy and have fun!
+При переводе старайтесь не спешить. Возьмите его легко и веселитесь!
 
-Thank you for being involved with the Translation Program and helping us make the website accessible to a wider audience. The TON community is global, and we are happy you are a part of it!
+Благодарим Вас за участие в Программе Переводов и за помощь нам сделать сайт доступным для более широкой аудитории. Сообщество TON является глобальным, и мы счастливы, что вы являетесь частью его!
