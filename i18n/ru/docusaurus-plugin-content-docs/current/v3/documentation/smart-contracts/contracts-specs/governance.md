@@ -1,86 +1,86 @@
-# Управляющие контракты
+# Governance Contracts
 
-В TON, консенсусные параметры работы узлов, относящиеся к TVM, catchain, комиссии, и топология цепи (а также то, как эти параметры хранятся и обновляются) контролируются набором специальных смарт-контрактов (в отличие от устаревших и негибких способов программирования тех параметров, которые применяются блокчейнами предыдущих поколений). Таким образом, TON осуществляет комплексное и транспарентное управление в рамках цепи. Комплекс специальных договоров сам регулируется параметрами и в настоящее время включает в себя электродвигателя, Конфигурация и DNS контрактов и в будущем будут расширены вневалютными Minter и другими.
+In TON, consensus parameters of node operation related to TVM, catchain, fees, and chain topology (as well as how those parameters are stored and updated) are controlled by a set of special smart contracts (in contrast to the old-fashioned and inflexible ways of hardcoding those parameters adopted by blockchains of previous generations). That way, TON implements comprehensive and transparent on-chain governance. The set of special contracts itself is governed by parameters and currently includes the Elector, Config, and DNS contracts and in future will be extended by extra-currency Minter and others.
 
-## Электрик
+## Elector
 
-Умный контракт электродвигателя управляет тем, как раунды проверки изменяют друг друга, кто получает обязанность проверить блокчейн и как будут распределяться вознаграждения за валидацию. Если вы хотите стать валидатором и взаимодействовать с Elector, обратитесь к [инструкциям по валидации](https://ton.org/validator).
+The Elector smart contract controls the way how rounds of validation change each other, who gets the duty to validate the blockchain, and how rewards for validation would be distributed. If you want to become a validator and interact with Elector, check [validator instructions](https://ton.org/validator).
 
-Elector хранит данные Toncoin, которые не выводятся в хэшкарте `credits`, новые приложения в хэшкарте `elect`, и информацию о предыдущих выборах в _past\_elections_ хэшмэне (последний хранится внутри _жалобы_ о неправильном поведении валидатора и _frozen_-ставках валидатора для уже завершенных раундов, которые не соответствуют `stake_held_for`(ConfigParam 15)). Контракт на электродвигатель преследует три цели:
+Elector stores data of Toncoin that is not withdrawn in `credits` hashmap, new applications in `elect` hashmap, and information about previous elections in _past\_elections_ hashmap (the latter is stored inside _complaints_ about validator misbehavior and _frozen_-stakes of validator for already finished rounds, which are withheld for `stake_held_for`(ConfigParam 15)). The Elector contract has three purposes:
 
-- Обработка заявок для выбора валидаторов
-- Задерживать выборы
-- Проверка процесса невыполнения отчетов
-- Распространять награды проверки
+- Process applications for the election of validators
+- Hold elections
+- Process validator misbehaving reports
+- Distribute validation rewards
 
-### Обработка приложений
+### Processing applications
 
-Для создания приложения будущий валидатор должен сформировать специальное сообщение, содержащее соответствующие параметры (ADNL адрес, открытый ключ, `max_factor` и т.д. , приложите его к некоторой сумме TON (называемой досье), и отправьте его электору. В свою очередь, Избиратель проверяет эти параметры и либо регистрирует приложение, либо немедленно возвращает долю обратно отправителю. Обратите внимание, что приложения принимаются только с адресов в мастер-цепочке.
+To create an application, a future validator needs to form a special message that contains the corresponding parameters (ADNL address, public key, `max_factor`, etc.), attach it to some sum of TON (called a stake), and send it to the Elector. In turn, the Elector checks those parameters and either registers an application or immediately returns the stake back to the sender. Note that applications are only accepted from addresses on the masterchain.
 
-### Проведение выборов
+### Conducting elections
 
-Избиратель является специальным смарт-контрактом, который имеет возможность принудительно вызвать в начале и конце каждого блока (так называемые тиковые и Tock транзакции). Избиратель действительно ссылается на каждый блок и проверяет, пришло ли время для проведения новых выборов.
+The Elector is a special smart contract that has the option to be forcedly invoked at the beginning and end of each block (so-called Tick and Tock transactions). The Elector, indeed, is invoked on each block and checks whether it is time to conduct a new election.
 
-Общая концепция избирательного процесса заключается в рассмотрении всех приложений, в частности, их количество TON и `max_factor` (максимальное соотношение результатов проверки, которое кандидат согласился сделать по сравнению с самым слабым валидатором), и задать вес для каждого валидатора пропорционально количеству TON, но таким образом, что выполняются все условия `max_factor`.
+The general concept of the election process is to consider all applications, in particular their TON amount and `max_factor` (the maximal ratio of validation work this applicant is agreed to do in comparison to the weakest validator), and set weights to each validator proportional to the TON amount but in such a way that all `max_factor` conditions are met.
 
-Технически она реализуется следующим образом:
+It is technically implemented as follows:
 
-1. Elector принимает все приложения с суммой выше текущего минимума сети `min_stake` (ConfigParam 17).
-2. Он сортирует их по категориям в порядке убывания.
-3. Если больше участников больше, чем максимальное число валидаторов (`max_validators` ConfigParam 16), сбросить хвост списка.
-4. Цикл «i» от «1» до «N» (оставшееся количество участников).
+1. Elector takes all applications with a stake amount above the current network minimum `min_stake` (ConfigParam 17).
+2. It sorts them by stake in descending order.
+3. If there are more participants than the maximum number of validators (`max_validators` ConfigParam 16), discard the tail of the list.
+4. Cycle `i` from `1` to `N` (remaining number of participants).
 
-- Снять первый элемент `i` из списка (сортируется по убыванию)
-- Предположим, что кандидат _i_-th будет последним принятым (и таким образом имеет наименьший вес) и рассчитывает эффективную долю (`true_stake` в коде) по отношению к `max_factor`. Другими словами, действительная доля кандидата в _j_-м (`j<i`) рассчитывается как `min(цена[i]*max_factor[j], ставка[j])`.
-- Расчет общей ставки (ТЕС) участников от 1 до _i_th. Если это TES выше, чем предыдущий максимальный TES, подумайте о текущей конфигурации наибольшего веса.
+- Take the first `i` element from the list (sorted in descending order)
+- Assume that _i_-th candidate will be the last accepted (and thus has the lowest weight) and calculate an effective stake (`true_stake` in code) with respect to `max_factor`. In other words, the effective stake of a _j_-th (`j<i`) applicant is calculated as `min(stake[i]*max_factor[j], stake[j])`.
+- Calculate the total effective stake (TES) of participants from 1 to _i_-th. If this TES is higher than the previous known maximal TES, consider it the current best weight configuration.
 
-5. Получить лучшую текущую конфигурацию, т.е. конфигурация веса, использующая максимальную ставку, и отправить его в конфигурационный контракт (Конфигурационный контракт, см. ниже), чтобы стать новым набором валидаторов.
-6. Разместите все неиспользуемые ставки, такие как те, которые не становятся валидаторами и превосходящими (если таковые имеются) `ставки[j]-min(доля[i]*max_factor[j], поставите[j])` в `credits` таблицу из которой они могут быть запрошены кандидатами.
+5. Get the current best configuration, i.e., the weight configuration that utilizes the maximal stake, and send it to the configuration contract (Config contract, see below) to be a new validator set.
+6. Put all unused stakes, such as those from applicants that do not become validators and excesses (if any) `stake[j]-min(stake[i]*max_factor[j], stake[j])` to the `credits` table from where they can be requested by applicants.
 
-Таким образом, если у нас девять кандидатов на 100 000 человек и в 2,7 раза на одного участника с 10 000. Последний участник не будет избран: без него эффективным было бы 900, 00, и с ним всего 9 \* 27,000 + 10,000 = 253 000. Напротив, если у нас есть один кандидат на 100 000 человек, а число - 2,7 и 9 участников на 10 000, то все они становятся валидаторами. Тем не менее, первый кандидат поставит только 10\*2.7 = 27 000 TON, при этом свыше 73 000 TON вписывается в `credits`.
+That way, if we have nine candidates with 100,000 and a factor of 2.7 and one participant with 10,000. The last participant will not be elected: Without him, an effective stake would be 900,000, and with him, only 9 \* 27,000 + 10,000 = 253,000. In contrast, if we have one candidate with 100,000 and a factor of 2.7 and nine participants with 10,000, they all become validators. However, the first candidate will only stake 10\*2.7 = 27,000 TON with the excess of 73,000 TON going into `credits`.
 
-Имейте в виду, что существуют некоторые ограничения (очевидно контролируемые параметрами конфигурации TON) на результирующем наборе валидации, в частности, `min_validators`, `max_validators` (ConfigParam 16), `min_stake`, `max_stake`, `min_total_stake`, `max_stake_factor` (ConfigParam 17). Если не будет возможности удовлетворить эти условия с учетом нынешних заявлений, выборы будут отложены.
+Note that there are some limitations (obviously controlled by TON configuration parameters) on the resulting validation set, in particular `min_validators`, `max_validators` (ConfigParam 16), `min_stake`, `max_stake`, `min_total_stake`, `max_stake_factor` (ConfigParam 17). If there is no way to meet those conditions with the current applications, elections will be postponed.
 
-### Процесс некорректности проверки отчетов
+### Process of reporting validator misbehavior
 
-Каждый валидатор время от времени назначается случайным образом для создания нового блока (если валидатор проваливается через несколько секунд, Эта обязанность передается следующему валидатору). Частота таких назначений определяется весом валидатора. Таким образом, каждый может получить блоки из предыдущего раунда проверки и проверить, близко ли ожидаемое количество генерируемых блоков к реальному количеству блоков. Статистически значимое отклонение (когда количество генерируемых блоков меньше, чем ожидалось) означает, что валидатор неправильно выполняется. В ТОН относительно легко доказать неправомерное поведение с помощью доказательств Merkle. Контракт избирателя принимает такое доказательство с предложенным штрафом от всех, кто готов оплатить его хранение и регистрирует жалобу. Затем каждый валидатор текущего раунда проверяет жалобу, и если это правильно, и предлагаемый штраф соответствует серьезности неправильного поведения, они голосуют за него. После получения более 2/3 голосов по весу, жалоба принимается, и штраф удаляется из хэшкарты `frozen` соответствующего элемента `past_elections`.
+Each validator, from time to time, is randomly assigned to create a new block (if the validator fails after a few seconds, this duty is passed to the next validator). The frequency of such assignments is determined by the validator's weight. So, anyone can get the blocks from the previous validation round and check whether the expected number of generated blocks is close to the real number of blocks. A statistically significant deviation (when the number of generated blocks is less than expected) means that a validator is misbehaving. On TON, it is relatively easy to prove misbehavior using Merkle proofs. The Elector contract accepts such proof with a suggested fine from anyone who is ready to pay for its storage and registers the complaint. Then, every validator of the current round checks the complaint, and if it is correct and the suggested fine corresponds to the severity of the misbehavior, they vote for it. Upon getting more than 2/3 of the votes with respect to the weight, the complaint gets accepted, and the fine is withheld from the `frozen` hashmap of the corresponding element of `past_elections`.
 
-### Распределение вознаграждений за подтверждение
+### Distribution of validation rewards
 
-Точно так же, как с проверкой, пришло ли время провести новые выборы, Электрик в каждом блоке проверяет, пришло ли время выпустить средства из «замороженных» для хранимых «past_elections». На соответствующем блоке, Избиратель распределяет накопленные доходы из соответствующих раундов проверки (платы за газ и вознаграждения за создание блоков) проверяющим участникам этого окружения пропорционально весу валидатора. После этого ставки с наградами добавляются в таблицу `credits`, а выборы удаляются из таблицы `past_elections`.
+The same way as with checking whether it is time to conduct new elections, the Elector in each block checks whether it is time to release funds from `frozen` for stored `past_elections`. At the corresponding block, the Elector distributes accumulated earnings from corresponding validation rounds (gas fees and block creation rewards) to validators of that round proportional to validator weights. After that, stakes with rewards are added to the `credits` table, and the election gets removed from `past_elections` table.
 
-### Текущее состояние электората
+### Current state of Elector
 
 You can check current state in the [dapp](https://1ixi1.github.io/elector/), which allows to see elections participants, locked stakes, ready to withdraw funds, complaints and so on.
 
-## Настройка
+## Config
 
-Настройка смарт-контракта управления параметрами конфигурации TON. Его логика определяет, кто и при каких условиях имеет право изменять некоторые из этих параметров. Она также внедряет механизм голосования/механизма проверки и устанавливает обновления для проверки достоверности.
+Config smart contract controls TON configuration parameters. Its logic determines who and under what conditions has permission to change some of those parameters. It also implements a proposal/voting mechanism and validator set rolling updates.
 
-### Валидатор устанавливает обновления ротации
+### Validator set rolling updates
 
-Как только конфигурационный контракт получает специальное сообщение от электродвигателя контракта, который уведомляет его о выбранном новом наборе валидаторов, Конфигурация добавляет новый валидатор в ConfigParam 36 (следующие валидаторы). Затем, во время транзакций TickTock в каждом блоке, Конфигурация проверяет, пришло ли время применить новый набор валидатора (время `utime_since` встроено в сам набор валидатора) и перемещает предыдущий набор из ConfigParam 34 (текущие валидаторы) в ConfigParam32 (предыдущие валидаторы) и устанавливает из ConfigParam 36 в ConfigParam 34.
+Once the Config contract gets a special message from the Elector contract that notifies it of a new validator set being elected, Config puts a new validator set to ConfigParam 36 (next validators). Then, in each block during TickTock transactions, Config checks whether it is time to apply a new validator set (the time `utime_since` is embedded in the validator set itself) and moves the previous set from ConfigParam 34 (current validators) to ConfigParam32 (previous validators) and sets from ConfigParam 36 to ConfigParam 34.
 
-### Механизм предложения/голосования
+### Proposal/voting mechanism
 
-Тот, кто готов оплатить плату за хранение предложения, может предложить изменить один или несколько параметров конфигурации, отправив соответствующие сообщения в Конфигентный контракт. В свою очередь, любой валидатор в текущем наборе может проголосовать за это предложение, подписав сообщение об утверждении с его приватным ключом (обратите внимание, что соответствующий открытый ключ хранится в ConfigParam 34). Получив или не получив 3/4 голосов (с учетом веса держателей), предложение выигрывает или проигрывает раунд. При выигрыше критического числа раундов (`min_wins` ConfigParam 11), предложение принимается; при потере критического количества раундов (`max_losses` ConfigParam 11), он будет снят.
-Обратите внимание, что некоторые параметры считаются критическими (набор критических параметров сам по себе является параметром конфигурации ConfigParam 10) и Таким образом, требуется принятие большего количества раундов.
+Anyone who is ready to pay the storage fee for storing the proposal may propose a change of one or more configuration parameters by sending corresponding messages to the Config contract. In turn, any validator in the current set may vote for this proposal by signing an approval message with their private key (note that the corresponding public key is stored in ConfigParam 34). On gaining or not gaining 3/4 of the votes (with respect to validators' weight), the proposal wins or loses the round. Upon winning a critical number of rounds (`min_wins` ConfigParam 11), the proposal is accepted; upon losing a critical number of rounds (`max_losses` ConfigParam 11), it gets discarded.
+Note that some of the parameters are considered critical (the set of critical parameters is itself a configuration parameter ConfigParam 10) and, thus require more rounds to be accepted.
 
-Индексы параметров конфигурации `-999`, `-1000`, `-1001` зарезервированы для голосования за механизм аварийного обновления и обновления кода конфигурации и электора. Когда предложение с соответствующими показателями получает достаточное количество голосов в достаточном количестве раундов, соответствующих ключу экстренной помощи, код Конфигурационного контракта или код договора электродвигателя обновится.
+Configuration parameter indexes `-999`, `-1000`, `-1001` are reserved for voting for an emergency update mechanism and updating the code of Config and the Elector. When the proposal with the corresponding indexes gains enough votes in enough rounds corresponding to the emergency key, the code of the Config contract or the code of the Elector contract gets updated.
 
-#### Экстренное обновление
+#### Emergency update
 
-Валидаторы могут голосовать за присвоение специального открытого ключа для обновления параметров конфигурации, когда это невозможно с помощью механизма голосования. Это временная мера, необходимая для активного развития сети. Ожидается, что по мере развития сети эта мера будет постепенно прекращена. Как только он будет разработан и протестирован, ключ будет передан в мультиподпись. И как только сеть доказала свою стабильность, аварийный механизм будет полностью отключен.
+Validators may vote to assign a special public key to be able to update configuration parameters when it cannot be done via the voting mechanism. This is a temporary measure that is necessary during the active development of the network. It is expected that as the network matures, this measure will be phased out. As soon as it’s developed and tested, the key will be transferred to a multisignature solution. And once the network has proven its stability, the emergency mechanism will be completely discarded.
 
-Валидаторы действительно проголосовали за присвоение этого ключа Фонду TON в июле 2021 года (блок masterchain `12958364`). Заметим, что такой ключ может быть использован только для ускорения обновления конфигурации. Он не может вмешиваться в код, хранение и баланс любого контракта ни по одной цепочке.
+Validators indeed voted to assign that key to TON Foundation in July 2021 (masterchain block `12958364`). Note that such a key can only be used to speed up configuration updates. It has no ability to interfere with the code, storage, and balances of any contract on any chain.
 
-История аварийных обновлений:
+History of emergency updates:
 
-- 17 апреля 2022 года, количество заявлений на выборы увеличилось достаточно большое, что выборы не могли быть проведены в газовые ограничения на тот момент. В частности, выборы требовали более 10 миллионов газов, а блок `soft_limit` и `hard_limit` был установлен в `10m` и `20m` (ConfigParam 22), `special_gas_limit` и `block_gas_limit` были установлены в `10m` и `10m`, соответственно, (ConfigParam 20). Таким образом, новые валидаторы не могут быть установлены и из-за достижения предела газа-блока, транзакции, которые обрабатывают внутренние сообщения на masterchain не могут быть включены в блок. В свою очередь, что приводит к неспособности голосовать за обновления конфигурации (невозможно выиграть требуемое количество раундов, так как текущий раунд не смог завершить). Экстренный ключ был использован для обновления ConfigParam 22 `soft_limit` до 22 м и `hard_limit` до 25 м (в блоке `19880281`) и ConfigParam 20 `special_gas_limit` до 20 м и `block_gas_limit` до 22 м (в блоке `19880300`). В результате этого выборы были успешно проведены, следующий блок потреблял газ `10 001 444`. Общая перенос выборов на более поздний срок составляла около 6 часов, и не сказалась на функциональности базовой цепочки.
-- 2 марта 2023 года количество заявлений на выборы увеличилось достаточно большое, что даже `20m` было недостаточно для проведения выборов. Тем не менее, в этот раз masterchain продолжает обрабатывать внешние сообщения из-за большей `hard_limit`. Ключ аварийной ситуации был использован для обновления ConfigParam 20 `special_gas_limit` до 25 м и `block_gas_limit` до 27 м (в блоке `27747086`). В результате выборы были успешно проведены в следующем блоке. Не было сказано о том, что общее время проведения выборов было отсрочено до 6 часов, помимо выборов, функциональность как главной цепочки, так и базовой цепочки.
-- 22 ноября 2023 года ключ был использован в [отказе от себя](https://t.me/tonblockchain/221) (в блоке `34312810`). В результате, публичный ключ был заменен на 32 нулевых байта.
-- Из-за переключения на реализацию OpenSSL проверки подписи Ed25519, проверьте [все символы публичного ключа одинаковые](https://github.com/ton-blockchain/ton/blob/7fcf26771748338038aec4e9ec543dc69afeb1fa/crypto/ellcurve/Ed25519.cpp#L57C1-L57C1) был отключен. В результате сверьте с нулевым публичным ключом перестала работать, как это было запланировано. С помощью этой проблемы ключ экстренной ситуации [был обновлен 9 декабря](https://t.me/tonstatus/80) еще раз (в блоке `34665437`, [tx](https://tonscan. rg/tx/MU%2FNmSFkC0pJiCi730Fmt6PszBooRZkzgiQMv0sExfY=)) to noth-in-my-sleeve byte-sequence `82b17caadb303d53c3286c06a6e1affc517d1bc1d3ef2e4489d18b873f5d7cd1`, это `sha256("Некорректная точка кривы")`. Теперь единственный способ обновить сетевые параметры - это достичь консенсуса валидатора.
+- On April 17, 2022, the number of applications for the election grew big enough that the election could not be conducted under gas limits at that moment. In particular, elections required more than 10 million of gas, while the block `soft_limit` and `hard_limit` were set to `10m` and `20m`  (ConfigParam 22), `special_gas_limit` and `block_gas_limit` were set to `10m` and `10m`, respectively (ConfigParam 20). That way, new validators cannot be set, and due to reaching the block gas limit, transactions that process internal messages on the masterchain could not be included in the block. In turn, that leads to the inability to vote for configuration updates (it was impossible to win the required number of rounds since the current round was unable to finish). An emergency key was used to update ConfigParam 22 `soft_limit` to 22m and `hard_limit` to 25m (in block `19880281`) and ConfigParam 20 `special_gas_limit` to 20m and `block_gas_limit` to 22m (in block `19880300`). As a result, the election was successfully conducted, the next block consumed `10 001 444` gas. The total postponement of elections was about 6 hours, and the functionality of the base chain was unaffected.
+- On March 2, 2023, the number of applications for the election grew big enough that even `20m` were not enough to conduct election. However, this time masterchain continue to process external messages due to higher `hard_limit`. An emergency key was used to update ConfigParam 20 `special_gas_limit` to 25m and `block_gas_limit` to 27m (in block `27747086`). As a result, the election was successfully conducted in next block. The total postponement of elections was about 6 hours, besides elections, functionality of the both master chain and base chain was unaffected.
+- On November 22, 2023, key was used to [renounce itself](https://t.me/tonblockchain/221) (in block `34312810`). As a result, public key was replaced with 32 zero bytes.
+- Due to switch to OpenSSL implementation of Ed25519 signature verification, check for special case [all bytes of public key are the same](https://github.com/ton-blockchain/ton/blob/7fcf26771748338038aec4e9ec543dc69afeb1fa/crypto/ellcurve/Ed25519.cpp#L57C1-L57C1) was disabled. As a result, check against zero public key stopped work as intended. Using this issue, emergency key was [updated on December 9](https://t.me/tonstatus/80) yet another time (in block `34665437`, [tx](https://tonscan.org/tx/MU%2FNmSFkC0pJiCi730Fmt6PszBooRZkzgiQMv0sExfY=)) to nothing-in-my-sleeve byte-sequence `82b17caadb303d53c3286c06a6e1affc517d1bc1d3ef2e4489d18b873f5d7cd1` that is `sha256("Not a valid curve point")`. Now, the only way to update network configuration parameters is through validator consensus.
 
-## Смотреть также
+## See Also
 
-- [Прекомпилированные контракты](/v3/documentation/smart-contracts/contracts-specs/precompiled-contracts)
+- [Precompiled Contracts](/v3/documentation/smart-contracts/contracts-specs/precompiled-contracts)
