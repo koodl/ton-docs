@@ -1,45 +1,45 @@
-# Cross-chain bridges
+# Кросс-цепные мосты
 
-Decentralized cross-chain bridges operate on TON Blockchain, allowing you to transfer assets from TON Blockchain to other blockchains and vice versa.
+Децентрализованные перекрестные мосты работают на TON Blockchain, позволяя передавать активы из TON Blockchain в другие блокчейны и наоборот.
 
-## Toncoin Bridge
+## Мост Тонкона
 
-The Toncoin bridge allows you to transfer Toncoin between TON Blockchain and the Ethereum blockchain, as well as between TON Blockchain and the BNB Smart Chain.
+Мост Тонкон позволяет передавать Тонкон между Тонконом блокчейном и блокчейном Ethereum, а также между TON Blockchain и BNB Smart Chain.
 
-The bridge is managed by [decentralized oracles](/v3/documentation/infra/crosschain/bridge-addresses).
+Мост управляется [децентрализованными оракулами](/v3/documentation/infra/crosschain/bridge-addresses).
 
-### How to use it?
+### Как это использовать?
 
-Bridge frontend is hosted on https://ton.org/bridge.
+Ведущий мост размещен на https://ton.org/bridge.
 
 :::info
-[Bridge frontend source code](https://github.com/ton-blockchain/bridge)
+[Исходный код фронтенда моста](https://github.com/ton-blockchain/bridge)
 :::
 
-### TON-Ethereum smart contracts source codes
+### Исходные коды смарт-контрактов TON-Ethereum
 
-- [FunC (TON side)](https://github.com/ton-blockchain/bridge-func)
-- [Solidity (Ethereum side)](https://github.com/ton-blockchain/bridge-solidity/tree/eth_mainnet)
+- [Функ (сторона TON)](https://github.com/ton-blockchain/bridge-func)
+- [Солидарность (сторона эфира)](https://github.com/ton-blockchain/bridge-solidity/tree/eth_mainnet)
 
-### TON-BNB Smart Chain smart contracts source codes
+### исходные коды умных цепей TON-BNB Smart Chain
 
-- [FunC (TON side)](https://github.com/ton-blockchain/bridge-func/tree/bsc)
-- [Solidity (BSC side)](https://github.com/ton-blockchain/bridge-solidity/tree/bsc_mainnet)
+- [Функ (сторона TON)](https://github.com/ton-blockchain/bridge-func/tree/bsc)
+- [Солидарность (сторона BSC)](https://github.com/ton-blockchain/bridge-solidity/tree/bsc_mainnet)
 
-### Blockchain Configs
+### Конфигурация блокчейна
 
-You can get the actual bridge smart contract addresses and oracle addresses by inspecting the corresponding config:
+Вы можете получить фактические адреса смарт-контракта моста и адреса оракула, просмотрев соответствующую конфигурацию:
 
 TON-Ethereum: [#71](https://github.com/ton-blockchain/ton/blob/35d17249e6b54d67a5781ebf26e4ee98e56c1e50/crypto/block/block.tlb#L738).
 
-TON-BSC: [#72](https://github.com/ton-blockchain/ton/blob/35d17249e6b54d67a5781ebf26e4ee98e56c1e50/crypto/block/block.tlb#L739).
+БСКЗ: [#72](https://github.com/ton-blockchain/ton/blob/35d17249e6b54d67a5781ebf26e4ee98e56c1e50/crypto/block/block.tlb#L739).
 
 TON-Polygon: [#73](https://github.com/ton-blockchain/ton/blob/35d17249e6b54d67a5781ebf26e4ee98e56c1e50/crypto/block/block.tlb#L740).
 
-### Documentation
+### Документация
 
-- [How the bridge works](https://github.com/ton-blockchain/TIPs/issues/24)
+- [Как работает мост](https://github.com/ton-blockchain/TIPs/issues/24)
 
-### Cross-chain roadmap
+### Карта перекрёстного пути
 
 - https://t.me/tonblockchain/146
