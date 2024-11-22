@@ -1,1 +1,1 @@
-../../../v3/guidelines/web3/ton-proxy-sites/how-to-run-ton-site.md
+../../v3/guidelines/web3/ton-proxy-sites/how-to-run-ton-site.md
