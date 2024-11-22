@@ -1,17 +1,17 @@
-# Localization Program
+# Программа локализации
 
-The Translation Program is a collaborative effort to translate various documents related to TON into multiple languages, making the website more accessible to billions of non-English speakers worldwide.
+Программа перевода - это совместная работа по переводу различных документов, связанных с TON на несколько языков, Russian is one of the six official languages of the United Nations .
 
-## System Design Philosophy
+## Философия системного дизайна
 
-![how it works](/img/localizationProgramGuideline/localization-program.png)
+![как это работает](/img/localizationProgramGuideline/localization-program.png)
 
-The localization program is **launched** and **actively maintained** by [**TownSquare Labs**](https://github.com/TownSquareXYZ), one of the closest partners of **TON**.
+Программа локализации **запущена** и **активно поддерживается** [**Лаборатория TownSqu**](https://github.com/TownSquareXYZ), одним из ближайших партнеров **ТОН**.
 
-We are committed to creating an open infrastructure for multilingual community collaboration to **advance TON to a better phase**, which includes:
+Мы намерены создать открытую инфраструктуру для многоязычного сотрудничества в целях продвижения на более продвинутую стадию TON\*\*, которая включает:
 
-- **Suitable for multilingual communities**\
-  The program supports multiple languages, ensuring inclusivity and ease of access for users from diverse linguistic backgrounds.
+- **Подходит для многоязычных сообществ**\
+  Программа поддерживает несколько языков, обеспечивая доступность и простоту доступа для пользователей с разнообразным языковым происхождением.
 
 - **Automate development, integration, and deployment**\
   Through automation tools, the program simplifies development, integration, and deployment, reducing manual efforts and enhancing efficiency and consistency across localization efforts.
@@ -20,20 +20,20 @@ We are committed to creating an open infrastructure for multilingual community c
   Our approach divides the responsibilities of developers, translators, and verifiers, allowing each role to focus on their tasks, ensuring high-quality translations and seamless collaboration without role conflicts.
 
 - **Incentives for community contributions**\
-  We offer incentives for community members who contribute to localization efforts. This fosters active participation, rewards contributors, and promotes a sense of ownership and community engagement.
+  We offer incentives for community members who contribute to localization efforts. Это способствует активному участию, поощряет участников и способствует формированию чувства сопричастности и участию общин.
 
-- **Advanced AI system integration**\
-  AI systems improve translation accuracy and efficiency by offering intelligent suggestions and automating repetitive tasks, ensuring high-quality outcomes with reduced effort.
+- **Расширенная интеграция с ИИ**\
+  системы ИИ повышают точность и эффективность переводов, предлагая интеллектуальные предложения и автоматизацию повторяющихся задач, обеспечение высококачественных исходов с уменьшенными усилиями.
 
-This project is designed to support speakers of multiple languages, with the goal of serving the global developer ecosystem.
+Этот проект предназначен для поддержки докладчиков из разных языков с целью обслуживания глобальной экосистемы разработчиков.
 
-## Acknowledgments
+## Благодарности
 
-We sincerely appreciate the thousands of community members who are integral to the Translation Program. We aim to acknowledge our translators and support their career growth. In the future, we plan to create leaderboards and a list of all contributors to the program.
+Мы искренне ценим тысячи членов сообщества, которые являются неотъемлемой частью программы перевода. Мы стремимся признавать наших переводчиков и поддерживать их карьерный рост. В будущем мы планируем создать таблицы лидеров и список всех участников программы.
 
-## Guides and Resources
+## Руководства и ресурсы
 
-If you are participating in or considering joining the Translation Program, refer to the translation guides below:
+Если вы участвуете в программе или планируете присоединиться к ней, обратитесь к руководству по переводу:
 
-- [**Translation Style Guide**](/v3/contribute/localization-program/translation-style-guide) – Instructions and tips for translators.
-- [**Crowdin Online Editor Guide**](https://support.crowdin.com/online-editor/) – An in-depth guide to using the Crowdin online editor and some of Crowdin's advanced features.
+- [**Руководство по стилю перевода**](/v3/contribute/localization-program/translation-style-guide) – Инструкции и советы для переводчиков.
+- [**Online Editor Guide**](https://support.crowdin.com/online-editor/) – Подробное руководство по использованию онлайн-редактора Crowdin и некоторых дополнительных функций Crowdin.
