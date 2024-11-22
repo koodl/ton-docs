@@ -1,19 +1,19 @@
 # CRC32
 
-## Overview
+## Общий обзор
 
-CRC stands for Cyclic Redundancy Check, a commonly used method for verifying the integrity of digital data. It is an error-detecting algorithm used to check if errors have occurred in digital data during transmission or storage. A CRC generates a short checksum or hash of the data being transmitted or stored, which is appended to the data. When the data is received or retrieved, the CRC is recalculated and compared to the original checksum. If the two checksums match, it is assumed that the data has not been corrupted. If they do not match, it indicates that an error has occurred and the data needs to be resent or retrieved again
+CRC означает проверку циклической избыточности, являющийся широко используемым методом проверки целостности цифровых данных. Это алгоритм обнаружения ошибок для проверки наличия ошибок в цифровых данных во время передачи или хранения. CRC генерирует короткую контрольную сумму или хэш передаваемых или хранящихся данных, которые добавляются к данным. Когда данные получены или получены, CRC пересчитывается и сравнивается с первоначальной контрольной суммой. Если две контрольные суммы совпадают, предполагается, что данные не были повреждены. Если они не совпадают, то это означает, что произошла ошибка и данные должны быть повторно отправлены или восстановлены снова
 
-The CRC32 IEEE version used for TL-B schemes. By viewing this [NFT op code](https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md#tl-b-schema) example a clearer understanding of calculation TL-B for various messages is achieved.
+Версия CRC32 IEEE используется для TL-B схем. Просматривая этот [код размаха NFT](https://github.com/ton-blockchain/TEPs/blob/master/text/0062-nft-standard.md#tl-b-schema), можно привести к более четкому пониманию расчёта TL-B для различных сообщений.
 
-## Tools
+## Инструменты
 
-### Online calculator
+### Онлайн калькулятор
 
-- [Online calculator example](https://emn178.github.io/online-tools/crc32.html)
-- [Tonwhales Introspection ID Generator](https://tonwhales.com/tools/introspection-id)
+- [Пример онлайн-калькулятора](https://emn178.github.io/online-tools/crc32.html)
+- [Генератор идентификатора Tonwhales Introspection ID](https://tonwhales.com/tools/introspection-id)
 
-### VS Code extension
+### Расширение кода VS
 
 - [crc32-opcode-helper](https://marketplace.visualstudio.com/items?itemName=Gusarich.crc32-opcode-helper)
 
@@ -24,17 +24,17 @@ import zlib
 print(zlib.crc32(b'<TL-B>') & 0x7FFFFFFF)
 ```
 
-### Go
+### Идти
 
 ```python
 func main() {
 
-	var schema = "some"
+	var schema = "некоторый"
 
 	schema = strings.ReplaceAll(schema, "(", "")
-	schema = strings.ReplaceAll(schema, ")", "")
-	data := []byte(schema)
-	var crc = crc32.Checksum(data, crc32.MakeTable(crc32.IEEE))
+	schema = strings. eplaceAll(schema, ")", "")
+	данных:= []byte(schema)
+	var crc = crc32. hecksum(data, crc32.MakeTable(crc32.IEEE))
 
 	var b_data = make([]byte, 4)
 	binary.BigEndian.PutUint32(b_data, crc)
@@ -46,15 +46,15 @@ func main() {
 ### TypeScript
 
 ```typescript
-import * as crc32 from 'crc-32';
+импортировать * как crc32 из 'crc-32';
 
 function calculateRequestOpcode_1(str: string): string {
-    return (BigInt(crc32.str(str)) & BigInt(0x7fffffff)).toString(16);
+    return (BigInt(crc32.str(str)) & BigInt(0x7fffffffff)). oString(16);
 }
 
 function calculateResponseOpcode_2(str: string): string {
-    const a = BigInt(crc32.str(str));
+    const a = BigInt(crc32. tr(str));
     const b = BigInt(0x80000000);
-    return ((a | b) < 0 ? (a | b) + BigInt('4294967296') : a | b).toString(16);
+    return ((a | b) < 0 ? (a | b) + BigInt('4294967296') : a | b). oString(16);
 }
 ```
