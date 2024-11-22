@@ -1,24 +1,24 @@
-# Руководители общей документации
+# Common Documentation Principals
 
-Для оптимального пользовательского опыта и ясности, Пожалуйста, обратите внимание на перечень общих и важных требований, которые мы стремимся применить ко всей документации на документации. on.org при создании нового контента.
+For optimal user experience and clarity, please keep in mind the list of general and important requirements that we aim to apply to all documentation on docs.ton.org while creating new content.
 
-## Документация создана для специалистов
+## Documentation crafted for Professionals
 
-Страницы документации в первую очередь предназначены для целей документации, а не в качестве руководства, так что в тексте важно минимизировать использование персональных примеров или аналогий. Крайне важно обеспечить, чтобы содержание сайта было подходящим как для профессионалов, так и для непрофессионалов, при этом предоставляя ценную информацию.
+Documentations pages is primarily intended for documentation purposes and not as a tutorial, so it is important to minimize the use of personal examples or analogies in the text. It is crucial to ensure that the content is suitable for both professionals and non-professionals alike, while still providing valuable information.
 
-## Использовать согласованный формат
+## Use a consistent format
 
-Для упрощения чтения навигации по документации важно использовать согласованный формат в рамках всего документа. Используйте заголовки, подзаголовки, пулевые точки и нумерованные списки, чтобы разбить текст и упростить чтение.
+To make it easier for readers to navigate through the documentation, it is important to use a consistent format throughout the document. Use headings, subheadings, bullet points, and numbered lists to break up the text and make it easier to read.
 
-## Предоставьте примеры в специальном разделе
+## Provide examples in special section
 
-Предоставление примеров может помочь читателям лучше понять содержание и как его применять. Если вы пишете страницу документации и хотите ссылаться на несколько примеров, пожалуйста, создайте специальный раздел Примеры непосредственно перед ссылками и смотрите также разделы. Не смешивайте описания и примеры на страницах документации.
-Используйте сниппеты, скриншоты или диаграммы, чтобы проиллюстрировать ваши точки и сделать документацию более интересной.
+Providing examples can help readers better understand the content and how to apply it. If you are writing documentation page and need refer several examples, please create special section Examples right before References and See Also sections. Do not mix description and examples in documentation pages.
+Use code snippets, screenshots, or diagrams to illustrate your points and make the documentation more engaging.
 
-## Будьте в курсе
+## Keep it up to date
 
-Техническая документация может быстро стать устаревшей из-за изменений в технологии или программных обновлениях. Важно регулярно пересматривать и обновлять документацию, с тем чтобы она оставалась точной и актуальной для текущей версии программного обеспечения.
+Tech documentation can quickly become outdated due to changes in technology or software updates. It is important to review and update the documentation regularly to ensure that it remains accurate and relevant to the current version of the software.
 
 ## Get feedback
 
-Перед публикацией документации стоит идея получения обратной связи от других авторов или пользователей. Это может помочь определить области, которые могут путать или неясны, и позволить вам внести улучшения до выпуска документации.
+Before publishing the documentation, it is a good idea to get feedback from other contributors or users. This can help identify areas that may be confusing or unclear, and allow you to make improvements before the documentation is released.
