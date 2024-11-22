@@ -1,61 +1,61 @@
-# History of FunC
+# История FunC
 
-# Initial version
+# Начальная версия
 
-Initial version was done by Telegram and active development was ceased after May 2020. We refer to version of May 2020 as "initial".
+Первоначальная версия была сделана с помощью Telegram и активное развитие было прекращено после мая 2020 года. Мы называем версию мая 2020 года "initial".
 
-# Version 0.1.0
+# Версия 0.1.0
 
-Released in [05.2022 update](https://github.com/ton-blockchain/ton/releases/tag/v2022.05).
+Опубликовано в [05.2022 обновление](https://github.com/ton-blockchain/ton/releases/tag/v2022.05).
 
-In this version were added:
+В этой версии были добавлены:
 
 - [Constants](/v3/documentation/smart-contracts/func/docs/literals_identifiers#constants)
-- [Extended string literals](/v3/documentation/smart-contracts/func/docs/literals_identifiers#string-literals)
-- [Semver pragmas](/v3/documentation/smart-contracts/func/docs/compiler_directives#pragma-version)
+- [Расширенные строковые литералы](/v3/documentation/smart-contracts/func/docs/literals_identifiers#string-literals)
+- [Праги семверов](/v3/documentation/smart-contracts/func/docs/compiler_directives#pragma-version)
 - [Includes](/v3/documentation/smart-contracts/func/docs/compiler_directives#pragma-version)
 
-Fixed:
+Исправлено:
 
-- Fixed rarely manifested bugs in Asm.fif.
+- Исправлены редкие ошибки в Asm.fif.
 
-# Version 0.2.0
+# Версия 0.2.0
 
-Released in [08.2022 update](https://github.com/ton-blockchain/ton/releases/tag/v2022.08).
+Опубликовано в [08.2022 обновление](https://github.com/ton-blockchain/ton/releases/tag/v2022.08).
 
-In this version were added:
+В этой версии были добавлены:
 
-- Unbalanced if/else branches (when some branches return and some are not)
+- Несбалансированные/другие ветки (когда некоторые ветки вернулись, а некоторые нет)
 
-Fixed:
+Исправлено:
 
-- [FunC incorrectly handles while(false) loops #377](https://github.com/ton-blockchain/ton/issues/377)
-- [FunC incorreclty generate code for ifelse branches #374](https://github.com/ton-blockchain/ton/issues/374)
-- [FunC incorrectly return from condition in inline functions #370](https://github.com/ton-blockchain/ton/issues/370)
-- [Asm.fif: splitting of large function bodies incorrectly interfere with inlines #375](https://github.com/ton-blockchain/ton/issues/375)
+- [FunC неправильно обрабатывает циклы «while(false) #377](https://github.com/ton-blockchain/ton/issues/377)
+- [FunC incorreclty генерирует код для других ветвей #374](https://github.com/ton-blockchain/ton/issues/374)
+- [Функция неправильно возвращается из состояния функции inline #370](https://github.com/ton-blockchain/ton/issues/370)
+- [Asm.fif: неправильное разделение больших тел функции помешало строкам #375](https://github.com/ton-blockchain/ton/issues/375)
 
-# Version 0.3.0
+# Версия 0.3.0
 
-Released in [10.2022 update](https://github.com/ton-blockchain/ton/releases/tag/v2022.10).
+Опубликовано в [10.2022 обновление](https://github.com/ton-blockchain/ton/releases/tag/v2022.10).
 
-In this version were added:
+В этой версии были добавлены:
 
-- [Multiline asms](/v3/documentation/smart-contracts/func/docs/functions#multiline-asms)
-- Duplication of identical definition for constants and asms became allowed
-- Bitwise operations for constants for constants became allowed
+- [Мультистрочные асмы](/v3/documentation/smart-contracts/func/docs/functions#multiline-asms)
+- Разрешено дублирование одинакового определения констант и злов
+- Разрешены Bitwise операции для констант
 
-# Version 0.4.0
+# Версия 0.4.0
 
-Released in [01.2023 update](https://github.com/ton-blockchain/ton/releases/tag/v2023.01).
+Выпущено в [01.2023 обновление](https://github.com/ton-blockchain/ton/releases/tag/v2023.01).
 
-In this version were added:
+В этой версии были добавлены:
 
 - [try/catch statements](/v3/documentation/smart-contracts/func/docs/statements#try-catch-statements)
-- [throw_arg functions](/v3/documentation/smart-contracts/func/docs/builtins#throwing-exceptions)
-- allowed in-place modification and mass-assignments of global variables: `a~inc()` and `(a, b) = (3, 5)`, where `a` is global
+- [throw_arg функции](/v3/documentation/smart-contracts/func/docs/builtins#throwing-exceptions)
+- разрешена модификация на месте и массовые назначения глобальных переменных: `a~inc()` и `(a, b) = (3, 5)`, где `a` является глобальным
 
-Fixed:
+Исправлено:
 
-- forbidden ambiguous modification of local variables after it's usage in the same expression: `var x = (ds, ds~load_uint(32), ds~load_unit(64));` are forbidden, while `var x = (ds~load_uint(32), ds~load_unit(64), ds);` are not
-- Allowed empty inline functions
-- fix rare `while` optimization bug
+- запрещена неоднозначная модификация локальных переменных после их использования в том же выражении: `var x = (ds, ds~load_uint(32), ds~load_unit(64)); запрещены, в то время как `var x = (ds~load_uint(32), ds~load_unit(64), ds);\` не
+- Разрешены пустые встроенные функции
+- исправляйте ошибки оптимизации `while`
