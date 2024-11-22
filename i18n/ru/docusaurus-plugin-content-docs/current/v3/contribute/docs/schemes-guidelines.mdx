@@ -1,33 +1,33 @@
 import ConceptImage from '@site/src/components/conceptImage';
 import ThemedImage from '@theme/ThemedImage';
 
-# Руководства по графическим пояснениям
+# Graphic Explanations Guidelines
 
-Важнейшее значение имеет поддержание последовательности в документации, и для этого был разработан конкретный стандарт визуализации процессов в смарт-контрактах.
+Maintaining consistency in documentation is crucial, and to achieve this, a specific standard for visualizing processes in smart contracts has been developed.
 
-## Заметка графического пояснения
+## Graphic Explanation Notation
 
-### График обработки сообщений
+### Message Processing Graph
 
-Чтобы изобразить обработку сообщений, рекомендуется использовать графическое представление, похожее на диаграмму смарт-контракта, заполненную метками для транзакций и сообщений.
+To depict message processing, it's advisable to utilize a graphical representation resembling a smart contract graph, complete with labels for transactions and messages.
 
-Если порядок транзакций не имеет значения, можно убрать их метки. Это упрощает диаграмму, что облегчает прочтение и понимание деталей, связанных с сообщениями и контрактами.
+If the order of transactions doesn't matter, you can omit their labels. This simplifies the diagram, making it easier to read and understand the details related to messages and contracts.
 
-#### Аннотация Примитива
+#### Annotation Primitives
 
-| Рисунок                                                                                                    | Описание                                                   |
-| ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- |
-| ![](/img/docs/scheme-templates/message-processing-graphs/circle_for_smart_contract.svg?raw=true)           | Круг - умный контракт сущности                             |
-| ![](/img/docs/scheme-templates/message-processing-graphs/rectangle_for_regular_message.svg?raw=true)       | Прямоугольник - Объект сообщения                           |
-| ![](/img/docs/scheme-templates/message-processing-graphs/dashed_rectgl_for_optional_message.svg?raw=true)  | Пунктирный прямоугольник - Дополнительный объект сообщения |
-| ![](/img/docs/scheme-templates/message-processing-graphs/line_for_transaction.svg?raw=true)                | Транзакции (необязательные числа)                          |
-| ![](/img/docs/scheme-templates/message-processing-graphs/person_figure_for_actor.svg?raw=true)             | Актер                                                      |
+| Figure                                                                                                     | Description                                |
+| ---------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| ![](/img/docs/scheme-templates/message-processing-graphs/circle_for_smart_contract.svg?raw=true)           | Circle - Smart Contract entity             |
+| ![](/img/docs/scheme-templates/message-processing-graphs/rectangle_for_regular_message.svg?raw=true)       | Rectangle - Message Entity                 |
+| ![](/img/docs/scheme-templates/message-processing-graphs/dashed_rectgl_for_optional_message.svg?raw=true)  | Dashed Rectangle - Optional Message Entity |
+| ![](/img/docs/scheme-templates/message-processing-graphs/line_for_transaction.svg?raw=true)                | Transactions (numeration optional)         |
+| ![](/img/docs/scheme-templates/message-processing-graphs/person_figure_for_actor.svg?raw=true)             | Actor                                      |
 
-- Избегайте использования большого количества различных и ярких цветов.
-- Используйте модификацию фигур, например, с пунктирной граничной линией.
-- Для лучшего понимания различные транзакции могут быть отображены с разными стилями линий (сплошные и пунктирные).
+- Avoid using big quantity different and bright colors.
+- Use the modification of figures, such as using a dashed border line.
+- For better comprehension, different transactions could be displayed with distinct line styles (solid and dashed).
 
-#### Пример обработки сообщений
+#### Message Processing Example
 
 <br></br>
 <ThemedImage
@@ -39,36 +39,36 @@ import ThemedImage from '@theme/ThemedImage';
 />
 <br></br>
 
-Узнайте ссылки непосредственно из Visio [message-processing.vsdx](/schemes-visio/message_processing.vsdx).
+Learn references directly from Visio [message-processing.vsdx](/schemes-visio/message_processing.vsdx).
 
-### Форматы и цвета
+### Formats and Colors
 
-#### Шрифты
+#### Fonts
 
-- Семейство **Inter** шрифтов для всех текстов в диаграммах.
+- **Inter** fonts family  for all text within diagrams.
 
-#### Цвета - Светлый режим
+#### Colors - Light Mode
 
-- Карандаш Рисунок (по умолчанию)
+- Pencil Hand Drawn(default theme)
 
-#### Цвета - Темный режим
+#### Colors - Dark Mode
 
 - Font `#e3e3e3`
-- Фон `#2328`
-- Light Highlight(стрелки и схемы границ) `#058dd2`
-- Темный Highlight(стрелки и схемы границ) `#0088cc`
-- InnerBackGround(для вложенных блоков) `#333337`
+- Background `#232328`
+- Light Highlight(arrows and scheme borders) `#058dd2`
+- Dark Highlight(arrows and scheme borders) `#0088cc`
+- InnerBackGround(for nested blocks) `#333337`
 
-#### Политика контроля версий
+#### Version Control Policy
 
-- Установка диаграмм в документации формата SVG для схем для обеспечения читаемости на различных устройствах.
-- Сохраняйте исходные файлы в Git репозитории проекта в каталоге "/static/visio", что облегчает их изменение в будущем.
+- Set diagrams in the documentation by SVG format for schemes to ensure readability on various devices.
+- Store original files in the project's Git repository under the "/static/visio" directory, making them easier to modify in the future.
 
-### Диаграмма последовательности
+### Sequence Diagram
 
-В случае сложных и повторяющихся схем коммуникации между 2-3 действующими лицами рекомендуется использовать диаграмму последовательности. Для сообщений используйте обозначение общей стрелки синхронного сообщения.
+In the case of complex and repetitive communication schemes between 2-3 actors, it is advisable to use a sequence diagram. For messages, use the notation of a common synchronous message arrow.
 
-#### Пример
+#### Example
 
 <br></br>
 <div class="text--center">
@@ -82,6 +82,6 @@ import ThemedImage from '@theme/ThemedImage';
 </div>
 <br></br>
 
-### Схема Схемы
+### Scheme References
 
 - [message-processing.vsdx](/schemes-visio/message_processing.vsdx)
