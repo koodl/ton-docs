@@ -1,201 +1,201 @@
-# Компилировать и создавать смарт-контракты на TON
+# Compile and Build smart contracts on TON
 
-Вот список библиотек и репозиториев для создания вашего смарт-контракта.
+Here is a list of libraries and repos to build your smart contract.
 
 **TLDR:**
 
-- В большинстве случаев достаточно использовать чертеж SDK.
-- Если вам нужен более низкоуровневый подход, вы можете использовать тон-компилятор или func-js.
+- In most cases, it's enough to use Blueprint SDK.
+- If you need more low-level approach, you can use ton-compiler or func-js.
 
-## Чертеж
+## Blueprint
 
-### Общий обзор
+### Overview
 
-Окружение для блокчейна TON для написания, тестирования и развертывания смарт-контрактов. Подробнее в [git repository](https://github.com/ton-community/blueprint).
+A development environment for TON blockchain for writing, testing, and deploying smart contracts. Read more in [Blueprint git repository](https://github.com/ton-community/blueprint).
 
-### Установка
+### Installation
 
-Выполните следующие действия в терминале для создания нового проекта и следуйте инструкциям на экране:
+Run the following in terminal to create a new project and follow the on-screen instructions:
 
 ```bash
-npm создать ton@latest
+npm create ton@latest
 ```
 
 &nbsp;
 
-### Возможности
+### Features
 
-- Упорядоченный рабочий процесс для разработки, тестирования и развертывания смарт-контрактов
-- Мертвая простая установка в mainnet/testnet с помощью вашего любимого кошелька (например, Tonkeeper)
-- Блэк быстрое тестирование нескольких смарт-контрактов в изолированном блокчейне, запущенном в процессе
+- Streamlined workflow for building, testing and deploying smart contracts
+- Dead simple deployment to mainnet/testnet using your favorite wallet (eg. Tonkeeper)
+- Blazing fast testing of multiple smart contracts in an isolated blockchain running in-process
 
-### Технический стек
+### Tech stack
 
-1. Компиляция FunC с помощью https://github.com/ton-community/func-js (без CLI)
-2. Тестирование смарт-контрактов с https://github.com/ton-community/sandbox
-3. Развертывание смарт-контрактов с [TON Connect 2](https://github.com/ton-connect), [Wallet](https://tonhub.com/) или `ton://` глубже
+1. Compiling FunC with https://github.com/ton-community/func-js (no CLI)
+2. Testing smart contracts with https://github.com/ton-community/sandbox
+3. Deploying smart contracts with [TON Connect 2](https://github.com/ton-connect), [Tonhub wallet](https://tonhub.com/) or a `ton://` deeplink
 
-### Требования
+### Requirements
 
-- [Node.js](https://nodejs.org) с последней версией, например v18, проверьте версию с помощью `node -v`
-- IDE с поддержкой TypeScript и FunC, например, [код Visual Studio](https://code.visualstudio.com/) с [плагином FunC](https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode)
+- [Node.js](https://nodejs.org) with a recent version like v18, verify version with `node -v`
+- IDE with TypeScript and FunC support like [Visual Studio Code](https://code.visualstudio.com/) with the [FunC plugin](https://marketplace.visualstudio.com/items?itemName=tonwhales.func-vscode)
 
-### Как использовать?
+### How to use?
 
-- [Смотреть презентацию DoraHacks с демонстрацией работы с чертежами](https://www.youtube.com/watch?v=5ROXVM-Fojo).
-- Читайте подробное описание в [Репозиции чертеже](https://github.com/ton-community/blueprint#create-a-new-project).
+- [Watch DoraHacks presentation with demo of working with blueprint](https://www.youtube.com/watch?v=5ROXVM-Fojo).
+- Read well detailed explanation in [Blueprint repo](https://github.com/ton-community/blueprint#create-a-new-project).
 
-## тонн-компилятор
+## ton-compiler
 
-### Общий обзор
+### Overview
 
-Упакованный компилятор FunC для смарт-контрактов TON:
+Packaged FunC compiler for TON smart contracts:
 
 - GitHub: [ton-community/ton-compiler](https://github.com/ton-community/ton-compiler)
 - NPM: [ton-compiler](https://www.npmjs.com/package/ton-compiler)
 
-### Установка
+### Installation
 
 ```bash npm2yarn
 npm install ton-compiler
 ```
 
-### Возможности
+### Features
 
-- Несколько версий компилятора FunC
-- Не нужно устанавливать и компилировать TON
-- Интерфейсы программирования и CLI
-- Готов к использованию в модульном тестировании
+- Multiple FunC compiler versions
+- Doesn't need to install and compile TON
+- Programmatic and CLI interfaces
+- Ready to use in unit-testing
 
-### Как использовать
+### How to use
 
-Это пакеты добавляют в проект двоичный файл `ton-compiler`.
+This packages adds `ton-compiler` binary to a project.
 
-Сборка FunC - это многоступенчатый процесс. Один из них компилирует Func в Fift код, который затем компилируется в бинарное представление. Fift компилятор уже имеет Asm.fif комплект.
+FunC compilation is a multi-stage process. One is compiling Func to Fift code that is then compiled to a binary representation. Fift compiler already has Asm.fif bundled.
 
-FunC stdlib в комплекте, но может быть отключён при запуске.
+FunC stdlib is bundled but could be disabled at runtime.
 
-#### Использование консоли
+#### Console Use
 
 ```bash
-# Компилировать в бинарную форму (для создания контракта)
-ton-compiler --input ./wallet.fc --output . wallet.cell
+# Compile to binary form (for contract creation)
+ton-compiler --input ./wallet.fc --output ./wallet.cell
 
-# Компилировать до конца (полезно для отладки)
-тон-компилятор --input . wallet.fc --output-fift ./wallet.fif
+# Compile to fift (useful for debugging)
+ton-compiler --input ./wallet.fc --output-fift ./wallet.fif
 
-# Компилировать в бинарную форму и fift
-ton-compiler --input ./wallet. c --output ./wallet.cell --output-fift ./wallet.fif
+# Compile to binary form and fift
+ton-compiler --input ./wallet.fc --output ./wallet.cell --output-fift ./wallet.fif
 
-# Отключить stdlib
-ton-compiler --no-stdlib --input ./wallet.fc --output ./wallet. ell --output-fift ./wallet.fif
+# Disable stdlib
+ton-compiler --no-stdlib --input ./wallet.fc --output ./wallet.cell --output-fift ./wallet.fif
 
-# Выберите версию
+# Pick version
 ton-compiler --version "legacy" --input ./wallet.fc --output ./wallet.cell --output-fift ./wallet.fif
 ```
 
-#### Программное использование
+#### Programmatic Use
 
 ```javascript
 import { compileContract } from "ton-compiler";
 let result = await compileContract({ code: 'source code', stdlib: true, version: 'latest' });
 if (result.ok) {
-  console.log(result. ift); // Compiled Fift assembler
-  console.log(result. ell); // Скомпилированная ячейка буфер
+  console.log(result.fift); // Compiled Fift assembler
+  console.log(result.cell); // Compiled cell Buffer
 } else {
-  console.warn(result.logs); // Выходные логи
+  console.warn(result.logs); // Output logs
 }
 ```
 
 ## func-js
 
-### Общий обзор
+### Overview
 
-_Cross-platform_ для компилятора TON FunC.
+_Cross-platform_ bindings for TON FunC compiler.
 
-Это более низкий уровень, чем тон-компилятор, поэтому используйте его только в том случае, если для вас не работает тон-компилятор.
+It's more low-level than ton-compiler, so use it only if ton-compiler doesn't work for you.
 
 - GitHub: [ton-community/func-js](https://github.com/ton-community/func-js)
 - NPM: [@ton-community/func-js](https://www.npmjs.com/package/@ton-community/func-js)
 
-### Установка
+### Installation
 
 ```bash npm2yarn
 npm install @ton-community/func-js
 ```
 
-### Возможности
+### Features
 
-- Не нужно компилировать файлы загрузки FunC
-- Работает в Node.js и **WEB** (WASM поддержка)
-- Собирает прямо в BOC с помощью ячейки кода
-- Сборка возвращена в целях отладки
-- Не зависит от файловой системы
+- No need to compile of download FunC binaries
+- Works both in Node.js & **WEB** (WASM support is required)
+- Compiles straight to BOC with code Cell
+- Assembly is returned fot debugging purposes
+- Does not depend on file-system
 
-### Как использовать
+### How to use
 
-Во внутреннем плане этот пакет использует оба интерпретатора FunC компилятора и Fift вместе с одной lib, скомпилированной в WASM.
+Internally, this package uses both FunC compiler and Fift interpreter combined to single lib compiled to WASM.
 
-Простая схема:
+Simple schema:
 
 ```bash
-(ваш код) -> WASM(FunC -> Fift -> BOC)
+(your code) -> WASM(FunC -> Fift -> BOC)
 ```
 
-Источники внутренней библиотеки можно найти [here](https://github.com/ton-blockchain/ton/tree/testnet/crypto/funcfiftlib).
+Sources to the internal lib could be found [here](https://github.com/ton-blockchain/ton/tree/testnet/crypto/funcfiftlib).
 
-### Пример использования
+### Usage example
 
 ```javascript
-импортировать {compileFunc, compilerVersion} из '@ton-community/func-js';
-импортировать {Cell} из 'ton';
+import {compileFunc, compilerVersion} from '@ton-community/func-js';
+import {Cell} from 'ton';
 
 async function main() {
-    // Вы можете загрузить версию компилятора 
-    с помощью версии = await compilerVersion();
+    // You can get compiler version 
+    let version = await compilerVersion();
     
     let result = await compileFunc({
         // Entry points of your project
-        entryPoints: ['main. c'],
-        // Источники
-        источников: {
-            "stdlib. c": "<stdlibCode>",
-            "main". c": "<contractCode>",
-            // Остаток файлов, которые включены в основную. c if some
+        entryPoints: ['main.fc'],
+        // Sources
+        sources: {
+            "stdlib.fc": "<stdlibCode>",
+            "main.fc": "<contractCode>",
+            // Rest of the files which are included in main.fc if some
         }
     });
 
-    если (результат. tatus === 'error') {
-        console.error(result. essage)
+    if (result.status === 'error') {
+        console.error(result.message)
         return;
     }
 
-    // результат. odeBoc содержит BOC с кодовым ячейкой 
-    пустой codeCell = CЯ. romBoc(Buffer.from(result.codeBoc, "base64"))[0];
+    // result.codeBoc contains base64 encoded BOC with code cell 
+    let codeCell = Cell.fromBoc(Buffer.from(result.codeBoc, "base64"))[0];
     
-    // результат. iftCode содержит сборочную версию вашего кода (для целей отладки)
+    // result.fiftCode contains assembly version of your code (for debug purposes)
     console.log(result.fiftCode)
 }
 ```
 
-Обратите внимание, что все содержимое исходных файлов FunC, используемых в вашем проекте, должно быть передано в `sources`, включая:
+Note that all FunC source file contents used in your project should be passed to `sources`, including:
 
-- точки входа
-- stdlib.fc (если вы используете его)
-- все файлы, включенные в точки входа
+- entry points
+- stdlib.fc (if you use it)
+- all files included in entry points
 
-### Проверено сообществом TON
+### Validated by TON Community
 
-- [ton-community/ton-compiler](https://github.com/ton-community/ton-compiler) — готовый к использованию компилятор для смарт-контрактов TON.
-- [ton-community/func-js](https://github.com/ton-community/func-js) — кросс-платформенные привязки для компилятора FunC TON.
+- [ton-community/ton-compiler](https://github.com/ton-community/ton-compiler) — ready-to-use FunC compiler for TON smart contracts.
+- [ton-community/func-js](https://github.com/ton-community/func-js) — cross-platform bindings for the TON FunC compiler.
 
-### Сторонние участники
+### Third-party contributors
 
-- [grozzzny/ton-compiler-groz](https://github.com/grozzzny/ton-compiler-groz) — компилятор для смарт-контрактов TON FunC.
-- [Termina1/tonc](https://github.com/Termina1/tonc) — TONC (TON Compiler). Использует WASM, так идеально подходит для Linux.
+- [grozzzny/ton-compiler-groz](https://github.com/grozzzny/ton-compiler-groz) — TON FunC smart contract compiler.
+- [Termina1/tonc](https://github.com/Termina1/tonc) — TONC (TON Compiler). Uses WASM, so perfect for Linux.
 
-## Прочие вопросы
+## Other
 
-- [disintar/toncli](https://github.com/disintar/toncli) — один из самых популярных подходов. Вы даже можете использовать его с Docker.
-- [tonthemoon/ton](https://github.com/tonthemoon/ton) — _(closed beta)_ установщик двоичных файлов TON.
-- [delab-team/tlbcrc](https://github.com/delab-team/tlbcrc) — Пакет и CLI, чтобы сгенерировать opcodes по схеме TL-B
+- [disintar/toncli](https://github.com/disintar/toncli) — one of the most popular approaches. You even can use it with Docker.
+- [tonthemoon/ton](https://github.com/tonthemoon/ton) — _(closed beta)_ one-line TON binaries installer.
+- [delab-team/tlbcrc](https://github.com/delab-team/tlbcrc) — Package & CLI to generate opcodes by TL-B scheme
