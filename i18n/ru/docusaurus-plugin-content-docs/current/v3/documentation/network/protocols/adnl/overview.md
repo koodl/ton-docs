@@ -1,40 +1,40 @@
 # ADNL Protocol
 
-Implementation:
+Осуществление:
 
 - https://github.com/ton-blockchain/ton/tree/master/adnl
 
-## Overview
+## Общий обзор
 
-The cornerstone of TON is the Abstract Datagram Network Layer (ADNL).
+Краеугольным камнем TON является Abstract Datagram Network Layer (ADNL).
 
-This is an overlay, peer-to-peer, unreliable (small-size) datagram protocol running on top of a **UDP** in **IPv4** (in the future, IPv6), with an optional **TCP fallback** if UDP is not available.
+Это overlay, peer-to-peer, ненадежный (маленький размер) протокол датаграммы, работающий поверх **UDP** в **IPv4** (в будущем, IPv6 (необязательный **резервный** TCP, если UDP недоступен.
 
-## ADNL address
+## ADNL адрес
 
-Each participant has a 256-bit ADNL Address.
+У каждого участника есть 256-битный адрес ADNL.
 
-The ADNL Protocol allows you to send (unreliable) and receive datagrams using only  ADNL Addresses. IP Addresses and Ports are hidden by the ADNL Protocol.
+Протокол ADNL позволяет вам отправлять (ненадежно) и получать датаграммы, используя только адреса ADNL. Адреса и порты IP скрыты протоколом ADNL.
 
-An ADNL Address is essentially equal to a 256-bit ECC public key. This public key can be arbitrarily generated, thus creating as many different network identities as the node needs.
-However, one must know the corresponding private key in order to receive (and decrypt) messages intended for the recipient address.
+ADNL адрес по существу равен 256-битному публичному ECC ключу. Этот открытый ключ может быть сгенерирован произвольно, таким образом, создавая столько разных идентификаторов сети, сколько требуется узлу.
+Тем не менее, необходимо знать соответствующий закрытый ключ для получения (и расшифровки) сообщений, предназначенных для адреса получателя.
 
-In reality, the ADNL Address is not the public key itself; instead, it is a 256-bit SHA256 hash of a serialized TL-object that can describe several types of public keys and addresses depending on its constructor.
+На самом деле ADNL адрес не является самим публичным ключом; вместо этого, это 256-битный хэш SHA256 сериализованного TL-объекта, который может описывать несколько типов открытых ключей и адресов в зависимости от его конструктора.
 
-## Encryption & security
+## Шифрование и безопасность
 
-Normally each datagram sent is signed by the sender and encrypted so that only the recipient can decrypt the message and verify its integrity by the signature.
+Обычно каждый посланный датаграмм подписывается отправителем и зашифрован так, что только получатель может расшифровать сообщение и проверить его целостность подписью.
 
-## Neighbor tables
+## Соседние столы
 
-Normally, a TON ADNL node will have some “neighbor table”, which contains information about other known nodes, such as their abstract addresses, public keys, IP Addresses and UDP Ports. Over time, it will gradually
-extend this table using information gathered from these known nodes. This new information can be in the form of answers to special queries or sometimes the removal of obsolete records.
+Обычно узел TON ADNL будет иметь некоторую «таблицу соседи», которая содержит информацию о других известных узлах, таких как их абстрактные адреса, открытые ключи, IP-адреса и UDP порты. Over time, it will gradually
+extend this table using information gathered from these known nodes. Эта новая информация может быть в виде ответов на специальные запросы или иногда удаления устаревших записей.
 
-ADNL allows you to set up point-to-point channels and tunnels (a chain of proxies).
+ADNL позволяет настроить каналы в точках и туннелях (цепочка прокси).
 
-A TCP-like stream protocol can be built over ADNL.
+С ADNL можно создать похожий на TCP потоковый протокол.
 
-## What's next?
+## Что дальше?
 
-- Read more about ADNL in the [Low-Level ADNL article](/v3/documentation/network/protocols/adnl/low-level-adnl)
-- Chapter 3.1 of the [TON Whitepaper](https://docs.ton.org/ton.pdf).
+- Подробнее о ADNL можно узнать в [статье ADNL на низком уровне](/v3/documentation/network/protocols/adnl/low-level-adnl)
+- Глава 3.1 [Whitepaper](https://docs.ton.org/ton.pdf).
