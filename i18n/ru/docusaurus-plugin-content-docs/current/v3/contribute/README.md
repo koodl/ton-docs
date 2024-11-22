@@ -1,51 +1,51 @@
-# Как помочь
+# How to Contribute
 
-## Определение области взноса
+## Identify area for contribution
 
-Есть несколько способов определить область, в которой вы можете внести свой вклад в документацию TON:
+There are several ways to identify the area where you can contribute to TON Docs:
 
-- Присоединяйтесь к [чату клуба TON Docs](https://t.me/+c-0fVO4XHQsyOWM8) в Telegram и получите последние задачи от сопровождающих.
-- Если у вас есть конкретный вклад, но не уверены в этом, Проверьте, является ли
-  подходящим вкладом, обратившись к одному из [сопровождающих документации](/v3/contribute/maintainers) напрямую.
-- Ознакомьтесь с наиболее часто задаваемыми вопросами в [разработчиках TON](https://t.me/tondev_eng) чатах.
-- Пожалуйста, прочтите [issues](https://github.com/ton-community/ton-docs/issues) в репозитории GitHub.
-- Изучение доступных [footsteps](https://github.com/ton-society/ton-footsteps/issues?q=documentation) для документации.
+- Join [TON Docs Club chat](https://t.me/+c-0fVO4XHQsyOWM8) in Telegram and get the latest tasks from maintainers.
+- If you have a specific contribution in mind but are unsure about it, confirm whether
+  the contribution is appropriate by contacting one of the [Docs maintainers](/v3/contribute/maintainers) directly.
+- Get familiar with the most frequently asked questions in the [TON Developers](https://t.me/tondev_eng) chats.
+- Please read over the [issues](https://github.com/ton-community/ton-docs/issues) in the GitHub repository.
+- Learn available [footsteps](https://github.com/ton-society/ton-footsteps/issues?q=documentation) for the documentation.
 
 ## TL;DR
 
-- Если вам нужно добавить или изменить что-нибудь в TON Docs, создайте запрос на слияние
-  в ветке `main`.
-- Команда документации рассмотрит запрос на слияние или, если необходимо, ответит на запрос.
-- Репозиторий: https://github.com/ton-community/ton-docs
+- If you need to add or edit something in TON Docs, create a pull request
+  against the `main` branch.
+- The documentation team will review the pull request or reach out as needed.
+- Repository: https://github.com/ton-community/ton-docs
 
-## Развитие
+## Development
 
-### Онлайн настройка вклада в один клик
+### Online one-click contribution setup
 
-Вы можете использовать Gitpod (бесплатно в Интернете, VS код, как IDE) для внесения взносов. Он запустит рабочую область одним щелчком мыши и автоматически:
+You can use Gitpod (a free, online, VS code-like IDE) for contributing. It will launch a workspace with a single click and will automatically:
 
-[![Открыть в Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ton-community/ton-docs)
+[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/ton-community/ton-docs)
 
-### Контрагенты кода
+### Code Conventions
 
-- **Самое важно**: посмотрите вокруг. Сопоставьте общий стиль проекта. Это включает в себя форматирование, именование файлов, именование объектов в коде, именование элементов в документации и так далее.
-- **Для документации**: при редактировании документации не переносите строк на 80 символов; вместо этого настройте редактор на soft-wrap.
-- **Grammar**: `cpell` проверит орфографию и предложит исправления в случае ошибок автоматически перед созданием нового коммита. Добавьте специфические настройки `words` в `cspell.json`, чтобы включить их в словарь верификации.
+- **Most important**: look around. Match the overall style of the project. This includes formatting, naming files, naming objects in code, naming things in documentation, and so on.
+- **For documentation**: When editing documentation, do not wrap lines at 80 characters; instead, configure your editor to soft-wrap.
+- **Grammar**: `cpell` will check the spelling and suggest corrections in case of mistakes automatically before creating new commit. Feel free to add specific `words` to `cspell.json` config to include them in the verification dictionary.
 
-Не беспокойтесь слишком много о стилях в общем; сопровождающие помогут вам их исправить, так как они просматривают ваш код.
+Don't worry too much about styles in general; the maintainers will help you fix them as they review your code.
 
-### Запросы на слияние
+### Pull Requests
 
-Таким образом, вы решили внести код обратно в исходный код, открыв запрос на слияние. Ты приложил много усилий и мы ценим это. Мы сделаем все возможное, чтобы работать с вами и получить pull-request проверку.
+So you have decided to contribute code back to upstream by opening a pull request. You've put in a lot of effort, and we appreciate it. We will do our best to work with you and get the pull request reviewed.
 
-При отправке Pull Request убедитесь, что:
+When submitting a pull request, please ensure the following:
 
-1. **Держите ваш запрос на слияние маленький**. Более мелкие Pull Request'ы (~300 строк разницы) проще пересматривать и чаще объединяться. Убедитесь, что запрос на слияние выполняет только одну вещь, в противном случае разделите его.
-2. **Используйте описательные названия**. Рекомендуется следовать стилю фиксации сообщения.
-3. **Проверьте ваши изменения**. Опишите ваш план тестирования в описании запроса на слияние.
+1. **Keep your pull request small**. Smaller pull requests (~300 lines of diff) are easier to review and more likely to get merged. Make sure the pull request does only one thing, otherwise please split it.
+2. **Use descriptive titles**. It is recommended to follow the commit message style.
+3. **Test your changes**. Describe your test plan in your pull request description.
 
-Все Pull Request'ы должны быть открыты в основную ветку.
+All pull requests should be opened against the `main` branch.
 
-## Что произойдет дальше?
+## What Happens Next?
 
-Команда TON Docs будет следить за запросами на слияние. Пожалуйста, помогите нам, следуя приведенным выше инструкциям, чтобы поддерживать последовательность запросов на слияние.
+The TON Docs team will be monitoring pull requests. Please help us by following the guidelines above to keep the pull requests consistent.
