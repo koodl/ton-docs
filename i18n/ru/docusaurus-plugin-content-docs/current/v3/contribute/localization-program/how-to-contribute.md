@@ -1,135 +1,135 @@
-# How to Contribute
+# Как помочь
 
-In our quest to make **TON the most successful blockchain**, ensuring that TON documentation is comprehensible to people worldwide is crucial. Localization is key, and we're **excited** to have you join us in this effort.
+В нашем стремлении сделать **TON самым успешным блокчейном**, чтобы документация TON была понятной для людей по всему миру. Локализация является ключом, и мы **рады** присоединяемся к нам.
 
-## Prerequisites
+## Предпосылки
 
-The **TownSquare Labs Localization Program** is open to everyone! Here are a few steps you need to take before you start contributing:
+**Программа локализации лабораторий TownSquare** открыта для всех! Вот несколько шагов, которые нужно предпринять, прежде чем вы начнете вносить свой вклад:
 
-1. Log in to your [**Crowdin**](https://crowdin.com) account or sign up.
-2. Select the language you want to contribute to.
-3. Familiarize yourself with the [**How to Use Crowdin**](/v3/contribute/localization-program/how-to-contribute) guide and the [**Translation Style Guide**](/v3/contribute/localization-program/translation-style-guide) for tips and best practices.
-4. Use machine translations to aid your work but do not rely solely on them.
-5. All translation results can be previewed on the website one hour after they have been proofread.
+1. Войдите в [**Crowdin**](https://crowdin.com) или зарегистрируйтесь.
+2. Выберите язык, к которому вы хотите присоединиться.
+3. Ознакомьтесь с [**Как использовать Crowdin**](/v3/contribute/localization-program/how-to-contribute) руководством и [**Руководство стиля перевода**](/v3/contribute/localization-program/translation-style-guide) для советов и лучших практик.
+4. Используйте машинные переводы, чтобы помочь вашей работе, но не полагайтесь только на них.
+5. Все результаты перевода можно просмотреть на сайте через час после вычитки.
 
-## Roles
+## Роли
 
-Here are the **roles** you can assume in the system:
+Вот **роли**, которые вы можете взять в системе:
 
-- **Language Coordinator** – Manages project features within assigned languages.
-- **Developer** – Uploads files, edits translatable text, connects integrations, and uses the API.
-- **Proofreader** – Translates and approves strings.
-- **Translator** (in-house or community) – Translates strings and votes on translations added by others.
+- **Language Coordinator** – Управляет функциями проекта в пределах назначенных языков.
+- **Разработчик** – загружает файлы, редактирует переводимый текст, соединяет интеграцию и использует API.
+- **Корректор** – Переводит и утверждает строки.
+- **Переводчик** (собственное или сообщество) – Переводит строки и голоса за переводы, добавленные другими.
 
-Our localization project is hosted on [Crowdin](https://crowdin.com/project/ton-docs).
+Наш проект локализации размещен на [Crowdin](https://crowdin.com/project/ton-docs).
 
 :::info
-Before you start contributing, **read the guidelines below** to ensure standardization and quality, making the review process much faster.
+Прежде чем вы начнете вносить свой вклад, **прочтите ниже**, чтобы обеспечить стандартизацию и качество, сделать процесс проверки намного быстрее.
 
-## Side-by-Side Mode
+## Боковой режим
 
-All tasks are performed in **side-by-side** mode in the Crowdin Editor. To enable this, click a file you want to work on. At the top right of the page, click the **Editor view** button and select **side-by-side** mode for a clearer editor view.\
-![side-by-side mode](/img/localizationProgramGuideline/side-by-side.png)
+Все задачи выполняются в режиме **побочно** в редакторе Crowdin. Чтобы включить это, нажмите на файл, на который вы хотите работать. В правом верхнем углу страницы нажмите кнопку **Просмотр редактора** и выберите режим **побоковое** для более четкого просмотра редактора.\
+![боковой режим](/img/localizationProgrameline/side-by-side.png)
 :::
 
-### Language Coordinator
+### Координатор языков
 
-- **Translate and approve strings**
-- **Pre-translate project content**
+- **Перевести и одобрить строки**
+- **Предварительный перевод содержимого проекта**
 - **Manage project members and join requests**
   ![manage-members](/img/localizationProgramGuideline/manage-members.png)
-- **Generate project reports**
-  ![generate-reports](/img/localizationProgramGuideline/generate-reports.png)
-- **Create tasks**
-  ![create-tasks](/img/localizationProgramGuideline/create-tasks.png)
+- **Создать отчеты о проекте**
+  ![generate-reports](/img/localizationProgrameline/generate-reports.png)
+- **Создать задачи**
+  ![create-tasks](/img/localizationProgrameline/create-tasks.png)
 
-### Developer
+### Разработчик
 
-- **Update Footer Configuration for Your Language :**
-  1. Fork our [**repository**](https://github.com/TownSquareXYZ/ton-docs/tree/i18n_feat).
-  2. Locate the file [**`src/theme/Footer/config.ts`**](https://github.com/TownSquareXYZ/ton-docs/blob/main/src/theme/Footer/config.ts).
-  3. Copy the value of the variable **`FOOTER_COLUMN_LINKS_EN`** to **`FOOTER_COLUMN_LINKS_[YOUR_LANG]`**.
-  4. Translate the values of the keys **`headerLangKey`** and **`langKey`** to your language, as we did for Mandarin in **`FOOTER_COLUMN_LINKS_CN`**.
-  5. Add a new property to **`FOOTER_LINKS_TRANSLATIONS`**:
-     - Set **the key** as your [**ISO language code**](https://www.andiamo.co.uk/resources/iso-language-codes/) (**two letters**, **lowercase**).
-     - **The value** should be the new variable you just created for your language.
-  6. Run the command **`yarn start:local [YOUR_IOS_LANG_CODE]`** to preview the new footer in your language.\
-     (e.g., **`yarn start:local ru`** for a preview of the **Russian** footer)
-  7. If everything looks good, create a pull request to the **`i18n_feat`** branch.
-- **Upload files**
-- **Edit translatable text**
-- **Connect integrations** (e.g., add GitHub integration)
+- **Обновить настройки нижнего колонтитула для вашего языка :**
+  1. Форкнуть [**репозиторий**](https://github.com/TownSquareXYZ/ton-docs/tree/i18n_feat).
+  2. Найдите файл [**`src/theme/Footer/config.ts`**](https://github.com/TownSquareXYZ/ton-docs/blob/main/src/theme/Footer/config.ts).
+  3. Скопируйте значение переменной **`FOOTER_COLUMN_LINKS_EN`** в **`FOOTER_COLUMN_LINKS_[YOUR_LANG]`**.
+  4. Переведите значения ключей **`headerLangKey`** и **`langKey`** на ваш язык, как мы сделали для Mandarin в **`FOOTER_COLUMN_LINKS_CN`**.
+  5. Добавить новое свойство **`FOOTER_LINKS_TRANSLATIONS`**:
+     - **Ключ** определил ваш [**код языка ISO**](https://www.andiamo.co.uk/resources/iso-language-codes/) (**две буквы**, **строчные буквы**).
+     - **Значение** должно быть новой переменной, которую вы только что создали для вашего языка.
+  6. Выполните команду **`yarn start:local [YOUR_IOS_LANG_CODE]`**, чтобы просмотреть новый футер на вашем языке.\
+     (например, **`yarn start:local ru`** для предпросмотра **русского** нижнего колонтитула)
+  7. Если все выглядит хорошо, создайте Pull Request к ветке **`i18n_feat`**.
+- **Загрузить файлы**
+- **Редактировать текст для перевода**
+- **Подключить интеграцию** (например, добавить интеграцию с GitHub)
   ![install-github-integration](/img/localizationProgramGuideline/howItWorked/install-github-integration.png)
-- **Use the [Crowdin API](https://developer.crowdin.com/api/v2/)**
+- **Используйте [Crowdin API](https://developer.crowdin.com/api/v2/)**
 
-### Proofreader
+### Корректор
 
-As a **Proofreader**, you'll work on files with a **blue progress bar**.
+Как **Proofreader**, вы будете работать с файлами с **синим индикатором**.
 ![proofread step1](/img/localizationProgramGuideline/proofread-step1.png)
 Click on a file to enter the editing interface.
 
-#### Let's Start Contributing
+#### Давайте начнем вносить свой вклад
 
-1. Make sure you're in [**side-by-side mode**](#side-by-side-mode). Filter by **Not Approved** translations to see strings needing proofreading.
-   ![proofread filter](/img/localizationProgramGuideline/proofread-filter.png)
+1. Убедитесь, что вы находитесь в [**параллельном режиме**](#side-by-side-mode). Фильтр по **Не утвержден** переводам, чтобы увидеть строки, требующие корректуры.
+   ![Фильтр корректора](/img/localizationProgrameline/proofread-filter.png)
 
-2. Follow these rules:
-   - Select strings with a **blue cube icon**. Check each translation:
-     - If **correct**, click the ☑️ button.
-     - If **incorrect**, move to the next line.
+2. Следуйте этим правилам:
+   - Выберите строки с **синей иконкой**. Проверить каждый перевод:
+     - Если **правильно**, нажмите ☑️ кнопку.
+     - Если **неверно**, переходите к следующей строке.
 
-![proofread approved](/img/localizationProgramGuideline/proofread-approved.png)
+![одобрено корректора](/img/localizationProgrameline/proofread-approved.png)
 
 :::info
-You can also review approved lines:
+Вы также можете просмотреть утвержденные строки:
 
-1. Filter by **Approved**.
+1. Фильтр по **одобрено**.
 
-2. If an approved line has issues, click the ☑️ button to revert it to needing proofreading.
+2. Если у одобренной строки есть проблемы, нажмите на кнопку ☑️ чтобы вернуть её в нужное место для корректуры.
    :::
 
-3. To move to the next file, click the file name at the top, select the new file from the pop-up window, and continue proofreading.
-   ![to next](/img/localizationProgramGuideline/redirect-to-next.png)
+3. Чтобы перейти к следующему файлу, щелкните имя файла вверху, выберите новый файл во всплывающем окне и продолжите коррекцию.
+   ![к следующему](/img/localizationProgrameline/redirect-to-next.png)
 
-#### Previewing Your Work
+#### Предварительный просмотр вашей работы
 
-Every approved content will be deployed to a preview website within one hour. Check [**our repo**](https://github.com/TownSquareXYZ/ton-docs/pulls) for the **preview** link in the newest PR.
-![preview link](/img/localizationProgramGuideline/preview-link.png)
+Каждый утвержденный контент будет размещен на веб-сайте предварительного просмотра в течение одного часа. Проверьте [\*\*наш репозиторий \*\*](https://github.com/TownSquareXYZ/ton-docs/pulls) для получения ссылки **preview** в новейшей PR.
+![ссылка](/img/localizationProgrameline/preview-link.png)
 
-### Translator
+### Переводчик
 
-As a **Translator**, your goal is to ensure translations are faithful and expressive, making them as close to the original meaning and as understandable as possible. Your mission is to make the **blue progress bar** reach 100%.
+Как **Переводчик** Ваша цель - убедиться, что переводы верны и выразительны, сделать их как можно ближе к оригиналу и как можно более понятным. Ваша миссия состоит в том, чтобы **синий индикатор** достиг 100%.
 
-#### Let's Start Translating
+#### Давайте начнем переводить
 
-Follow these steps for a successful translation process:
+Выполните эти шаги для успешного процесса перевода:
 
-1. Select files that haven't reached 100% translation.
-   ![translator select](/img/localizationProgramGuideline/translator-select.png)
+1. Выберите файлы, которые не достигли 100% перевода.
+   ![Выбор переводчика](/img/localizationProgrameline/translator-select.png)
 
-2. Ensure you're in [**side-by-side mode**](#side-by-side-mode). Filter by **Untranslated** strings.
-   ![translator filter](/img/localizationProgramGuideline/translator-filter.png)
+2. Убедитесь, что вы находитесь в [**параллельном режиме**](#side-by-side-mode). Фильтр по **Непереведённой** строкам.
+   ![фильтр переводчиков](/img/localizationProgrameline/translator-filter.png)
 
-3. Your workspace has four parts:
-   - **Top left:** Input your translation based on the source string.
-   - **Bottom left:** Preview the translated file. Maintain the original format.
-   - **Bottom right:** Suggested translations from Crowdin. Click to use, but verify for accuracy, especially with links.
+3. Ваша рабочая область состоит из четырех частей:
+   - **Вверху слева:** Вводите ваш перевод на основе исходной строки.
+   - **Нижний левы:** Предпросмотр переведенного файла. Поддерживать исходный формат.
+   - **Внизу справа:** Предлагаемые переводы от Crowdin. Нажмите, чтобы использовать, но проверить на точность, особенно со ссылками.
 
-4. Save your translation by clicking the **Save** button at the top.
-   ![translator save](/img/localizationProgramGuideline/translator-save.png)
+4. Сохраните перевод, нажав кнопку **Сохранить** вверху.
+   ![сохранение переводчика](/img/localizationProgrameline/translator-save.png)
 
-5. To move to the next file, click the file name at the top and select the new file from the pop-up window.
-   ![to next](/img/localizationProgramGuideline/redirect-to-next.png)
+5. Чтобы перейти к следующему файлу, щелкните имя файла вверху и выберите новый файл во всплывающем окне.
+   ![к следующему](/img/localizationProgrameline/redirect-to-next.png)
 
-## How to Add Support for a New Language
+## Как добавить поддержку для нового языка
 
-Currently, we have all desired languages in Crowdin. If you are a community manager, follow these steps:
+В настоящее время у нас есть все желаемые языки в Crowdin. Если вы менеджер сообщества, выполните следующие действия:
 
-1. Add a new branch named `[lang]_localization` (e.g., `ko_localization` for Korean) on [TownSquareXYZ/ton-docs](https://github.com/TownSquareXYZ/ton-docs).
-2. **Contact the Vercel owner of this repo** to add the new language to the menu.
-3. Create a PR request to the dev branch. **Do not merge to dev**; this is for preview purposes only.
+1. Добавьте новую ветку `[lang]_localization` (например, `ko_localization` для Кореи) на [TownSquareXYZ/ton-docs](https://github.com/TownSquareXYZ/ton-docs).
+2. \*\*Свяжитесь с владельцем Vercel для добавления нового языка в меню.
+3. Создать PR запрос к ветке dev. **Не объединяйте с dev**; это только для предварительного просмотра.
 
-Once these steps are completed, you can see the preview of your language in the PR request.
-![ko preview](/img/localizationProgramGuideline/ko_preview.png)
+После завершения этих шагов вы можете увидеть предварительный просмотр вашего языка в PR запросе.
+![Предварительный просмотр](/img/localizationProgramGuideline/ko_preview.png)
 
-When your language is ready for the TON docs, create an issue, and we'll set your language into the production environment.
+Когда ваш язык будет готов к документам TON, создайте проблему, и мы установим ваш язык в рабочую среду.
