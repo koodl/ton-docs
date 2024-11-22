@@ -1,85 +1,85 @@
-# Compiler directives
+# Директивы компилятора
 
-These are keywords that start with `#` and instruct the compiler to do some actions, checks, or change parameters.
+Это ключевые слова, начинающиеся с `#` и указывающие компилятору выполнять некоторые действия, проверять или изменять параметры.
 
-Those directives can be used only at the outermost level (not inside any function definition).
+Эти директивы можно использовать только на самом верхнем уровне (не внутри любого определения функции).
 
-## #include
+## #включать
 
-The `#include` directive allows to include another FunC source code file that will be parsed in place of include.
+Директива `#include` позволяет включить другой исходный код FunC, который будет обработан вместо include.
 
-Syntax is `#include "filename.fc";`. Files are automatically checked for re-inclusion, and attempts to include
-a file more than once will be ignored by default, with a warning if the verbosity level is no lower than 2.
+Синтаксис `#include "filename.fc";`. Файлы автоматически проверяются на повторную интеграцию и при попытке включить
+файл более одного раза будет проигнорирован по умолчанию, с предупреждением, если уровень громкости не ниже 2.
 
-If an error happens during the parsing of an included file, additionally, a stack of inclusions is printed with the locations
-of each included file in the chain.
+Если возникла ошибка во время разбора входящего файла, то дополнительно, стек включения печатается с местоположением
+каждого включенного файла в цепочке.
 
 ## #pragma
 
-The `#pragma` directive is used to provide additional information to the compiler beyond what the language itself conveys.
+Директива `#pragma` используется для предоставления компилятору дополнительной информации, помимо того, что сам язык передается.
 
-### #pragma version
+### #pragma версия
 
-Version pragma is used to enforce a specific version of FunC compiler when compiling the file.
+Версия pragma используется для обеспечения конкретной версии компилятора FunC при компиляции файла.
 
-The version is specified in a semver format, that is, _a.b.c_, where _a_ is the major version, _b_ is the minor, and _c_ is the patch.
+Версия указана в формате semver, то есть _a.b. _, где _a_ — основная версия, _b_ — младший, а _c_ — патч.
 
-There are several comparison operators available to a developer:
+Существует несколько операторов сравнения для разработчиков:
 
-- _a.b.c_ or _=a.b.c_—requires exactly the _a.b.c_ version of the compiler
-- _>a.b.c_—requires the compiler version to be higher than _a.b.c_,
-  - _>=a.b.c_—requires the compiler version to be higher or equal to _a.b.c_
-- _\<a.b.c_—requires the compiler version to be lower than _a.b.c_,
-  - _\<=a.b.c_—requires the compiler version to be lower or equal to _a.b.c_
-- _^a.b.c_—requires the major compiler version to be equal to the 'a' part and the minor to be no lower than the 'b' part,
-  - _^a.b_—requires the major compiler version to be equal to _a_ part and minor be no lower than _b_ part
-  - _^a_—requires the major compiler version to be no lower than _a_ part
+- _a.b.c_ или _=a.b.c_— требует точно _a.b.c_ версии компилятора
+- _>a.b.c_—требуется версия компилятора больше чем _a.b.c_,
+  - _>=a.b.c_—требует, чтобы версия компилятора была больше или равна _a.b.c_
+- _\<a.b.c_— требует меньшую версию компилятора чем _a.b.c_,
+  - _\<=a.b.c_— требует, чтобы версия компилятора была меньше или равна _a.b.c_
+- _^a.b.c_—требует, чтобы основная версия компилятора была равна части 'a', а младшая часть должна быть не ниже 'b',
+  - _^a.b_—требует, чтобы основная версия компилятора была равной _a_ части и младше не менее _b_ части
+  - _^a_—требует, чтобы основная версия компилятора не была меньше _a_
 
-For other comparison operators (_=_, _>_, _>=_, _\<_, _\<=_) short format assumes zeros in omitted parts, that is:
+Для других операторов сравнения (_=_, _>_, _>=_, _\<_, _\<=_) короткий формат предполагает нули в пропущенных частях:
 
-- _>a.b_ is the same as _>a.b.0_ (and therefore does NOT match thd _a.b.0_ version)
-- _\<=a_ is the same as _\<=a.0.0_ (and therefore does NOT match the _a.0.1_ version)
-- _^a.b.0_ is **NOT** the same as _^a.b_
+- _>a.b_ то же самое, что и _>a.b.0_ (поэтому не соответствует версии _a.b.0_)
+- _\<=a_ то же самое, что и _\<=a.0.0_ (поэтому не соответствует _a.0.1_ версии)
+- _^a.b.0_ это **НЕ** то же самое, что и _^a.b_
 
-For example, _^a.1.2_ matches _a.1.3_ but not _a.2.3_ or _a.1.0_, however, _^a.1_ matches them all.
+Например, _^a.1.2_ совпадает с _a.1.3_ но не _a.2.3_ или _a.1.0_, однако, _^a.1_ совпадает со всеми.
 
-This directive may be used multiple times; the compiler version must satisfy all provided conditions.
+Эта директива может использоваться несколько раз; версия компилятора должна соответствовать всем установленным условиям.
 
-### #pragma not-version
+### #pragma неверсия
 
-The syntax of this pragma is the same as the version pragma but it fails if the condition is satisfied.
+Синтаксис этой прагмы такой же, как и прагма версии, но не удается, если условие удовлетворено.
 
-It can be used for blacklisting a specific version known to have problems, for example.
+Он может быть использован для черного списка конкретной версии, известной, например, с проблемами.
 
 ### #pragma allow-post-modification
 
 _funC v0.4.1_
 
-By default it is prohibited to use variable prior to its modification in the same expression. In other words, expression `(x, y) = (ds, ds~load_uint(8))` won't compile, while `(x, y) = (ds~load_uint(8), ds)` is valid.
+По умолчанию запрещается использовать переменную до ее модификации в том же выражении. Другими словами, выражение `(x, y) = (ds, ds~load_uint(8))` не компилируется, а `(x, y) = (ds~load_uint(8), ds)` верно.
 
-This rule can be overwritten, by `#pragma allow-post-modification`, which allow to modify variable after usage in mass assignments and function invocation; as usual sub-expressions will be computed left to right: `(x, y) = (ds, ds~load_bits(8))` will result in `x` containing initial `ds`; `f(ds, ds~load_bits(8))` first argument of `f` will contain initial `ds`, and second - 8 bits of `ds`.
+Это правило может быть перезаписано `#pragma allow-post-modification`, которые позволяют изменять переменную после использования при массовых назначениях и вызове функций; как обычные подвыражения будут вычисляться слева направо: `(x, y) = (ds, ds~load_bits(8))` приведет к `x`, содержащий первоначальный `ds`; Первый аргумент `f(ds, ds~load_bits(8))` будет содержать начальный `ds`, а второй - 8 бит `ds`.
 
-`#pragma allow-post-modification` works only for code after the pragma.
+`#pragma allow-post-modification` работает только для кода после прагмы.
 
-### #pragma compute-asm-ltr
+### #прагма compute-asm-ltr
 
 _funC v0.4.1_
 
-Asm declarations can overwrite order of arguments, for instance in the following expression
+Объявления Asm могут перезаписывать порядок аргументов, например, в следующем выражении
 
 ```func
 idict_set_ref(ds~load_dict(), ds~load_uint(8), ds~load_uint(256), ds~load_ref())
 ```
 
-order of parsing will be: `load_ref()`, `load_uint(256)`, `load_dict()` and `load_uint(8)` due to following asm declaration (note `asm(value index dict key_len)`):
+порядок парсинга будет следующим: `load_ref()`, `load_uint(256)`, `load_dict()` и `load_uint(8)` из-за следующего объявления asm (примечание `asm(value index dict key_len)`):
 
 ```func
-cell idict_set_ref(cell dict, int key_len, int index, cell value) asm(value index dict key_len) "DICTISETREF";
+ячейка idict_set_ref(клетка, int key_len, int index, cell value) asm(value dict key_len) "DICTISETREF";
 ```
 
-This behavior can be changed to strict left-to-right order of computation via `#pragma compute-asm-ltr`
+Это поведение можно изменить на строгую левую на правую последовательность вычислений через `#pragma compute-asm-ltr`
 
-As a result in
+В результате
 
 ```func
 #pragma compute-asm-ltr
@@ -87,6 +87,6 @@ As a result in
 idict_set_ref(ds~load_dict(), ds~load_uint(8), ds~load_uint(256), ds~load_ref());
 ```
 
-order of parsing will be `load_dict()`, `load_uint(8)`, `load_uint(256)`, `load_ref()` and all asm permutation will happen after computation.
+порядок разбора будет `load_dict()`, `load_uint(8)`, `load_uint(256)`, `load_ref()` и вся перестановка asm произойдет после вычисления.
 
-`#pragma compute-asm-ltr` works only for code after the pragma.
+`#pragma compute-asm-ltr` работает только для кода после прагмы.
