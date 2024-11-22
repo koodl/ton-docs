@@ -1,69 +1,69 @@
-# Types
+# Типы
 
 :::info
 
-FunC documentation was initially written by [@akifoq](https://github.com/akifoq).
+Документация FunC была первоначально написана [@akifoq](https://github.com/akifoq).
 
 :::
 
-FunC has the following built-in types.
+У FunC есть следующие встроенные типы.
 
-## Atomic types
+## Атомные типы
 
-- `int` is the type of 257-bit signed integers. By default, overflow checks are enabled and lead to integer overflow exceptions.
-- `cell` is the type of TVM cells. All persistent data in TON Blockchain is stored in trees of cells. Every cell has up to 1023 bits of arbitrary data and up to four references to other cells. Cells serve as memory in stack-based TVMs.
-- `slice` is the type of cell slices. A cell can be transformed into a slice, and then the data bits and references to other cells from the cell can be obtained by loading them from the slice.
-- `builder` is the type of cell builders. Data bits and references to other cells can be stored in a builder, and then the builder can be finalized to a new cell.
-- `tuple` is the type of TVM tuples. Tuple is an ordered collection of up to 255 components with arbitrary value types that are possibly distinct.
-- `cont` is the type of TVM continuations. Continuations are used for controlling the flow of the TVM program execution. It is rather low-level object from the perspective of FunC, although paradoxically quite general.
+- `int` - это 257-битные числовые знаки. По умолчанию, проверки переполнения включены и приводят к целочисленному переполнению исключений.
+- `cell` - это тип камер TVM. Все данные в TON Blockchain хранятся в деревьях клеток. Каждая ячейка имеет до 1023 бит произвольных данных и до четырех ссылок на другие ячейки. Ячейки служат памятью в телевизорах на основе стека.
+- `slice` - это разновидность клеточных масок. Ген может быть преобразован в ломтик, а затем данные и ссылки на другие ячейки из ячейки можно получить, загрузив их из ломтика.
+- `builder` - это тип клеток строителей. Биты и ссылки на другие ячейки могут храниться в конструкторе, а затем конструктор может быть завершен в новую ячейку.
+- «трубка» - это тип трубки TVM. Tuple - это упорядоченная коллекция до 255 компонентов с произвольными типами значений, которые, возможно, отличаются друг от друга.
+- `cont` - это продолжение TVM. Продолжение используется для управления потоком выполнения программы TVM. Это довольно низкий объект с точки зрения FunC, хотя и парадоксально довольно общий.
 
-Note that any of the types above occupy only a single entry in the TVM stack.
+Обратите внимание, что любой из вышеуказанных типов занимает только одну запись в стеке TVM.
 
-### Absence of boolean type
+### Отсутствие логического типа
 
-In FunC, booleans are represented as integers; `false` is represented as `0` and `true` is represented as `-1` (257 ones in binary notation). Logical operations are done as bitwise operations. When a condition is checked, every non-zero integer is considered a `true` value.
+В FunC булевы представлены числовыми значениями; `false` представлен как `0` и `true` представлен как `-1` (257 единиц в двоичном нотах). Логические операции выполняются как побитные операции. Когда отмечено условие, каждое не-нулевое целое считается значением «true».
 
-### Null values
+### Null значения
 
-By the value `null` of TVM type `Null`, FunC represents the absence of a value of some atomic type. Some primitives from the standard library may be typed as ones returning an atomic type and actually return `null`s in some cases. Others may be typed as ones excepting a value of an atomic type but work fine with `null` values too. Such behavior is explicitly stated in the primitive specification. By default, `null` values are prohibited and lead to a run-time exception.
+По значению 'null' типа TVM 'Null' FunC означает отсутствие значения какого-либо атомарного типа. Некоторые примитивы из стандартной библиотеки могут быть введены как те, которые возвращают атомарный тип и в некоторых случаях возвращают `null`. Другие могут быть набраны как единицы, исключающие значение атомарного типа, но хорошо работают и с значениями `null`. Такое поведение явно указано в описании примитивной спецификации. По умолчанию значения `null` запрещены и приводят к run-time исключению.
 
-In such a way, the atomic type `A` may be implicitly transformed into type `A^?` a.k.a. `Maybe A` (the type checker is agnostic to such a transformation).
+Таким образом, атомный тип `A` может быть имплицитно преобразован в тип `A^?` a.k.a. `Может быть А` (проверка типов агностична к такому преобразованию).
 
-## Hole type
+## Тип отверстия
 
-FunC has support for type inference. Types `_` and `var` represent type "holes" which can later be filled with some actual type during type checking. For example, `var x = 2;` is a definition of variable `x` equal to `2`. The type checker can infer that `x` has type `int`, because `2` has type `int`, and the left and right sides of the assignment must have equal types.
+Функция FunC поддерживает ввод типа. Типы `_` и `var` представляют тип "дырки", который позже может быть заполнен реальным типом во время проверки типа. Например, `var x = 2;` — это определение переменной `x` равное `2`. Тип чекера может означать, что `x` имеет тип `int`, потому что `2` имеет тип `int`, и левая и правая стороны назначения должны иметь одинаковые типы.
 
-## Composite types
+## Композитные типы
 
-Types can be composed into more complex ones.
+Виды могут быть составлены в более сложные.
 
-### Functional type
+### Функциональный тип
 
-Types of the form `A -> B` represent functions with specified domain and codomain. For example, `int -> cell` is the type of function that takes one integer argument and returns a TVM cell.
+Типы формы `A -> B` представляют функции с указанным доменом и codomain. Например, `int -> cell` является типом функции, которая принимает один целочисленный аргумент и возвращает ячейку TVM.
 
-Internally, values of such types are represented as continuations.
+Во внутреннем плане значения таких типов представлены как продолжения.
 
-### Tensor types
+### Типы датчиков
 
-Types of the form `(A, B, ...)` essentially represent ordered collections of values of types `A`, `B`, `...`, which all together occupy more than one TVM stack entry.
+Типы формы «(A, B, ...)» представляют по сути упорядоченные коллекции значений типов «A», «B», «B». .\`, который все вместе занимает более одного стека ТВМ.
 
-For example, if a function `foo` has type `int -> (int, int)`, it means that the function takes one integer and returns a pair of them.
+Например, если функция `foo` имеет тип `int -> (int, int)`, это означает, что функция занимает одно целое число и возвращает пару из них.
 
-A call of this function may look like `(int a, int b) = foo(42);`. Internally, the function consumes one stack entry and leaves two of them.
+Вызов этой функции может выглядеть как `(int a, int b) = foo(42);`. Во внутреннем плане функция потребляет одну запись в стеке и оставляет две из них.
 
-Note that from a low-level perspective, value `(2, (3, 9))` of type `(int, (int, int))` and value `(2, 3, 9)` of type `(int, int, int)`, are represented in the same way as three stack entries `2`, `3` and `9`. For the FunC type checker they are values of **different** types. For example, code `(int a, int b, int c) = (2, (3, 9));` wouldn't be compiled.
+Обратите внимание, что из ракурса низкого уровня значение «(2, (3, 9))» типа «(int, (int, int))» и значения «(2, 3, 9)`типа`(int, int, int)`представлен таким же образом, как и три записи стека`2`, `3`и`9`. Для чекера типа FunC это значения **различных** типов. Например, код `(int a, int b, int c) = (2, (3, 9));\` не компилируется.
 
-A special case of the tensor type is the **unit type** `()`. It is usually used to represent the fact that a function doesn't return any value or has no arguments. For example, a function `print_int` would have type `int -> ()` and the function `random` has type `() -> int`. It has a unique inhabitant `()` which occupies 0 stack entries.
+Особый случай растяжения — это **тип единицы** `()`. Обычно он используется для обозначения того факта, что функция не возвращает никакого значения или не имеет аргументов. Например, функция `print_int` будет иметь тип `int -> ()`, а функция `random` имеет тип `() -> int`. Уникальный житель «()», занимающий 0 записей.
 
-Type of form `(A)` is considered by type checker as the same type as `A`.
+Тип формы '(A)' рассматривается по типу чекера как тот же тип, что и 'A'.
 
-### Tuples types
+### Типы трюков
 
-Types of the form `[A, B, ...]` represent TVM tuples with specific lengths and types of components known in compile time. For example, `[int, cell]` is the type of TVM tuple which length is exactly 2, and where the first component is an integer and the second is a cell. `[]` is the type of empty tuples (having the unique inhabitant—the empty tuple). Note that in contrast to the unit type `()`, the value of `[]` occupies one stack entry.
+Типы формы «[A, B, ...]» представляют ТВМ трубки с определенной длиной и типом компонентов, известных во времени компиляции. Например, `[int, cell]` - тип ТВМ трубки, длина которой ровно 2, , где первый компонент является целым числом, а второй - ячейкой. `[]` - это тип пустых труб (единственного жителя – пустой трубочки). Обратите внимание, что в отличие от типа единиц `()`, значение `[]` занимает одну запись в стеке.
 
-## Polymorphism with type variables
+## Полиморфизм с переменными типа
 
-FunC has Miller-Rabin type system with support for polymorphic functions. For example, the following function:
+В FunC имеется система типа Miller-Rabin с поддержкой полиморфических функций. Например, следующая функция:
 
 ```func
 forall X -> (X, X) duplicate(X value) {
@@ -71,16 +71,16 @@ forall X -> (X, X) duplicate(X value) {
 }
 ```
 
-is a polymorphic function which takes a (single stack entry) value and returns two copies of this value. `duplicate(6)` will produce values `6 6`, and `duplicate([])` will produce two copies `[] []` of an empty tuple.
+является функцией полиморфии, которая принимает значение (одна строка стека) и возвращает две копии этого значения. `duplicate(6)` будет выводить значения `6 6`, а `duplicate([])` будет выводиться две копии `[] []` пустой трубочки.
 
-In this example, `X` is a type variable.
+В этом примере «X» — это переменная типа.
 
 See more info on this topic in the [functions](/v3/documentation/smart-contracts/func/docs/functions#polymorphism-with-forall) section.
 
-## User-defined types
+## Определенные пользователем типы
 
-Currently, FunC has no support for defining types except for the type constructions described above.
+В настоящее время FunC не поддерживает определение типов, за исключением конструкций, описанных выше.
 
-## Type width
+## Ширина типа
 
-As you may have noticed, every value of a type occupies some number of stack entries. If it is the same number for all values of the type, this number is called **type width**. Polymorphic functions can currently be defined only for types with fixed and known in advance type width.
+Как вы могли заметить, каждое значение типа занимает некоторое количество записей. Если это одно и то же число для всех значений типа, то это число называется **тип ширины**. В настоящее время полиморфические функции могут определяться только для типов с фиксированными и известными в предварительном типе шириной.
