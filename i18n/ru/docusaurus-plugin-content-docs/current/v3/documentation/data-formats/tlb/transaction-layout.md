@@ -1,14 +1,14 @@
-# Transaction layout
+# Макет транзакции
 
 :::info
-To maximize your comprehension of this page, familiarizing yourself with the [TL-B language](/v3/documentation/data-formats/tlb/cell-boc) is highly recommended.
+Чтобы максимально понять эту страницу, настоятельно рекомендуется ознакомиться с [языком TL-B](/v3/documentation/data-formats/tlb/cell-boc).
 :::
 
-The TON Blockchain operates using three key parts: accounts, messages, and transactions. This page describes the structure and layout of transactions.
+TON Blockchain работает с тремя ключевыми частями: аккаунтами, сообщениями и транзакциями. На этой странице описывается структура и расположение транзакций.
 
-A transaction is an operation that processes inbound and outbound messages related to a specific account, altering its state and potentially generating fees for validators.
+Транзакция - это операция, которая обрабатывает входящие и исходящие сообщения, относящиеся к конкретному счету, изменяя его состояние и потенциально генерируя комиссии для валидаторов.
 
-## Transaction
+## Транзакция
 
 ```tlb
 transaction$0111 account_addr:bits256 lt:uint64
@@ -17,38 +17,38 @@ transaction$0111 account_addr:bits256 lt:uint64
     orig_status:AccountStatus end_status:AccountStatus
     ^[ in_msg:(Maybe ^(Message Any)) out_msgs:(HashmapE 15 ^(Message Any)) ]
     total_fees:CurrencyCollection state_update:^(HASH_UPDATE Account)
-    description:^TransactionDescr = Transaction;
+
 ```
 
-| Field             | Type                                                                                | Required | Description                                                                                                                                                                                                                                |
-| ----------------- | ----------------------------------------------------------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `account_addr`    | bits256                                                                             | Yes      | The hash part of the address on which the transaction was executed. [More about addresses](/v3/documentation/smart-contracts/addresses#address-of-smart-contract)                                                          |
-| `lt`              | uint64                                                                              | Yes      | Represents _Logical time_. [More about logical time](/v3/documentation/smart-contracts/message-management/messages-and-transactions#what-is-a-logical-time)                                                                |
-| `prev_trans_hash` | bits256                                                                             | Yes      | The hash of the previous transaction on this account.                                                                                                                                                                      |
-| `prev_trans_lt`   | uint64                                                                              | Yes      | The `lt` of the previous transaction on this account.                                                                                                                                                                      |
-| `now`             | uint32                                                                              | Yes      | The `now` value that was set when executing this transaction. It's a Unix timestamp in seconds.                                                                                                            |
-| `outmsg_cnt`      | uint15                                                                              | Yes      | The number of outgoing messages created while executing this transaction.                                                                                                                                                  |
-| `orig_status`     | [AccountStatus](#accountstatus)                                                     | Yes      | The status of this account before the transaction was executed.                                                                                                                                                            |
-| `end_status`      | [AccountStatus](#accountstatus)                                                     | Yes      | The status of this account after executing the transaction.                                                                                                                                                                |
-| `in_msg`          | (Message Any)                                                    | No       | The incoming message that triggered the execution of the transaction. Stored in a reference.                                                                                                               |
-| `out_msgs`        | HashmapE 15 ^(Message Any)                                       | Yes      | The dictionary that contains the list of outgoing messages that were created while executing this transaction.                                                                                                             |
-| `total_fees`      | [CurrencyCollection](/v3/documentation/data-formats/tlb/msg-tlb#currencycollection) | Yes      | The total amount of fees that were collected while executing this transaction. It consists of a _Toncoin_ value and possibly some [Extra-currencies](/v3/documentation/dapps/defi/coins#extra-currencies). |
-| `state_update`    | [HASH_UPDATE](#hash_update) Account                            | Yes      | The `HASH_UPDATE` structure. Stored in a reference.                                                                                                                                                        |
-| `description`     | [TransactionDescr](#transactiondescr-types)                                         | Yes      | A detailed description of the transaction execution process. Stored in a reference.                                                                                                                        |
+| Поле                       | Тип                                                                                 | Требуется | Описание                                                                                                                                                                                                                                         |
+| -------------------------- | ----------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `account_addr`             | bits256                                                                             | Да        | Хэш-часть адреса, на котором была произведена транзакция. [Подробнее о адресах](/v3/documentation/smart-contracts/addresses#address-of-smart-contract)                                                                           |
+| `lt`                       | uint64                                                                              | Да        | Представляет собой _логическое время_. [Подробнее о логическом времени](/v3/documentation/smart-contracts/message-management/messages-and-transactions#what-is-a-logical-time)                                                   |
+| `преобразовать_trans_hash` | bits256                                                                             | Да        | Хэш предыдущей транзакции на этом аккаунте.                                                                                                                                                                                      |
+| `преобразовать_trans_lt`   | uint64                                                                              | Да        | `lt` предыдущей транзакции на этом аккаунте.                                                                                                                                                                                     |
+| `now`                      | uint32                                                                              | Да        | Значение «now», установленное при выполнении этой транзакции. Это метка времени Unix в секундах.                                                                                                                 |
+| `outmsg_cnt`               | uint15                                                                              | Да        | Количество исходящих сообщений, созданных при выполнении этой транзакции.                                                                                                                                                        |
+| `orig_status`              | [AccountStatus](#accountstatus)                                                     | Да        | Статус этого счета до совершения операции.                                                                                                                                                                                       |
+| `end_status`               | [AccountStatus](#accountstatus)                                                     | Да        | Статус этого счета после совершения транзакции.                                                                                                                                                                                  |
+| `in_msg`                   | (Мастер любой)                                                   | Нет       | Входящее сообщение, вызвавшее выполнение транзакции. Сохранено в ссылке.                                                                                                                                         |
+| `out_msgs`                 | Хэшмапп 15 ^(Message Any)                                        | Да        | Словарь, содержащий список исходящих сообщений, которые были созданы при выполнении этой транзакции.                                                                                                                             |
+| `всего_феи`                | [CurrencyCollection](/v3/documentation/data-formats/tlb/msg-tlb#currencycollection) | Да        | Общая сумма комиссий, которая была собрана во время выполнения этой транзакции. Он состоит из значения _Toncoin_ и, возможно, некоторых [Extra-currencies](/v3/documentation/dapps/defi/coins#extra-currencies). |
+| `state_update`             | [HASH_UPDATE](#hash_update) Account                            | Да        | Структура `HASH_UPDATE`. Сохранено в ссылке.                                                                                                                                                                     |
+| `description`              | [TransactionDescr](#transactiondescr-типы)                                          | Да        | Подробное описание процесса выполнения транзакции. Сохранено в ссылке.                                                                                                                                           |
 
 ## AccountStatus
 
 ```tlb
-acc_state_uninit$00 = AccountStatus;
-acc_state_frozen$01 = AccountStatus;
-acc_state_active$10 = AccountStatus;
-acc_state_nonexist$11 = AccountStatus;
+acc_state_uninit$00 = Статус счета;
+acc_state_frozen$01 = Статус счета;
+acc_state_active$10 = Статус счета;
+acc_state_nonexist$11 = Статус счета;
 ```
 
-- `[00]`: Account is not initialized
+- `[00]`: Аккаунт не инициализирован
 - `[01]`: Account is frozen
 - `[10]`: Account is active
-- `[11]`: Account does not exist
+- `[11]`: Аккаунт не существует
 
 ## HASH_UPDATE
 
@@ -57,24 +57,24 @@ update_hashes#72 {X:Type} old_hash:bits256 new_hash:bits256
     = HASH_UPDATE X;
 ```
 
-| Field      | Type    | Description                                                                     |
-| ---------- | ------- | ------------------------------------------------------------------------------- |
-| `old_hash` | bits256 | The hash of the account state before executing the transaction. |
-| `new_hash` | bits256 | The hash of the account state after executing the transaction.  |
+| Поле       | Тип     | Описание                                                          |
+| ---------- | ------- | ----------------------------------------------------------------- |
+| `old_hash` | bits256 | Хэш состояния счета перед выполнением транзакции. |
+| `new_hash` | bits256 | Хэш состояния счета после выполнения транзакции.  |
 
-## TransactionDescr Types
+## Типы операций Descr
 
-- [Ordinary](#ordinary)
+- [Ordinary](#обычный)
 - [Storage](#storage)
 - [Tick-tock](#tick-tock)
-- [Split prepare](#split-prepare)
-- [Split install](#split-install)
-- [Merge prepare](#merge-prepare)
-- [Merge install](#merge-install)
+- [Разделить готов](#split-prepare)
+- [Сплит установку](#split-install)
+- [Подготовка к объединению](#merge-prepare)
+- [Объединить установку](#merge-install)
 
-## Ordinary
+## Обычный
 
-This is the most common type of transaction and it fulfills most developers' needs. Transactions of this type have exactly one incoming message and can create several outgoing messages.
+Это самый распространенный вид транзакции и он отвечает большинству потребностей разработчиков. Транзакции этого типа имеют только одно входящее сообщение и могут создавать несколько исходящих сообщений.
 
 ```tlb
 trans_ord$0000 credit_first:Bool
@@ -86,58 +86,58 @@ trans_ord$0000 credit_first:Bool
     = TransactionDescr;
 ```
 
-| Field          | Type           | Required | Description                                                                                                                                                                                                         |
-| -------------- | -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `credit_first` | Bool           | Yes      | A flag that correlates with `bounce` flag of an incoming message. `credit_first = !bounce`                                                                                                          |
-| `storage_ph`   | TrStoragePhase | No       | Contains information about storage phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `credit_ph`    | TrCreditPhase  | No       | Contains information about credit phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                         |
-| `compute_ph`   | TrComputePhase | Yes      | Contains information about compute phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `action`       | TrActionPhase  | No       | Contains information about action phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Stored in a reference. |
-| `aborted`      | Bool           | Yes      | Indicates whether the transaction execution was aborted.                                                                                                                                            |
-| `bounce`       | TrBouncePhase  | No       | Contains information about bounce phase of a transaction execution. [More Info](/v3/documentation/smart-contracts/message-management/non-bounceable-messages)                                       |
-| `destroyed`    | Bool           | Yes      | Indicates whether the account was destroyed during the execution.                                                                                                                                   |
+| Поле           | Тип            | Требуется | Описание                                                                                                                                                                                        |
+| -------------- | -------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `credit_first` | Бул            | Да        | Флаг, который соотносится с флагом «отказов» входящего сообщения. `credit_first = !bounce`                                                                                      |
+| `storage_ph`   | TrStorageФаза  | Нет       | Содержит информацию о этапе хранения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
+| `credit_ph`    | ТрафикФаза     | Нет       | Содержит информацию о стадии исполнения сделки. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                         |
+| `compute_ph`   | TrComputePhase | Да        | Содержит информацию о компьютерной фазе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                          |
+| `действие`     | TrActionФаза   | Нет       | Содержит информацию о этапе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Сохранено в ссылке. |
+| `прервал`      | Бул            | Да        | Указывает, было ли прервано исполнение транзакции.                                                                                                                              |
+| `отказок`      | TrBounceФаза   | Нет       | Содержит информацию о фазе возврата транзакции. [Подробнее](/v3/documentation/smart-contracts/message-management/non-bounceable-messages)                                       |
+| \`уничтожил'   | Бул            | Да        | Указывает, был ли счет уничтожен в ходе выполнения.                                                                                                                             |
 
-## Storage
+## Хранилище
 
-Transactions of this type can be inserted by validators at their discretion. They do not process any inbound messages and do not invoke any code. Their only effect is to collect storage payments from an account, affecting its storage statistics and balance. If the resulting _Toncoin_ balance of the account drops below a certain amount, the account may be frozen, and its code and data replaced by their combined hash.
+Транзакции этого типа могут быть вставлены валидаторами по своему усмотрению. Они не обрабатывают входящие сообщения и не запускают никаких кодов. Их единственным следствием является сбор накопительных платежей со счета, что влияет на его статистику хранения и баланс. Если баланс счета упадет ниже определенной суммы, аккаунт может быть заморожен, а его код и данные заменены комбинированными хэшами.
 
 ```tlb
 trans_storage$0001 storage_ph:TrStoragePhase
-    = TransactionDescr;
+    = Описание операции;
 ```
 
-| Field        | Type           | Description                                                                                                                                                  |
-| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `storage_ph` | TrStoragePhase | Contains information about storage phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases) |
+| Поле         | Тип           | Описание                                                                                                                                 |
+| ------------ | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `storage_ph` | TrStorageФаза | Содержит информацию о этапе хранения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases) |
 
-## Tick-tock
+## Тик-Ток
 
-`Tick` and `Tock` transactions are reserved for special system smart contracts that are required to be automatically invoked in each block. `Tick` transactions are invoked at the beginning of each masterchain block, and `Tock` transactions are invoked at the end.
+Транзакции `Tick` и `Tock` зарезервированы для специальных системных смарт-контрактов, которые необходимо автоматически запускать в каждом блоке. Транзакции `Tick` вызываются в начале каждого блока masterchain и транзакции `Tock` вызываются в конце.
 
 ```tlb
 trans_tick_tock$001 is_tock:Bool storage_ph:TrStoragePhase
     compute_ph:TrComputePhase action:(Maybe ^TrActionPhase)
-    aborted:Bool destroyed:Bool = TransactionDescr;
+    прерван:Bool destroyed:Bool = TransactionDescr;
 ```
 
-| Field        | Type           | Required | Description                                                                                                                                                                                                         |
-| ------------ | -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `is_tock`    | Bool           | Yes      | A flag indicating the type of transaction. Used to separate `Tick` and `Tock` transactions                                                                                                          |
-| `storage_ph` | TrStoragePhase | Yes      | Contains information about storage phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `compute_ph` | TrComputePhase | Yes      | Contains information about compute phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `action`     | TrActionPhase  | No       | Contains information about action phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Stored in a reference. |
-| `aborted`    | Bool           | Yes      | Indicates whether the transaction execution was aborted.                                                                                                                                            |
-| `destroyed`  | Bool           | Yes      | Indicates whether the account was destroyed during the execution.                                                                                                                                   |
+| Поле         | Тип            | Требуется | Описание                                                                                                                                                                                        |
+| ------------ | -------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `is_tock`    | Бул            | Да        | Флаг, указывающий тип транзакции. Используется для разделения транзакций `Tick` и `Tock`                                                                                        |
+| `storage_ph` | TrStorageФаза  | Да        | Содержит информацию о этапе хранения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
+| `compute_ph` | TrComputePhase | Да        | Содержит информацию о компьютерной фазе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                          |
+| `действие`   | TrActionФаза   | Нет       | Содержит информацию о этапе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Сохранено в ссылке. |
+| `прервал`    | Бул            | Да        | Указывает, было ли прервано исполнение транзакции.                                                                                                                              |
+| \`уничтожил' | Бул            | Да        | Указывает, был ли счет уничтожен в ходе выполнения.                                                                                                                             |
 
-## Split Prepare
+## Подготовить разделение
 
 :::note
-This type of transaction is currently not in use. Information about this process is limited.
+Этот тип транзакции в настоящее время не используется. Информация об этом процессе ограничена.
 :::
 
-Split transactions are initiated on large smart contracts that need to be divided under high load. The contract should support this transaction type and manage the splitting process to balance the load.
+Сплит транзакции инициируются по крупным смарт-контрактам, которые должны быть разделены под высокой нагрузкой. Контракт должен поддерживать этот тип транзакции и управлять сплит процессом, чтобы сбалансировать нагрузку.
 
-Split Prepare transactions are initiated when a smart contract needs to be split. The smart contract should generate the state for a new instance of itself to be deployed.
+Сплит готовые транзакции инициируются когда смарт-контракт должен быть разделен. Умный контракт должен генерировать состояние для нового экземпляра самого себя.
 
 ```tlb
 trans_split_prepare$0100 split_info:SplitMergeInfo
@@ -147,86 +147,86 @@ trans_split_prepare$0100 split_info:SplitMergeInfo
     = TransactionDescr;
 ```
 
-| Field        | Type           | Required | Description                                                                                                                                                                                                         |
-| ------------ | -------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `split_info` | SplitMergeInfo | Yes      | Information about split process.                                                                                                                                                                    |
-| `storage_ph` | TrStoragePhase | No       | Contains information about storage phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `compute_ph` | TrComputePhase | Yes      | Contains information about compute phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `action`     | TrActionPhase  | No       | Contains information about action phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Stored in a reference. |
-| `aborted`    | Bool           | Yes      | Indicates whether the transaction execution was aborted.                                                                                                                                            |
-| `destroyed`  | Bool           | Yes      | Indicates whether the account was destroyed during the execution.                                                                                                                                   |
+| Поле         | Тип                   | Требуется | Описание                                                                                                                                                                                        |
+| ------------ | --------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `split_info` | Объединить информацию | Да        | Информация о раздельном процессе.                                                                                                                                               |
+| `storage_ph` | TrStorageФаза         | Нет       | Содержит информацию о этапе хранения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
+| `compute_ph` | TrComputePhase        | Да        | Содержит информацию о компьютерной фазе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                          |
+| `действие`   | TrActionФаза          | Нет       | Содержит информацию о этапе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Сохранено в ссылке. |
+| `прервал`    | Бул                   | Да        | Указывает, было ли прервано исполнение транзакции.                                                                                                                              |
+| \`уничтожил' | Бул                   | Да        | Указывает, был ли счет уничтожен в ходе выполнения.                                                                                                                             |
 
-## Split install
+## Сплит установки
 
 :::note
-This type of transaction is currently not in use. Information about this process is limited.
+Этот тип транзакции в настоящее время не используется. Информация об этом процессе ограничена.
 :::
 
-Split Install transactions are used for creating new instances of large smart contracts. The state for the new smart contract is generated by a [Split Prepare](#split-prepare) transaction.
+Операции сплит инсталляция используются для создания новых экземпляров больших смарт-контрактов. Состояние для нового смарт-контракта создается при помощи транзакции [Split Prepare](#split-prepare).
 
 ```tlb
 trans_split_install$0101 split_info:SplitMergeInfo
-    prepare_transaction:^Transaction
-    installed:Bool = TransactionDescr;
+    prepare_transaction:^Транзакция
+    установлена:Bool = Descr;
 ```
 
-| Field                 | Type                        | Description                                                                                                                                  |
-| --------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| `split_info`          | SplitMergeInfo              | Information about split process.                                                                                             |
-| `prepare_transaction` | [Transaction](#transaction) | Information about the [transaction prepared](#split-prepare) for the split operation. Stored in a reference. |
-| `installed`           | Bool                        | Indicates whether the transaction was installed.                                                                             |
+| Поле                  | Тип                        | Описание                                                                                                                              |
+| --------------------- | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `split_info`          | Объединить информацию      | Информация о раздельном процессе.                                                                                     |
+| `prepare_transaction` | [Transaction](#транзакция) | Информация о [подготовленной транзакции](#split-prepare) для операции разделения. Сохранено в ссылке. |
+| `installed`           | Бул                        | Указывает, была ли установлена транзакция.                                                                            |
 
-## Merge prepare
+## Подготовка к слиянию
 
 :::note
-This type of transaction is currently not in use. Information about this process is limited.
+Этот тип транзакции в настоящее время не используется. Информация об этом процессе ограничена.
 :::
 
-Merge transactions are initiated on large smart contracts that need to recombine after being split due to high load. The contract should support this transaction type and manage the merging process to balance the load.
+Слияние транзакций инициируется по крупным смарт-контрактам, которые должны быть рекомбинированы после разделения из-за высокой нагрузки. Контракт должен поддерживать этот тип транзакции и управлять процессом слияния для баланса нагрузки.
 
-Merge Prepare transactions are initiated when two smart contracts need to be merged. The smart contract should generate a message for another instance of itself to facilitate the merge.
+Объединить транзакции подготовки начинается, когда необходимо объединить два смарт-контракта. Умный контракт должен генерировать послание для другого экземпляра самого, чтобы облегчить слияние.
 
 ```tlb
 trans_merge_prepare$0110 split_info:SplitMergeInfo
-    storage_ph:TrStoragePhase aborted:Bool
-    = TransactionDescr;
+    storage_ph:TrStoragePhase прерван:Bool
+    = Описание транзакции;
 ```
 
-| Field        | Type           | Description                                                                                                                                                  |
-| ------------ | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `split_info` | SplitMergeInfo | Information about merge process.                                                                                                             |
-| `storage_ph` | TrStoragePhase | Contains information about storage phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases) |
-| `aborted`    | Bool           | Indicates whether the transaction execution was aborted.                                                                                     |
+| Поле         | Тип                   | Описание                                                                                                                                 |
+| ------------ | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `split_info` | Объединить информацию | Информация о процессе слияния.                                                                                           |
+| `storage_ph` | TrStorageФаза         | Содержит информацию о этапе хранения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases) |
+| `прервал`    | Бул                   | Указывает, было ли прервано исполнение транзакции.                                                                       |
 
-## Merge install
+## Объединить установку
 
 :::note
-This type of transaction is currently not in use. Information about this process is limited.
+Этот тип транзакции в настоящее время не используется. Информация об этом процессе ограничена.
 :::
 
-Merge Install transactions are used for merging instances of large smart contracts. The special message facilitating the merge is generated by a [Merge Prepare](#merge-prepare) transaction.
+Слияние транзакций используется для слияния экземпляров больших смарт-контрактов. Специальное сообщение, облегчающее слияние, генерируется транзакцией [Подготовка к слиянию](#merge-prepare).
 
 ```tlb
 trans_merge_install$0111 split_info:SplitMergeInfo
-    prepare_transaction:^Transaction
+    prepare_transaction:^Транзакция
     storage_ph:(Maybe TrStoragePhase)
     credit_ph:(Maybe TrCreditPhase)
     compute_ph:TrComputePhase action:(Maybe ^TrActionPhase)
-    aborted:Bool destroyed:Bool
+    прервана:Bool destroyed:Bool
     = TransactionDescr;
 ```
 
-| Field                 | Type                        | Required | Description                                                                                                                                                                                                         |
-| --------------------- | --------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `split_info`          | SplitMergeInfo              | Yes      | Information about merge process.                                                                                                                                                                    |
-| `prepare_transaction` | [Transaction](#transaction) | Yes      | Information about the [transaction prepared](#merge-prepare) for the merge operation. Stored in a reference.                                                                        |
-| `storage_ph`          | TrStoragePhase              | No       | Contains information about storage phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `credit_ph`           | TrCreditPhase               | No       | Contains information about credit phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                         |
-| `compute_ph`          | TrComputePhase              | Yes      | Contains information about compute phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
-| `action`              | TrActionPhase               | No       | Contains information about action phase of a transaction execution. [More Info](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Stored in a reference. |
-| `aborted`             | Bool                        | Yes      | Indicates whether the transaction execution was aborted.                                                                                                                                            |
-| `destroyed`           | Bool                        | Yes      | Indicates whether the account was destroyed during the execution.                                                                                                                                   |
+| Поле                  | Тип                        | Требуется | Описание                                                                                                                                                                                        |
+| --------------------- | -------------------------- | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `split_info`          | Объединить информацию      | Да        | Информация о процессе слияния.                                                                                                                                                  |
+| `prepare_transaction` | [Transaction](#транзакция) | Да        | Информация о [подготовленной транзакции](#merge-prepare) для операции слияния. Сохранено в ссылке.                                                              |
+| `storage_ph`          | TrStorageФаза              | Нет       | Содержит информацию о этапе хранения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                        |
+| `credit_ph`           | ТрафикФаза                 | Нет       | Содержит информацию о стадии исполнения сделки. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                                         |
+| `compute_ph`          | TrComputePhase             | Да        | Содержит информацию о компьютерной фазе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases)                                          |
+| `действие`            | TrActionФаза               | Нет       | Содержит информацию о этапе выполнения транзакции. [Подробнее](/v3/documentation/tvm/tvm-overview#transactions-and-phases). Сохранено в ссылке. |
+| `прервал`             | Бул                        | Да        | Указывает, было ли прервано исполнение транзакции.                                                                                                                              |
+| \`уничтожил'          | Бул                        | Да        | Указывает, был ли счет уничтожен в ходе выполнения.                                                                                                                             |
 
-## See also
+## Смотреть также
 
-- Original description of [Transaction layout](/tblkch.pdf#page=75\&zoom=100,148,290) from whitepaper
+- Оригинальное описание [Планета переводов](/tblkch.pdf#page=75\&zoom=100,148,290) из бумаги
