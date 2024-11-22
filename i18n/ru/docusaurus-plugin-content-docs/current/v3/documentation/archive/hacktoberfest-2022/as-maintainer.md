@@ -1,39 +1,39 @@
-# Participate as a Maintainer
+# Участвовать в качестве Сопровождающего
 
-The Hacktoberfest event is the best time of year to receive support from the community!
+Событие Хактоберфест - лучшее время года для получения поддержки от сообщества!
 
-If your repository is relevant to the TON Ecosystem, many contributors will be interested in it. Let's help them dive right into your project!
+Если ваш репозиторий имеет отношение к Экосистеме TON, многие участники будут заинтересованы в этом. Давайте поможем им погрузиться прямо в ваш проект!
 
-## Prepare to party
+## Приготовьтесь к вечеринке
 
-To handle contributors in the right way, you need to have a repository in good standing.
+Для правильной работы с участниками необходимо иметь репозиторий.
 
-Follow these best practices to prepare your project for contributions:
+Следуйте этим наилучшим практикам, чтобы подготовить ваш проект к вкладу:
 
-1. Add the “hacktoberfest” topic to your repository to **OPT-IN TO HACKTOBERFEST** and indicate you are looking for contributions.
-2. Apply the “hacktoberfest” label to issues you want contributors to help you with in your GitHub or GitLab project.
-3. Please read and use [the essential tips for new open source maintainers](https://blog.ton.org/essential-tips-for-new-open-source-maintainers) by TON Society.
-4. Prepare to accept legitimate pull/merge requests by merging them, leaving an overall approving review, or adding the "hacktoberfest-accepted" label.
-5. Reject any spam requests you receive by labeling them as “spam,” and close or label any other invalid contributions as "invalid."
+1. Добавьте тему «hacktoberfest» в ваш репозиторий **OPT-IN TO HACKTOBERFEST** и укажите, что вы ищете.
+2. Применить метку «hacktoberfest» к вопросам, с которыми вы хотите помочь вам в вашем проекте GitHub или GitLab.
+3. Пожалуйста, прочитайте и используйте [необходимые советы для новых сопровождающих открытого исходного кода](https://blog.ton.org/essential-tips-for-new-open-source-maintainers) от TON Society.
+4. Готовьтесь принять законные запросы на слияние и слияние, оставив при этом полный обзор или добавьте метку "Хактоберфест".
+5. Отклонить все запросы на спам, которые вы получите, пометив их как «спам», а также закрыть или отметить любые недействительные вклады как «недействительные».
 
-Here is an example of a full repository: [ton-community/ton-compiler](https://github.com/ton-community/ton-compiler)
+Вот пример полного репозитория: [ton-community/ton-compiler](https://github.com/ton-community/ton-compiler)
 
-After that, feel free to add your repository to the list.
+После этого не стесняйтесь добавить ваш репозиторий в список.
 
-## Rewards for Maintainers
+## Награда за сопровождающих
 
-As a repository maintainer in the TON Ecosystem, you will be able to receive two types of rewards:
+Являясь автором репозитория в TON Ecosystem, вы сможете получить две награды:
 
-1. [Hacktoberfest Reward Kit](https://hacktoberfest.com/participation/#maintainers) (_see REWARD FOR MAINTAINERS_)
-2. [Limited Hack-TON-berfest NFT](/v3/documentation/archive/hacktoberfest-2022#what-are-the-rewards) (_please, register the wallet address in the [@toncontests_bot](https://t.me/toncontests_bot)_)
+1. [Набор наград Хактоберфест](https://hacktoberfest.com/participation/#maintainers) (_see REWARD FOR MAINTAINERS_)
+2. [Ограниченный NFT-Hack-TON-berfest ](/v3/documentation/archive/hacktoberfest-2022#what-are-the-rewards) (_пожалуйста, зарегистрируйте адрес кошелька в [@toncontests_bot](https://t.me/toncontests_bot)_)
 
-## How to join and be listed?
+## Как вступить и быть в списке?
 
-To participate in Hack-TON-berfest follow this link:
+Чтобы принять участие в Hack-TON-berfest перейдите по ссылке:
 
 <span className="DocsMarkdown--button-group-content">
   <a href="https://airtable.com/shrgXIgZdBKKX64NL"
      className="Button Button-is-docs-primary">
-    Add a repository to the list
+    Добавить репозиторий в список
   </a>
 </span>
