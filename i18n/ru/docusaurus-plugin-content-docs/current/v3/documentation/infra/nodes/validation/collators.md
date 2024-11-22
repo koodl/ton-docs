@@ -1,41 +1,41 @@
-# Validator/Collator separation
+# Разделение валидатора/оллятора
 
-:::caution in development
-This feature is testnet only right now! Participate on your own risk.
+:::caution в разработке
+Эта функция testnet только сейчас! Участвуйте на свой страх и риск.
 :::
 
-The key feature of TON blockchain is the ability to distribute transaction processing over network nodes, and switching from "everybody checks all transactions" to "every transaction is checked by secure validator subset". This ability to infinitely horizontally scale throughput over shards when one workchain splits to required number of _shardchains_ distinguishes TON from other L1 networks.
+Ключевой особенностью блокчейна TON является способность распространять обработку транзакций по сетевым узлам, и переход с "все проверяют все транзакции" на "каждая транзакция проверяется с помощью надежного подмножества валидатора". Эта возможность бесконечно горизонтально масштабируется сквозь шарды, когда одна рабочая цепочка делится на требуемое количество _шардчейнов_ отличает TON от других сетей L1.
 
-However it is necessary to regularly rotate validator subsets which process one or another shard to prevent collusion. At the same time to process transactions validators obviously should know state of the shard prior transaction. The simplest approach is to require all validators to know state of all shards.
+Однако необходимо регулярно вращать поднаборы валидатора, которые обрабатывают один или другой шард для предотвращения сговора. В то же время для обработки транзакций валидаторам явно необходимо знать состояние предыдущего шарда транзакции. Самый простой подход заключается в том, чтобы требовать от всех валидаторов знать состояние всех шардов.
 
-This approach works well while number of TON users is within range of a few millions and TPS (transactions per second) is under hundred. However, in the future, when TON will process many thousands transactions per second and server hundred millions or billions of people, no single server would be able to keep actual state of whole network. Fortunately, TON was designed with such loads in mind and supports sharding both throughput and state update.
+Такой подход хорошо работает, в то время как число пользователей TON находится в пределах нескольких миллионов и TPS (транзакций в секунду) составляет менее 100. Однако, в будущем, когда TON будет обрабатывать много тысяч транзакций в секунду и сервер сотни миллионов или миллиарды людей, ни один сервер не сможет сохранить фактическое состояние всей сети. К счастью, TON был разработан с учетом таких нагрузок и поддерживает как загрузку, так и обновление состояния.
 
-This is achieved through separation of two roles:
+Это достигается за счет разделения двух ролей:
 
-- _Collator_ - actor which watch for only part of the network, know actual state and _collate_ (generate) next blocks
-- _Validator_ - actor which gets new blocks from _Collator_, checks it's validity and signs it effectively guaranteeing correctness at the risk of losing the stake.
+- _Коллектор_ - персонаж, который отслеживает только часть сети, знает фактическое состояние и _коллат_ (генерирует) следующие блоки
+- _Validator_ - персонаж, который получает новые блоки от _Collator_, проверяет их правильность и подписывает это эффективно гарантируя правильность на риск потери ставки.
 
-At the same time architecture of TON allows _Validator_ effectively validate new blocks without actually storing state of blockchain, by checking specially crafted proofs.
+В то же время архитектура TON позволяет _Validator_ эффективно проверять новые блоки без сохранения состояния блокчейна, проверяя специально созданные доказательства.
 
-That way, when throughput of TON will be to heavy to be processed by single machine, network will consist of subnetwork of collators each of which will process only part of the chains it is capable to process and subnetwork of validators which will form many secure sets for committing new transactions.
+Таким образом, при прохождении TON будет тяжело обрабатываться одной машиной, сеть будет состоять из подсети, каждая из которых будет обрабатывать только часть цепочек, которые она может обрабатывать и подсеть валидаторов, которые сформируют множество безопасных наборов для совершения новых транзакций.
 
-Currently, TON testnet is used for testing this _Validator_/_Collator_ separation, where some validators works as usual, and some validators do not collate blocks for themselves and receive them from collators.
+В настоящее время тестовая сеть TON используется для тестирования разделения _Валидатор_/_Коллектор_, где работают некоторые валидаторы как обычно, и некоторые валидаторы не объединяют блоки для себя и получают их от коллаторов.
 
-# Join with "lite validator"
+# Присоединиться к "lite validator"
 
-New node software is available in [accelerator](https://github.com/ton-blockchain/ton/tree/accelerator) branch.
+Новое программное обеспечение узла доступно в ветке [accelerator](https://github.com/ton-blockchain/ton/tree/accelerator).
 
-## Collator
+## Коллатор
 
-To create new collator you need to setup TON node; you can use flag `-M` to force node not to keep eye on shardchains it doesn't process.
+Для создания нового коллажа необходимо настроить TON узел; вы можете использовать флаг `-M`, чтобы заставить узел не держать след за шардчейнами, он не обрабатывается.
 
-In `validator-engine-console` create new key for collator, set adnl category `0` to this key and add collation entity through command:
+В `validator-engine-console` создайте новый ключ для коллажа, установите этот ключ в категорию adnl `0` и добавьте элемент коллажа через команду:
 
 ```bash
 addcollator <adnl-id> <chain-id> <shard-id>
 ```
 
-For example:
+Например:
 
 ```bash
 newkey
@@ -43,83 +43,83 @@ addadnl <adnl-id> 0
 addcollator <adnl-id> 0 -9223372036854775808
 ```
 
-Collator which is configured to shard wc:shard_pfx can collate blocks in shard wc:shard_pfx, its ancestors and its descendants; it also will monitor all shese shards because this is required for collation.
+Коллектор, который настроен на шард wc:shard_pfx может обобщать блоки в осколках wc:shard_pfx, его предки и его потомки; он также будет контролировать все шире осколков, потому что это требуется для сопоставления.
 
-Collator can be stopped with command:
+Колятор может быть остановлен командой:
 
 ```bash
 delcollator <adnl-id> 0 -9223372036854775808
 ```
 
 :::info
-Currently there is one collator in the Network and config **-41** is used to announce it's adnl address.
+В настоящее время в сети есть один столбик, а конфигурация **-41** используется для объявления адреса adnl.
 :::
 
 ## Validator
 
-To run validator you need to setup TON node, use flag `--lite-validator` to force validator to request new blocks from collators instead of generating them, and set up staking process. Validator in lite mode takes collator nodes from `-41` config.
+Для запуска валидатора необходимо настроить TON узел, используйте флаг `--lite-validator` чтобы заставить валидатор запрашивать новые блоки от коллажей вместо того, чтобы генерировать их, и настроить процесс разбиения. Валидатор в режиме Liite принимает узлы коллактора из конфигурации `-41`.
 
-The easiest way is the following:
+Самый простой способ заключается в следующем:
 
-- setup MyTonCtrl for testnet
+- установка MyTonCtrl для testnet
 - Stop validator `sudo systemctl stop validator`
-- Update service file `sudo nano /etc/systemd/system/validator.service`: add `--lite-validator` flag
-- Reload systemctl `sudo systemctl daemon-reload`
-- Start validator `sudo systemctl start validator`
+- Обновить файл сервиса `sudo nano /etc/systemd/system/validator.service`: добавить флаг `--lite-validator`
+- Перезагрузить systemctl `sudo systemctl daemon-reload`
+- Запустить валидатор `sudo systemctl start validator`
 
 ## Liteserver
 
-Just like Collators, Liteservers can be configured to only monitor some part of the blockchain. It can be done by running a node with option `-M` and adding shards in `validator-engine-console`:
+Подобно Collators, Liteservers можно настроить только для отслеживания некоторых частей blockchain. Это можно сделать, запустив узел с параметром `-M` и добавив шарды в `validator-engine-console`:
 
 ```bash
 addshard 0 -9223372036854775808
 ```
 
-Masterchain is always monitored by default. Shards can be removed using `delshard 0 -9223372036854775808`.
+Шедевральная цепь всегда контролируется по умолчанию. Осколки можно удалить с помощью `delshard 0 -9223372036854775808`.
 
-### Lite Client
+### Lite клиент
 
-Global config should contain at least one of two secions: `liteservers` and `liteservers_v2`. First section contains "full" Liteservers which have data about all shard states. Second section contains "partial" liteservers which contain data about some part of the blockchain.
+Глобальная конфигурация должна содержать хотя бы одну из двух секций: `liteservers` и `liteservers_v2`. Первый раздел содержит "полные" Liteserver, у которых есть данные обо всех государствах шарда. Второй раздел содержит "частичные" Liteserver, содержащие данные о части блокчейна.
 
-"Partial" Liteservers are described as following:
+"Частичные" Liteservers описаны следующим образом:
 
 ```json
 "liteservers_v2": [
   {
     "ip": ...,
-    "port": ...,
+    "port": ...
     "id": {
-      "@type": "pub.ed25519",
-      "key": "..."
+      "@type": "pub. d25519",
+      "ключ": "...
     },  
-    "shards": [
+    "шарды": [
       {   
         "workchain": 0, 
-        "shard": -9223372036854775808
+        "Шард": -9223372036854775808
       }   
     ]   
   }
-  ...
+  . .
 ]
 ```
 
-Lite Client and Tonlib support this config and can choose a suitable Liteserver for each query. Note that each Liteserver monitors masterchain by default, and each server in `liteservers_v2` is implicitly configured to accept queries about masterchain. Shard `wc:shard_pfx` in the config means that the server accepts queries about shard `wc:shard_pfx`, its ancestors and its descendants (just like configuration of collators).
+Lite Client и Tonlib поддерживают эту конфигурацию и могут выбрать подходящий Liteserver для каждого запроса. Обратите внимание, что каждый сервер Liteserver контролирует masterchain по умолчанию, и каждый сервер в `liteservers_v2` явно настроен на принятие запросов о masterchain. Шар `wc:shard_pfx` в конфигурации означает, что сервер принимает запросы о шарде `wc:shard_pfx`, его предки и его потомки (так же, как и конфигурация коллаторов).
 
-## Full collated data
+## Полные сопоставленные данные
 
-By default validators proposing new block in validator set do not attach data that proves "prior to block" state. This data should be obtained by other validators from locally stored state. That way old (from master branch) and new nodes may reach consensus, but new validators should keep eye on all network state.
+По умолчанию валидаторы, предлагающие новый блок в наборе валидаторов, не прикрепляют данные, которые подтверждают состояние "до блока". Эти данные должны быть получены другими валидаторами из локального состояния. Таким образом, старые (из главной ветви) и новые узлы могут достичь консенсуса, но новые валидаторы должны следить за всем состоянием сети.
 
-Upgrade to new protocol when validators will share blocks with collated data attached can be done by
+Обновление до нового протокола, когда валидаторы будут делиться блоками с сопоставленными данными, может быть сделано с помощью
 
-- Upgrading all validators to new node version
-- Setting [full_collated_data](https://github.com/ton-blockchain/ton/tree/accelerator/crypto/block/block.tlb#L858) to true
+- Обновление всех валидаторов до новой версии узла
+- Установка [full_collated_data](https://github.com/ton-blockchain/ton/tree/accelerator/crypto/block/block.tlb#L858) на true
 
-# Next steps
+# Следующие шаги
 
-The practical ability to separate _Validator_ and _Collator_ roles is the main milestone on the road to limitless throughput, but to create truly decentralized and censorship-resistant network it necessary to
+Практическая способность разделять роли _валидатора_ и _коллатора_ является главной вехой на пути к бесконечной пропускной способности, но для создания действительно децентрализованной и устойчивой к цензуре сети необходимо
 
-- ensure independence and redundancy of _Collators_
-- ensure stable and secure way to interaction of Validators and Collators
-- ensure suitable financial model for Collators which incentivize durable collation of new blocks
+- обеспечить независимость и избыточность _коллакторов_
+- обеспечить стабильный и безопасный способ взаимодействия валидаторов и Collators
+- обеспечить подходящую финансовую модель для коллаторов, которые стимулируют прочное сопоставление новых блоков
 
-Currently, these tasks are out of the scope.
+В настоящее время эти задачи не охвачены.
