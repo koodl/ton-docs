@@ -1,132 +1,132 @@
 import Player from '@site/src/components/player'
 
-# Приложения кошелька
+# Wallet Apps
 
-## Общий обзор
+## Overview
 
-Эта статья описывает кошельки с точки зрения развития. Конечная цель - создать приложения кошелька, которые поддерживают TON массового усыновления.
+This article describes wallets from a developmental perspective. The end goal is to create wallet applications that support TON mass adoption.
 
 <br></br>
 <Player url="https://www.youtube.com/watch?v=OfW96enpD4Q" />
 <br></br>
 
-Если вы хотите найти кошелек для установки, откройте [ton.org/wallets](https://ton.org/wallets).
+If you want to find a wallet to install, open [ton.org/wallets](https://ton.org/wallets).
 
-## Программное обеспечение для защиты (Hot) кошельков
+## Non-Custodial Software (Hot) Wallets
 
 :::info
-Программный кошелек, чаще известный как горячий кошелек, работает как программное обеспечение на хост-устройстве, и они сохраняют ваши приватные ключи в своем интерфейсе. В основном, эти кошельки не являются хранительными, что означает, что они дают вам контроль над вашими ключами.
+A Software wallet, more often known as a hot wallet, operates as software on a host device and they store your private keys within its interface. Mostly, these wallets are non-custodial, meaning they give you custody of your keys.
 :::
 
-Вот некоторые кошельки, не являющиеся хранителями для TON Blockchain:
+Here are some non-custodial wallets for TON Blockchain:
 
-- [TON Wallet](https://chrome.google.com/webstore/detail/ton-wallet/nphplpgoakhhjchkkhmiggakijnkhfnd) — мультиплатформенные (iOS, Android, macOS, Linux, Windows) классические кошельки TON Ecosystem, разработанные фондом TON.
+- [TON Wallet](https://chrome.google.com/webstore/detail/ton-wallet/nphplpgoakhhjchkkhmiggakijnkhfnd) — Multiplatform (iOS, Android, macOS, Linux, Windows) classic wallets of TON Ecosystem developed by TON Foundation.
 - [Tonkeeper](https://tonkeeper.com/) — an open-source multi-platform (iOS, Android, Firefox, Chrome) wallet with a great user base.
-- [Tonhub](https://tonhub.com/) — открытый исходный код (iOS, Android) альтернативный кошелек для мобильного телефона с расширенными функциями (TON китов разбивки китов).
-- [OpenMask](https://www.openmask.app/) — кошелек расширения Chrome с биометрической аутентификацией.
+- [Tonhub](https://tonhub.com/) — an open-source (iOS, Android) alternative mobile phone wallet with advanced features (TON Whales Staking UI).
+- [OpenMask](https://www.openmask.app/) — an open-source Chrome extension wallet with biometric authentication.
 - [MyTonWallet](https://mytonwallet.io/) — an open-source browser web wallet and a browser extension wallet for TON.
 
-### Основные возможности
+### Basics features
 
-| Кошелек     | Переводы Jetton & NFT        | Ton Connect 2.0                                                       | Авторизация                                                          | Контракт кошелька                                                                                               |
-| ----------- | ---------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| TON Кошелек | Не реализовано               | -                                                                     | -                                                                    | [кошелёк v3](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/wallet3-code.fc)                |
-| Тонкипер    | Поддерживается               | [Supported](https://github.com/ton-society/ton-footsteps/issues/161)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [кошелек v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c40d8d87505e0f)     |
-| Tonhub      | Поддерживаемый\*             | [Supported](https://github.com/ton-society/ton-footsteps/issues/108)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [кошелек v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c40d8d87505e0f)     |
-| OpenMask    | Поддерживается               | [Supported](https://github.com/ton-society/ton-footsteps/issues/107)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [кошелек v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c40d8d87505e0f)     |
-| MyTonWallet | Поддерживается               | [Supported](https://github.com/ton-society/ton-footsteps/issues/149)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [кошелек v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c40d8d87505e0f)     |
+| Wallet      | Jetton & NFT transfers        | Ton Connect 2.0                                                       | Authorization                                                        | Wallet contract                                                                                               |
+| ----------- | ----------------------------- | --------------------------------------------------------------------- | -------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| TON Wallet  | Not implemented               | -                                                                     | -                                                                    | [wallet v3](https://github.com/ton-blockchain/ton/blob/master/crypto/smartcont/wallet3-code.fc)               |
+| Tonkeeper   | Supported                     | [Supported](https://github.com/ton-society/ton-footsteps/issues/161)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [wallet v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c4040d8d87505e0f)  |
+| Tonhub      | Supported\*                   | [Supported](https://github.com/ton-society/ton-footsteps/issues/108)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [wallet v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c4040d8d87505e0f)  |
+| OpenMask    | Supported                     | [Supported](https://github.com/ton-society/ton-footsteps/issues/107)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [wallet v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c4040d8d87505e0f)  |
+| MyTonWallet | Supported                     | [Supported](https://github.com/ton-society/ton-footsteps/issues/149)  | [TON Connect 2.0](/v3/guidelines/ton-connect/overview)               | [wallet v4](https://github.com/ton-blockchain/wallet-contract/tree/3fd1d7ae39f1c46ec1f2be54c4040d8d87505e0f)  |
 
-> \*Расширение Tonhub открывает встроенный браузер, который позволяет размещать рынки NFT. Jetton полностью поддерживается.
+> \*Tonhub extension opens a built-in browser, which allows NFT market placements. Jetton is fully supported.
 
-### TON Кошелек
+### TON Wallet
 
-TON Wallet стал первым шагом в технологии массового внедрения блокчейн, доступной обычным пользователям. Он демонстрирует, как должен работать кошелек на TON Blockchain.
+TON Wallet was the first step in mass-adoption blockchain technology available to ordinary users. It demonstrates how a wallet should work on TON Blockchain.
 
-|                                                                                                                                                                                                                                           |
-| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![TON кошелек](/img/docs/wallet-apps/TonWallet. ng?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
+|                                                                                                                                                                                                                                   |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![TON wallet](/img/docs/wallet-apps/TonWallet.png?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 
-#### Проценты и недостатки
+#### Pros and Cons
 
-- ✅ Оригинальный кошелек, разработанный Фондом TON. TON Wallet работает в соответствии с видением основных разработчиков TON Blockchin.
-- ✅ Поддержка многоплатформенной архитектуры. Он работает в Linux, Windows, macOS, iOS, Android, а также в плагине Chrome.
-- ✅ [Программа Ошибки](https://github.com/ton-blockchain/bug-bounty)
-- ❌ Редко обновляется. Этот кошелек не имеет всех актуальных функций (TON DNS адреса, а контракт wallet-v4 не поддерживается).
-- ❌ текущий интерфейс устарел и хуже альтернативных кошельков.
+- ✅ The original wallet developed by TON Foundation. TON Wallet works according to the vision of TON Blockchain's core developers.
+- ✅ Multi-platform architecture support. It works in Linux, Windows, macOS, iOS, Android and as well as a Chrome plugin.
+- ✅ [Bug bounty program](https://github.com/ton-blockchain/bug-bounty)
+- ❌ Rarely updates. This wallet does not have not all up-to-date features (TON DNS addresses, and the wallet-v4 contract isn't supported).
+- ❌ The current UI is outdated and is worse than alternative wallets.
 
-#### Окружение тестового кошелька
+#### Ton Wallet test environment
 
-Чтобы включить классический кошелек в тестовую среду, откройте в браузере с параметром testnet:
+To switch TON classic wallet to test environment, you should to open in browser with testnet parameter:
 
-#### Ссылки
+#### Links
 
 - [GitHub\*](https://github.com/ton-blockchain/wallet-ios)
 
-  > \*TON Wallet клиенты для каждой поддерживаемой операционной системы, размещенной в близлежащих репозиториях.
+  > \*TON Wallet clients for every supported OS placed in nearby repositories.
 
-### Тонкипер
+### Tonkeeper
 
-[Tonkeeper](https://tonkeeper.com/) - это самый скачанный и популярный кошелек, разработанный командой Tonkeeper, и имеет активную поддержку как пользователей, так и разработчиков.
+[Tonkeeper](https://tonkeeper.com/) - is the most downloaded and popular wallet, developed by the Tonkeeper team, and has active support from both users and developers.
 
 |                                                                                                                                                                                                                                  |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![Tonkeeper](/img/docs/wallet-apps/Tonkeeper.png?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 
-#### Проценты и недостатки
+#### Pros and Cons
 
-- ✅ Это приложение наиболее популярно среди пользователей.
-- ✅ поддерживает все актуальные функции, включая передачу NFT между кошельками пользователя.
-- ✅ Поддерживает все основные платформы, такие как iOS и Android, а также работает в популярных браузерах, таких как Firefox или Chrome.
-- ❌ Требуются продвинутые навыки, чтобы внести свой вклад в исходный код. Большая часть работы уже выполнена, и новичкам будет трудно добавить что-то важное или полезное.
+- ✅ This app is most popular with users.
+- ✅ Supports all up-to-date features including native NFT transfer between user wallets.
+- ✅ Supports all major platforms, such as iOS and Android, but also works in popular browsers, such as Firefox or Chrome.
+- ❌ Requires advanced skills to contribute to its source code. A lot of the job is already done, and it will be hard for newcomers to add something significant or useful.
 
-#### Тестовая среда Tonkeeper
+#### Tonkeeper test environment
 
-##### Расширение для браузера Tonkeeper
+##### Tonkeeper Browser Extension
 
-1. Перейдите в раздел настроек и несколько раз нажмите значок Tonkeeper до появления нового экрана.
-2. Переключиться на testnet.
+1. Go to the settings section and tap the Tonkeeper icon multiple times until a new screen pops up.
+2. Switch to testnet.
 
-Теперь ваш кошелек находится в режиме testnet!
+That's it, your wallet is now in testnet mode!
 
-##### Мобильное приложение Tonkeeper
+##### Tonkeeper Mobile App
 
-1. Перейдите в раздел Настройки.
-2. Прокрутите вниз и быстро нажмите значок Tonkeeper несколько раз, пока не появится новая секция настроек.
-3. Включить режим Dev в верхней части секции настроек.
-4. Вернитесь к главному экрану Tonkeeper.
-5. Нажмите на название кошелька в верхней части экрана.
-6. Нажмите на новый кошелек.
-7. Выберите опцию Testnet Account (учётная запись).
-8. Введите ту же фразу для восстановления вашего кошелька mainnet.
+1. Go to the Settings section.
+2. Scroll down and tap the Tonkeeper icon quickly multiple times until a new settings section pops up.
+3. Enable Dev mode at the top of the new settings section.
+4. Go back to the Tonkeeper main screen.
+5. Click on your wallet name at the top of the screen.
+6. Click New Wallet.
+7. Select the Testnet Account option.
+8. Enter the same Recovery Phrase as you used for your mainnet wallet.
 
-Теперь ваш кошелек testnet создан и подключен к вашему кошельку mainnet.
+Now your testnet wallet is created and connected to your mainnet wallet.
 
-#### Ссылки
+#### Links
 
 - [GitHub](https://github.com/tonkeeper/wallet)
 - [Tonkeeper Wallet API](https://github.com/tonkeeper/wallet-api)
 
 ### Tonhub
 
-[Tonhub](https://tonhub.com/) - это еще один полностью настроенный кошелёк TON, который поддерживает основные функции. Тон-киты быстро увеличивают возможности кошелька.
+[Tonhub](https://tonhub.com/) - is another fully-fledged TON wallet, that has basic up-to-date features support. Ton Whales are rapidly increasing the capabilities of the wallet.
 
 |                                                                                                                                                                                                                            |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![Tonhub](/img/docs/wallet-apps/Tonhub.png?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 
-#### Проценты и недостатки
+#### Pros and Cons
 
-- ✅ Имеет собственный [Тон Номинатор](https://github.com/tonwhales/ton-nominators) контракт, поддерживаемый Tonhub UI.
-- ✅ кошелек с открытым исходным кодом с начала существующего приложения.
-- ✅ [Программа Ошибки](https://tonwhales.com/bounty).
-- ❌ Нет поддержки для настольных платформ.
-- ❌ Требуются продвинутые навыки, чтобы внести свой вклад в исходный код.
+- ✅ Has own custom [Ton Nominator](https://github.com/tonwhales/ton-nominators) contract supported with Tonhub UI.
+- ✅ Open-source wallet from the beginning of the existing application.
+- ✅ [Bug bounty program](https://tonwhales.com/bounty).
+- ❌ Doesn't have any kind of support for desktop platforms.
+- ❌ Requires advanced skills to contribute to its source code.
 
-#### Окружение теста Тонхаба
+#### Tonhub test environment
 
-Вам нужно загрузить отдельное приложение для подключения к Testnet.
+You will need to download separate application to connect to the Testnet.
 
-#### Ссылки
+#### Links
 
 - [GitHub](https://github.com/tonwhales/wallet)
 - [Sandbox iOS](https://apps.apple.com/app/ton-development-wallet/id1607857373)
@@ -140,80 +140,80 @@ TON Wallet стал первым шагом в технологии массов
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![OpenMask](/img/docs/wallet-apps/OpenMask.png?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 
-#### Проценты и недостатки
+#### Pros and Cons
 
-- ✅ Удобно для разработчиков изучать и создавать dApps с компьютера без мобильных устройств.
-- ✅ Уникальные функции, такие как несколько кошельков, с подробными описаниями и примерами в документации.
-- ❌ В данный момент практически не интегрируется с dApps.
-- ❌ Поддерживает только платформу расширения браузера.
+- ✅ Convenient for developers to learn and create dApps via desktop without mobile devices.
+- ✅ Unique functions such as multiple wallets, with detailed descriptions and examples in its documentation.
+- ❌ Has almost no integration with dApps at the moment.
+- ❌ Supports only browser extension platform.
 
-#### Окружение теста OpenMask
+#### OpenMask test environment
 
-Чтобы переключить OpenMask между Mainnet и Testnet: вам нужно нажать кнопку "mainnet/testnet" в верхней части главного экрана OpenMask и выбрать нужную вам сеть.
+To switch OpenMask between Mainnet and Testnet: you need to click on "mainnet/testnet" button on the top of the OpenMask's main screen and choose the network you need.
 
-#### Ссылки
+#### Links
 
 - [GitHub](https://github.com/OpenProduct/openmask-extension)
 - [Documentation](https://www.openmask.app/docs/introduction)
 
 ### MyTonWallet
 
-[MyTonWallet](https://mytonwallet. o/) - это наиболее функциональный веб-кошелек и расширение для браузера TON - при поддержке токенов, NFT, TON DNS, TON Sites, TON Proxy, и TON Magic.
+[MyTonWallet](https://mytonwallet.io/) - is the most feature-rich web wallet and browser extension for TON – with support of tokens, NFT, TON DNS, TON Sites, TON Proxy, and TON Magic.
 
 |                                                                                                                                                                                                                                      |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![MyTonWallet](/img/docs/wallet-apps/MyTonWallet.png?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 
-#### Проценты и недостатки
+#### Pros and Cons
 
-- ✅ Есть все основные функции.
-- ✅ Уникальная функция - управление [Nominator Pool contract](https://github.com/ton-blockchain/nominator-pool) из интерфейса кошелька.
-- ✅ поддерживает все основные платформы (например, macOS, Linux и Windows) и также работает в Chrome как расширение.
-- ❌ Не работает в Firefox в качестве расширения.
+- ✅ Has all basic features implemented.
+- ✅ Unique feature - management of the official [Nominator Pool contract](https://github.com/ton-blockchain/nominator-pool) from the wallet UI.
+- ✅ Supports all major platforms (such as macOS, Linux and Windows) and also runs in Chrome as an extension.
+- ❌ Doesn't work in Firefox as an extension.
 
-#### Условия тестирования MyTonWallet (браузер, настольный компьютер и мобильное приложение)
+#### MyTonWallet test environment (browser, desktop, and mobile application)
 
-1. Перейдите в раздел Настройки.
-2. Прокрутите вниз и нажмите на версию приложения MyTonWallet .
-3. В всплывающем окне выберите окружение.
+1. Go to the Settings section.
+2. Scroll down and click on the MyTonWallet application version.
+3. In the pop-up window, select the environment.
 
-#### Ссылки
+#### Links
 
 - [GitHub](https://github.com/mytonwalletorg/mytonwallet)
-- [Телеграмма MyTonWallele](https://t.me/MyTonWalletRu)
+- [MyTonWallet Telegram](https://t.me/MyTonWalletRu)
 
-## Аппаратное оборудование (холодные) кошельки
+## Non-Custodial Hardware (Cold) Wallets
 
 :::info
-Аппаратный кошелек - это физическое устройство, которое сохраняет приватные ключи на ваши криптовалютные средства из интернета. Даже если вы совершаете транзакции с ним, кошелек подтверждает транзакции в автономном режиме. Этот процесс помогает всегда держать ваши приватные ключи в стороне от рисков Интернета.
+A hardware wallet is a physical device that stores the private keys to your cryptocurrency funds away from the internet. Even if you make transactions with it, the wallet confirms the transactions in an offline environment. This process helps keep your private keys away from the risks of the internet at all times.
 :::
 
-### Лёгкий
+### Ledger
 
-[Ledger](https://www.ledger.com/) аппаратные кошельки с Ledger Live приложение.
+[Ledger](https://www.ledger.com/) hardware wallets with Ledger Live app.
 
-#### Ссылки
+#### Links
 
-- [Blogpost](https://blog.ton.org/ton-is-coming-to-ledger-hardware-wallets) руководство пользователя TON в кошельках Ledger .
+- [Ledger TON Blogpost](https://blog.ton.org/ton-is-coming-to-ledger-hardware-wallets) user manual for TON in the Ledger wallets.
 - [Ledger](https://www.ledger.com/) official site.
 
 ### SafePal
 
-[SafePal](https://www.safepal.com/ru/) - это ваш шлюз к быстро расширяющейся галактике децентрализованных приложений.
+[SafePal](https://www.safepal.com/en/) is your gateway to the rapidly expanding galaxy of decentralized applications.
 
-#### Ссылки
+#### Links
 
 - [SafePal](https://www.safepal.com/en/) official site
 
-## Хранилище кошельков
+## Custodial wallets
 
 :::info
-С кошельком хранилища пользователь доверяет кого-нибудь держать закрытый ключ кошелька.
+With a custodial wallet, user trusts somebody else to hold the wallet's private key.
 :::
 
-### @кошелек
+### @wallet
 
-[@wallet](https://t.me/wallet) — бот, который будет отправлять и торговать TON за реальные деньги, используя P2P в Telegram. Поддержка Telegram Mini App UI.
+[@wallet](https://t.me/wallet) — a bot to send and receive or trade TON for real money using P2P in Telegram. Supports Telegram Mini App UI.
 
 |                                                                                                                                                                                                                            |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -221,41 +221,41 @@ TON Wallet стал первым шагом в технологии массов
 
 ### @cryptobot
 
-[@cryptobot](https://t.me/cryptobot) — кошелек для хранения, отправки и обмена TON.
+[@cryptobot](https://t.me/cryptobot) — A Telegram bot wallet for storing, sending and exchanging TON.
 
 |                                                                                                                                                                                                                                  |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![CryptoBot](/img/docs/wallet-apps/CryptoBot.png?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 
-#### Ссылки для сторонних интеграций
+#### Links for 3d-party integrations
 
 - [Crypto Pay API](https://help.crypt.bot/crypto-pay-api)
 
 ### @tonRocketBot
 
-[@tonRocketBot](https://t.me/tonRocketBot) - кошелек для хранения, отправки и обмена TON. Поддерживает трейдинг Jetton также.
+[@tonRocketBot](https://t.me/tonRocketBot) - A Telegram bot wallet for storing, sending and exchanging TON. Supports Jetton trading as well.
 
 |                                                                                                                                                                                                                                        |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;![tonrocketbot](/img/docs/wallet-apps/tonrocketbot.png?raw=true) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
 
-#### Ссылки для сторонних интеграций
+#### Links for 3d-party integrations
 
-- [Ракетная биржа](https://trade.ton-rocket.com/api/)
-- [Документы платных ракетов](https://pay.ton-rocket.com/api/)
+- [Rocket exchange](https://trade.ton-rocket.com/api/)
+- [Rocket pay docs](https://pay.ton-rocket.com/api/)
 
-## Мульти-подписи кошельки
+## Multi signature Wallets
 
 ### Tonkey
 
-Tonkey - это продвинутый проект, который вводит функциональность multi-signature в TON Blockchain.
+Tonkey is an advanced project that introduces multi-signature functionality to TON Blockchain.
 
-### Ссылки
+### Links
 
 - https://tonkey.app/
 - [GitHub](https://github.com/tonkey-app)
 
-## Смотреть также
+## See Also
 
-- [Что такое блокчейн? Что такое умный контракт? Что такое газ?](https://blog.ton.org/what-is-blockchain)
-- [Виды договоров кошелька](/v3/documentation/smart-contracts/contracts-specs/wallet-contracts)
+- [What is blockchain? What is a smart contract? What is gas?](https://blog.ton.org/what-is-blockchain)
+- [Types of Wallet Contracts](/v3/documentation/smart-contracts/contracts-specs/wallet-contracts)
