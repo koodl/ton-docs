@@ -1,45 +1,45 @@
 # TL
 
-TL (Type Language) is a language for describing data structures.
+TL (Type Language) - это язык описания структур данных.
 
-For structuring useful data, when communicating, [TL schemas](https://github.com/ton-blockchain/ton/tree/master/tl/generate/scheme) are used.
+Для структурирования полезных данных при общении, используются [TL схемы](https://github.com/ton-blockchain/ton/tree/master/tl/generate/scheme).
 
-TL operates on 32 bit blocks. Accordingly, the data size in TL must be a multiple of 4 bytes.
-If the size of the object is not a multiple of 4, we need to add the required number of zero bytes up to the multiple.
+TL работает на 32-битных блоках. Соответственно, размер данных в TL должен быть кратен 4 байта.
+Если размер объекта не кратен в 4, нам нужно добавить требуемое количество нулевых байт к множеству.
 
-Numbers are always encoded in Little Endian order.
+Цифры всегда кодируются в Малом Эндианском порядке.
 
-More details about TL can be found in [Telegram documentation](https://core.telegram.org/mtproto/TL)
+Подробнее о TL можно найти в [документации Telegram](https://core.telegram.org/mtproto/TL)
 
-## Encoding bytes array
+## Кодирование массива байт
 
-To encode an array of bytes, we first need to determine its size.
-If it is less than 254 bytes, then the encoding with 1 byte as the size is used. If more,
-then 0xFE is written as the first byte, as an indicator of a large array, and after it 3 bytes of size follow.
+Для кодирования массива байт сначала нужно определить его размер.
+Если размер меньше 254 байт, то используется кодировка с 1 байтом. Если больше,
+тогда 0xFE записывается как первый байт, как индикатор большого массива, а после него следуют 3 байта.
 
-For example, we encode the array `[0xAA, 0xBB]`, its size is 2. We use 1 byte
+Например, мы кодируем массив `[0xAA, 0xBB]`, его размер составляет 2. We use 1 byte
 size and then write the data itself, we get `[0x02, 0xAA, 0xBB]`, done, but we see
 that the final size is 3 and not a multiple of 4 bytes, then we need to add 1 byte of padding to make it 4. Result: `[0x02, 0xAA, 0xBB, 0x00]`.
 
-In case we need to encode an array whose size will be equal to, for example, 396,
-we do this: 396 >= 254, so we use 3 bytes for size encoding and 1 byte oversize indicator,
-we get: `[0xFE, 0x8C, 0x01, 0x00, array bytes]`, 396+4 = 400, which is a multiple of 4, no need to align.
+Если нам нужно закодировать массив, размер которого будет равен 396,
+Мы это делаем: 396 >= 254, поэтому мы используем 3 байта для кодировки размера и 1 байт индикатора,
+получаем: `[0xFE, 0x8C, 0x01, 0x00, массив байтов]`, 396+4 = 400, что много, не нужно выравнивать.
 
-## Non-obvious serialization rules
+## Неочевидные правила сериализации
 
-Often, a 4-byte prefix is written before the schema itself - its ID. The schema ID is a CRC32 with an IEEE table from the schema text, while symbols such as `;` and brackets `()` are previously removed from the text. The serialization of a schema with an ID prefix is called **boxed**, this allows the parser to determine which schema comes before it if there are multiple options.
+Часто перед самой схемой пишется 4-байтный префикс - его ID. Идентификатор схемы представляет собой CRC32 с таблицей IEEE из текста схемы, а символы, такие как `; и скобки `()\` ранее удалены из текста. Сериализация схемы с префиксом ID называется **boxed**, это позволяет парсеру определить, какая схема будет прежде, если есть несколько параметров.
 
-How to determine whether to serialize as boxed or not? If our schema is part of another schema, then we need to look at how the field type is specified, if it is specified explicitly, then we serialize without a prefix, if not explicitly (there are many such types), then we need to serialize as boxed. Example:
+Как определить сериализовать как коробок или нет? Если наша схема является частью другой схемы, то мы должны посмотреть, как тип поля указан, если он явно указан, то мы сериализуем без префикса, если не явно, (существует много таких типов), то мы должны сериализовать как коробку. Например:
 
 ```tlb
-pub.unenc data:bytes = PublicKey;
+pub.unenc данные:байты = PublicKey;
 pub.ed25519 key:int256 = PublicKey;
 pub.aes key:int256 = PublicKey;
 pub.overlay name:bytes = PublicKey;
 ```
 
-We have such types, if `PublicKey` is specified in the schema, for example `adnl.node id:PublicKey addr_list:adnl.addressList = adnl.Node`, then it is not explicitly specified and we need to serialize with an ID prefix (boxed). And if it were specified like this: `adnl.node id:pub.ed25519 addr_list:adnl.addressList = adnl.Node`, then it would be explicit, and the prefix would not be needed.
+У нас есть такие типы, если `PublicKey` указан в схеме, например `adnl.node id:PublicKey addr_list:adnl. ddressList = adnl.Node`, то он явно не указан и нам нужно сериализовать с префиксом ID (boxed). И если он указан следующим образом: `adnl.node id:pub.ed25519 addr_list:adnl.addressList = adnl.Node`, то это будет явным и префикс не требуется.
 
-## References
+## Справочная литература
 
-_Here a [link to the original article](https://github.com/xssnick/ton-deep-doc/blob/master/TL.md) by [Oleg Baranov](https://github.com/xssnick)._
+_Здесь [ссылка на оригинальную статью](https://github.com/xssnick/ton-deep-doc/blob/master/TL.md) от [Oleg Baranov](https://github.com/xssnick)._
