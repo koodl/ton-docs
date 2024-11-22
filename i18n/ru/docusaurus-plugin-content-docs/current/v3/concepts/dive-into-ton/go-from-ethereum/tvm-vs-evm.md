@@ -1,78 +1,78 @@
-# ТВМ против EVM
+# TVM vs EVM
 
-Ethereum Virtual Machine (EVM) и TON Virtual Machine (TVM) являются виртуальными машинами на основе стека, разработанными для выполнения смарт-кода контракта. Несмотря на то, что они имеют общие черты, между ними существуют заметные различия.
+Ethereum Virtual Machine (EVM) and TON Virtual Machine (TVM) are both stack-based virtual machines developed for running smart contract code. Although they have common features, there are notable distinctions between them.
 
-## Представление данных
+## Data presentation
 
-### Виртуальная машина Ethereum (EVM)
+### Ethereum Virtual Machine (EVM)
 
-1. Единицы основных данных
+1. Fundamental Data Units
 
-- EVM работает в первую очередь на 256-битных целых числах, отражающих его дизайн вокруг криптографических функций Ethereum (например, операции по хэшированию Keccak-256 и эллиптической кривой).
-- Типы данных в основном ограничены целым числом, байтами и иногда массивами этих типов, но все они должны соответствовать правилам 256-битной обработки данных.
+- The EVM operates primarily on 256-bit integers, reflecting its design around Ethereum's cryptographic functions (e.g.,   Keccak-256 hashing and elliptic curve operations).
+- Data types are limited mainly to integers, bytes, and occasionally arrays of these types, but all must conform to 256-bit processing rules.
 
-2. Хранилище состояния
+2. State Storage
 
-- Состояние блокчейна Ethereum - это сопоставление 256-битных адресов с 256-битными значениями. Это отображение поддерживается в структуре данных, известной как Merkle Patricia Trie (MPT).
-- MPT позволяет Ethereum эффективно доказать целостность и целостность состояния блокчейна путем криптографической проверки, Это жизненно важно для децентрализованной системы, такой как Ethereum.
+- The entire state of the Ethereum blockchain is a mapping of 256-bit addresses to 256-bit values. This mapping is maintained in a data structure known as the Merkle Patricia Trie (MPT).
+- The MPT enables Ethereum to efficiently prove the consistency and integrity of the blockchain state through cryptographic verification, which is vital for a decentralized system like Ethereum.
 
-3. Ограничения структуры данных
+3. Data Structure Limitations
 
-- Упрощение до 256-битных текстовых ограничений означает, что EVM не имеет своей целью непосредственную обработку сложных или пользовательских структур данных.
-- Зачастую разработчикам необходимо внедрять дополнительную логику в рамках смарт-контрактов для моделирования более сложных структур данных, что может привести к увеличению затрат на газ и сложности.
+- The simplification to 256-bit word constraints means that the EVM is not inherently designed to handle complex or custom data structures directly.
+- Developers often need to implement additional logic within smart contracts to simulate more complex data structures, which can lead to increased gas costs and complexity.
 
-### ТОН Виртуальная машина (ТВМ)
+### TON Virtual Machine (TVM)
 
-1. Архитектура на основе ячеек
+1. Cell-Based Architecture
 
-- ТВМ использует для представления данных уникальную модель «мешок клеток». Каждая ячейка может содержать до 128 байт данных и может иметь до 4 ссылок на другие ячейки.
-- Эта структура позволяет ТВМ изначально поддерживать произвольные алгебраические типы данных и более сложные конструкции, такие как деревья или режиссерные ациклические графики (DAGs) непосредственно в своей модели хранения.
+- TVM uses a unique "bag of cells" model to represent data. Each cell can contain up to 128 data bytes and can have up to 4 references to other cells.
+- This structure allows the TVM to natively support arbitrary algebraic data types and more complex constructions such as trees or directed acyclic graphs (DAGs) directly within its storage model.
 
-2. Гибкость и эффективность
+2. Flexibility and Efficiency
 
-- Модель ячейки обеспечивает значительную гибкость, что позволяет ТВ работать с широким спектром данных более естественным и эффективным, чем EVM.
-- Например, способность создавать связанные структуры через клеточные ссылки позволяет создавать динамические и потенциально бесконечные структуры данных, которые имеют решающее значение для определенных типов приложений, таких как децентрализованные социальные сети или сложные децентрализованные протоколы финансирования DeFi.
+- The cell model provides significant flexibility, enabling the TVM to handle a wide variety of data structures more naturally and efficiently than the EVM.
+- For example, the ability to create linked structures through cell references allows for dynamic and potentially infinite data structures, which are crucial for certain types of applications like decentralized social networks or complex decentralized finance (DeFi) protocols.
 
-3. Обработка сложных данных
+3. Complex Data Handling
 
-- Возможность управлять сложными типами данных, присущими архитектуре ВМ, уменьшает потребность в реализации смарт-контрактов, потенциально снижая стоимость исполнения и увеличивая скорость исполнения.
-- Разработка ТВМ особенно выгодна для приложений, требующих сложного государственного управления или взаимосвязанных структур данных, создание надежного фундамента для разработчиков для создания сложных и масштабируемых децентрализованных приложений.
+- The ability to manage complex data types inherently within the VM architecture reduces the need for workaround implementations in smart contracts, potentially lowering the execution cost and increasing execution speed.
+- TVM's design is particularly advantageous for applications requiring complex state management or interlinked data structures, providing a robust foundation for developers to build sophisticated and scalable decentralized applications.
 
-## Машина в стеке
+## Stack machine
 
-### Виртуальная машина Ethereum (EVM)
+### Ethereum Virtual Machine (EVM)
 
-- EVM работает в качестве традиционного стека, где для управления вычислениями используется последняя стек (LIFO).
-- Он обрабатывает операции нажатием и всплывающим 256-битным целым числом, которые являются стандартным размером для всех элементов стека.
+- The EVM operates as a traditional stack-based machine, where it uses a last-in, first-out (LIFO) stack to manage computation.
+- It processes operations by pushing and popping 256-bit integers, which are the standard size for all elements in the stack.
 
-### ТОН Виртуальная машина (ТВМ)
+### TON Virtual Machine (TVM)
 
-- TVM также функционирует как машина на основе стека, но с ключевым отличием: он поддерживает как 257-битные целые числа, так и ссылки на клетки.
-- Это позволяет TVM отправлять и всплывать эти два разных типа данных вкл/выкл из стека, обеспечивая повышенную гибкость при использовании прямых данных.
+- TVM also functions as a stack-based machine but with a key distinction: it supports both 257-bit integers and references to cells.
+- This allows TVM to push and pop these two distinct types of data onto/from the stack, providing enhanced flexibility in direct data manipulation.
 
-### Пример операций стека
+### Example of stack operations
 
-Предположим, что в EVM мы хотим добавить два числа (2 и 2). Этот процесс будет включать прокрутку номеров в стек, а затем вызов инструкции "ADD". Результат (4) останется на вершине стека.
+Suppose we want to add two numbers (2 and 2) in EVM. The process would involve pushing the numbers onto the stack and then calling the `ADD` instruction. The result (4) would be left on the top of the stack.
 
-Мы можем сделать эту операцию так же в ТВ. Но рассмотрим другой пример с более сложными структурами данных, такими как хэшкарты и ссылки на ячейки. Предположим, у нас есть хэшпап, который хранит пары ключевой стоимости, где ключи являются целыми числами и значениями либо целыми числами, либо ссылками ячеек. Давайте скажем, что наша хэшкарта содержит следующие записи:
+We can do this operation in the same way in TVM. But let’s look at another example with more complex data structures, such as hashmaps and cell reference. Suppose we have a hashmap that stores key-value pairs, where keys are integers and values are either integers or cell references. Let’s say our hashmap contains the following entries:
 
 ```js
 {
     1: 10
-    2: cell_a (содержащий 10)
+    2: cell_a (which contains 10)
 }
 ```
 
-Мы хотим добавить значения, ассоциированные с ключами 1 и 2, и сохранить результат с ключом 3. Давайте рассмотрим операции в стеках:
+We want to add the values associated with keys 1 and 2 and store the result with key 3. Let’s look at stack operations:
 
-1. Нажмите клавишу 1 на стек: `stack` = (1)
-2. Звоните `DICTGET` для ключа 1 (возвращает значение, связанное с ключом в верхней части стека): Возвращает значение 10. `stack` = (10)
-3. Нажмите клавишу 2 на стек: `stack` = (10, 2)
-4. Звоните в `DICTGET` для ключа 2: Retrieves reference to Cell_A. `stack` = (10, Cell_A)
-5. Load value from Cell_A: Выполняется инструкция для загрузки значения из ссылки на ячейку. `stack` = (10, 10)
-6. Вызовите инструкцию `ADD`: Когда выполняется инструкция `ADD`, TVM покажет верхние два элемента из стека, добавит их вместе, а результат обратно в стек. В этом случае верхние два элемента составляют 10 и 10. После дополнения, стек будет содержать результат: `stack` = (20)
-7. Нажмите 3 на стек: `stack` = (20, 3)
-8. Звоните `DICTSET`: Магазин 20 с ключом 3. Обновлена хэшкарта:
+1. Push key 1 onto the stack: `stack` = (1)
+2. Call `DICTGET` for key 1 (retrieves the value associated with the key at the top of the stack): Retrieves value 10. `stack` = (10)
+3. Push key 2 onto the stack: `stack` = (10, 2)
+4. Call `DICTGET` for key 2: Retrieves reference to Cell_A. `stack` = (10, Cell_A)
+5. Load value from Cell_A: An instruction to load the value from the cell reference is executed. `stack` = (10, 10)
+6. Call the `ADD` instruction: When the `ADD` instruction is executed, the TVM will pop the top two elements from the stack, add them together, and push the result back onto the stack. In this case, the top two elements are 10 and 10. After the addition, the stack will contain the result: `stack` = (20)
+7. Push key 3 onto the stack: `stack` = (20, 3)
+8. Call `DICTSET`: Stores 20 with key 3. Updated hashmap:
 
 ```js
 {
@@ -82,51 +82,51 @@ Ethereum Virtual Machine (EVM) и TON Virtual Machine (TVM) являются в�
 }
 ```
 
-делать то же самое в EVM, необходимо определить сопоставление, которое хранит пары ключевого значения и функцию, где мы работаем непосредственно с 256-битными целыми числами, хранящимися в сопоставлении.
-Важно отметить, что EVM поддерживает сложные структуры данных, используя Solidity, но эти структуры построены на основе более простой модели данных EVM, которая существенно отличается от более выразительной модели данных ТВМ
+To do the same in EVM, we need to define a mapping that stores key-value pairs and the function where we work directly with 256-bit integers stored in the mapping.
+It’s essential to note that the EVM supports complex data structures by leveraging Solidity, but these structures are built on top of the EVM’s simpler data model, which is fundamentally different from the more expressive data model of the TVM
 
-## Арифметические операции
+## Arithmetic operations
 
-### Виртуальная машина Ethereum (EVM)
+### Ethereum Virtual Machine (EVM)
 
-- Виртуальная машина Ethereum (EVM) обрабатывает арифметику с использованием 256-битных целых чисел, что означает такие операции, как добавление, вычитание, умножение и деление по своему размеру данных.
+- The Ethereum Virtual Machine (EVM) handles arithmetic using 256-bit integers, meaning operations such as addition, subtraction, multiplication, and division are tailored to this data size.
 
-### ТОН Виртуальная машина (ТВМ)
+### TON Virtual Machine (TVM)
 
-- TON Virtual Machine (TVM) поддерживает более разнообразные арифметические операции, включая 64 бит, 128-бит и 256-битные целые числа, как неподписанные и подписанные, так и модульные операции. ТВМ еще более укрепляет свой арифметический потенциал благодаря таким операциям, как мультипликация и деление сдвига, которые особенно полезны для реализации арифметики с фиксированной точкой. Этот выбор позволяет разработчикам выбирать наиболее эффективные арифметические операции на основе специфических требований их умных контрактов, предлагает потенциальную оптимизацию на основе размера и типа данных.
+- The TON Virtual Machine (TVM) supports a more diverse range of arithmetic operations, including 64-bit, 128-bit, and 256-bit integers, both unsigned and signed, as well as modulo operations. TVM further enhances its arithmetic capabilities with operations like multiply-then-shift and shift-then-divide, which are particularly useful for implementing fixed-point arithmetic. This variety allows developers to select the most efficient arithmetic operations based on the specific requirements of their smart contracts, offering potential optimizations based on data size and type.
 
-## Проверка переполнения
+## Overflow checks
 
-### Виртуальная машина Ethereum (EVM)
+### Ethereum Virtual Machine (EVM)
 
-- В EVM проверки переполнения не выполняются самой виртуальной машиной. С введением солидарности 0.8.0 в целях повышения безопасности были интегрированы вопросы автоматического переполнения и переполнения переполнения. Эти проверки помогают предотвратить общие уязвимости, связанные с арифметическими операциями, но требуют новых версий солидарности, так как предыдущие версии требуют ручного применения этих гарантий.
+- In the EVM, overflow checks are not inherently performed by the virtual machine itself. With the introduction of Solidity 0.8.0, automatic overflow and underflow checks were integrated into the language to enhance security. These checks help prevent common vulnerabilities related to arithmetic operations but require newer versions of Solidity, as earlier versions necessitate manual implementation of these safeguards.
 
-### ТОН Виртуальная машина (ТВМ)
+### TON Virtual Machine (TVM)
 
-- В отличие от этого, TVM автоматически осуществляет проверку переполнения всех арифметических операций, что встроено непосредственно в виртуальную машину. Такой дизайн-выбор упрощает разработку смарт-контрактов за счет естественного уменьшения риска ошибок и повышения общей надежности и безопасности кода.
+- In contrast, TVM automatically performs overflow checks on all arithmetic operations, a feature built directly into the virtual machine. This design choice simplifies the development of smart contracts by inherently reducing the risk of errors and enhancing the overall reliability and security of the code.
 
-## Криптография и хэш функции
+## Cryptography and hash functions
 
-### Виртуальная машина Ethereum (EVM)
+### Ethereum Virtual Machine (EVM)
 
-- EVM поддерживает специфическую схему криптографии Ethereum, такую как эллиптическая кривая secp256k1 и хэш keccak256. Кроме того, EVM не имеет встроенной поддержки доказательств Merkle, которые являются криптографическими доказательствами, используемыми для проверки членства элемента в наборе.
+- EVM has support for the Ethereum-specific cryptography scheme, such as the secp256k1 elliptic curve and the keccak256 hash function. Also, EVM does not have built-in support for Merkle proofs, which are cryptographic proofs used to verify the membership of an element in a set.
 
-### ТОН Виртуальная машина (ТВМ)
+### TON Virtual Machine (TVM)
 
-- TVM предлагает поддержку 256-битной Elliptic Curve Cryptography (ECC) для предопределенных кривых, например Curve25519. Он также поддерживает пары Weil на некоторых эллиптических кривых, которые полезны для быстрой реализации zk-SNARKs (доказательства нулевого знания). Также поддерживаются популярные хэш-функции, такие как sha256, предоставляя больше возможностей для криптографических операций. Кроме того, TVM может работать с доказательствами Merkle, обеспечивая дополнительные криптографические функции, которые могут быть полезны для некоторых вариантов использования, например, верификация включения транзакции в блок.
+- TVM offers support for 256-bit Elliptic Curve Cryptography (ECC) for predefined curves, like Curve25519. It also supports Weil pairings on some elliptic curves, which are useful for fast implementation of zk-SNARKs (zero-knowledge proofs). Popular hash functions like sha256 are also supported, providing more options for cryptographic operations. In addition, TVM can work with Merkle proofs, providing additional cryptographic features that can be beneficial for certain use cases, such as verifying the inclusion of a transaction in a block.
 
-## На высоком уровне языки
+## High-level languages
 
-### Виртуальная машина Ethereum (EVM)
+### Ethereum Virtual Machine (EVM)
 
-- EVM использует Солидарность в качестве высокоуровневого языка, который является объектно-ориентированным языком, подобным JavaScript и С++. Кроме того, существуют другие языки для написания смарт-контрактов Ethereum, таких как Vyper, Yul, и т.д.
+- EVM primarily uses Solidity as its high-level language, which is an object-oriented, statically-typed language similar to JavaScript and C++. Also, there are other languages for writing Ethereum smart-contracts such as Vyper, Yul, etc.
 
-### ТОН Виртуальная машина (ТВМ)
+### TON Virtual Machine (TVM)
 
-- TVM использует FunC в качестве языка высокого уровня, предназначенного для написания смарт-контрактов TON. Это процедурный язык со статическими типами и поддержкой алгебраических типов данных. FunC компилирует в Fift, который в свою очередь компилирует с ТВМ байткодом.
+- TVM uses FunC as a high-level language designed for writing TON smart contracts. It is a procedural language with static types and support for algebraic data types. FunC compiles to Fift, which in turn compiles to TVM bytecode.
 
-## Заключение
+## Conclusion
 
-Таким образом, хотя и EVM и TVM являются станками на основе стека, предназначенными для выполнения смарт-контрактов, TVM предлагает более гибкую систему, поддержка более широкого спектра типов данных и структур, встроенная проверка переполнения, расширенные криптографические функции.
+In summary, while both EVM and TVM are stack-based machines designed to execute smart contracts, TVM offers more flexibility, support for a wider range of data types and structures, built-in overflow checks, advanced cryptographic features.
 
-Поддержка смарт-контрактов ТВМ и его уникальный подход к представлению данных делают его лучше подходящим для определенных вариантов использования и масштабируемых блокчейн сетей.
+TVM’s support for sharding-aware smart contracts and its unique data representation approach make it better suited for certain use cases and scalable blockchain networks.
