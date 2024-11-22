@@ -45,74 +45,74 @@ x{6F02} dup @Defop PAIR @Defop CONS
 
 > wallet_v3_r2.fif
 
-Последний фрагмент кода выглядит как TVM сборка, и большинство из них на самом деле! Как это случилось?
+Last fragment of code looks like TVM assembly, and most of it really is! How can this happen?
 
-Представьте, что вы говорите с инструктором, говорите ему "и теперь добавляйте команды, делая это и это в конце функции". Ваши команды в конце концов становятся программой стажера. Они обрабатываются дважды - как здесь, опкоды заглавными буквами (SETCP0, DUP и т.д. ) обрабатываются как по Fift, так и по TVM.
+Imagine you're talking to a trainee programmer, saying him "and now add commands doing this, this and that to the end of function". Your commands end up being in trainee's program. They're processed twice - just like here, opcodes in capital letters (SETCP0, DUP, etc) are processed both by Fift and by TVM.
 
-Вы можете объяснить абстракции высокого уровня вашему обучающему, в конечном итоге он будет понимать и уметь их использовать. Fift также расширяется - вы можете определить свои собственные команды. In fact, Asm[Tests].fif is all about defining TVM opcodes.
+You can explain high-level abstractions to your trainee, eventually he will understand and be able to use them. Fift is also extensible - you're able to define your own commands. In fact, Asm[Tests].fif is all about defining TVM opcodes.
 
-С другой стороны, ТВМ опкоды выполняются **во время запуска** - это код смарт-контрактов. Они могут быть задуманы как программа Вашего стажера - сборка ТВМ может сделать меньше (напр. он не имеет встроенных примитивов для подписи данных, потому что все, что TVM делает в блокчейне, публично), но он действительно может взаимодействовать со своей средой.
+TVM opcodes, on the other hand, are executed **at run-time** - they're code of smart contracts. They can be thought of as program of your trainee - TVM assembly can do less things (e.g. it doesn't have builtin primitives for signing data - because everything that TVM does in blockchain is public), but it can really interact with its environment.
 
-## Использование в смарт-контрактах
+## Usage in smart-contracts
 
 ### [Fift] - Putting big BOC into contract
 
-Это возможно, если вы используете `toncli`. Если вы используете другие компиляторы, то есть другие способы включить big BOC.
-Редактируйте `project.yaml` так, чтобы `fift/blob.fif` был включен при создании кода smart-contract:
+This is possible if you are using `toncli`. If you use other compilers to build contract, possibly there are other ways to include big BOC.
+Edit `project.yaml` so that `fift/blob.fif` is included when building smart-contract code:
 
 ```
-контракт:
+contract:
   fift:
     - fift/blob.fif
-  функция:
+  func:
     - func/code.fc
 ```
 
-Поместите BOC в `fift/blob.boc`, затем добавьте следующий код в `fift/blob.fif`:
+Put the BOC in `fift/blob.boc`, then add the following code to `fift/blob.fif`:
 
 ```
 <b 8 4 u, 8 4 u, "fift/blob.boc" file>B B>boc ref, b> <s @Defop LDBLOB
 ```
 
-Теперь вы можете извлечь этот блок из умного контракта:
+Now, you're able to extract this blob from smart contract:
 
 ```
-ячейка load_blob() asm "LDBLOB";
+cell load_blob() asm "LDBLOB";
 
 () recv_internal() {
     send_raw_message(load_blob(), 160);
 }
 ```
 
-### [ТВМ сборка] - Преобразование целого в строку
+### [TVM assembly] - Converting integer to string
 
-"К сожалению, попытка преобразования внутри строки с использованием примитивов Fift не удалась.
+"Sadly", int-to-string conversion attempt using Fift primitives fails.
 
 ```
-срез int_to_string(int x) см "(.) $>s PUSHSLICE";
+slice int_to_string(int x) asm "(.) $>s PUSHSLICE";
 ```
 
-Причина очевидна: Исправление вычисляет время компиляции, где пока нет `x` для конвертации. Для конвертирования непостоянных целых чисел в слой строки требуется сборка TVM. Например, это код одного из участников TON Smart Challenge 3:
+The reason is obvious: Fift is doing calculations in compile-time, where no `x` is yet available for conversion. To convert non-constant integer to string slice, you need TVM assembly. For example, this is code by one of TON Smart Challenge 3 participants':
 
 ```
 tuple digitize_number(int value)
   asm "NIL WHILE:<{ OVER }>DO<{ SWAP TEN DIVMOD s1 s2 XCHG TPUSH }> NIP";
 
-строитель_number(builder msg, tuple t)
+builder store_number(builder msg, tuple t)
   asm "WHILE:<{ DUP TLEN }>DO<{ TPOP 48 ADDCONST ROT 8 STU SWAP }> DROP";
 
 builder store_signed(builder msg, int v) inline_ref {
   if (v < 0) {
-    return msg. tore_uint(45, 8).store_number(digitize_number(- v));
+    return msg.store_uint(45, 8).store_number(digitize_number(- v));
   } elseif (v == 0) {
-    return msg. tore_uint(48, 8);
+    return msg.store_uint(48, 8);
   } else {
     return msg.store_number(digitize_number(v));
   }
 }
 ```
 
-### [сборка ТВМ] - Дешевое умножение модулей
+### [TVM assembly] - Cheap modulo multiplication
 
 ```
 int mul_mod(int a, int b, int m) inline_ref {               ;; 1232 gas units
@@ -126,4 +126,4 @@ int mul_mod_better(int a, int b, int m) inline_ref {        ;; 1110 gas units
 int mul_mod_best(int a, int b, int m) asm "x{A988} s,";     ;; 65 gas units
 ```
 
-`x{A988}является опкодом, отформатированным согласно [5.2 Division](/v3/documentation/tvm/instructions#A988): деление с предшествующей умножением, где единственным возвращаемым результатом является третий аргумент модуля. Но opcode должен попасть в smart-contract код - вот что делает `s,\`: он хранит кусочек поверх стека в builder слегка ниже.
+`x{A988}` is opcode formatted according to [5.2 Division](/v3/documentation/tvm/instructions#A988): division with pre-multiplication, where the only returned result is remainder modulo third argument. But opcode needs to get into smart-contract code - that's what `s,` does: it stores slice on top of stack into builder slightly below.
