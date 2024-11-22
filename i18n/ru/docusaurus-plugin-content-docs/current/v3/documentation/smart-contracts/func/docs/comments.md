@@ -1,20 +1,20 @@
-# Комментарии
+# Comments
 
-У FunC есть однострочные комментарии, начинающиеся с `;` (двойной `;`). Например:
+FunC has single-line comments which start with `;;` (double `;`). For example:
 
 ```func
-int x = 1; ; установить значение 1 к x
+int x = 1; ;; assign 1 to x
 ```
 
-У него также есть многострочные комментарии, которые начинаются с `{-` и заканчиваются `-}`. Обратите внимание, что в отличие от многих других языков, комментарии по нескольким строкам могут быть вложены. Например:
+It also has multi-line comments which start with `{-` and end with `-}`. Note that unlike in many other languages, FunC multi-line comments can be nested. For example:
 
 ```func
-{- Это многострочный комментарий
+{- This is a multi-line comment
     {- this is a comment in the comment -}
 -}
 ```
 
-Более того, есть однострочные комментарии внутри нескольких строк, а однострочные комментарии `;` "сильнее" чем многострочные `{- -}`. Другими словами в следующем примере:
+Moreover, there can be one-line comments inside multi-line ones, and one-line comments `;;` are "stronger" than multiline `{- -}`. In other words in the following example:
 
 ```func
 {-
@@ -29,4 +29,4 @@ const a = 10;
 -}
 ```
 
-`const a = 10;` находится внутри многострочного комментария и комментируется.
+`const a = 10;` is inside multiline comment and is commented out.
