@@ -1,10 +1,10 @@
 import ThemedImage from '@theme/ThemedImage';
 
-# Cell & Bag of Cells (BoC)
+# Ячейка и сумка клеток (БК)
 
-## Cell
+## Ген
 
-A cell represents a data structure on TON Blockchain. Cells are able to store up to 1023 bits and possess up to 4 references to other cells.
+Ячейка представляет собой структуру данных в TON Blockchain. Гены могут хранить до 1023 бит и иметь до 4 ссылок на другие клетки.
 
 <br></br>
 <ThemedImage
@@ -16,9 +16,9 @@ sources={{
 />
 <br></br>
 
-## Bag of Cells
+## Мешок ячеек
 
-Bag of Cells (BoC) is a format for serializing cells into byte arrays, which is further described in the [TL-B schema](https://github.com/ton-blockchain/ton/blob/24dc184a2ea67f9c47042b4104bbb4d82289fac1/crypto/tl/boc.tlb#L25).
+Мешок ячеек (BoC) — это формат сериализации ячеек в массивы байтов, который далее описан в [схеме TL-B](https://github.com/ton-blockchain/ton/blob/24dc184a2ea67f9c47042b4104bbb4d82289fac1/crypto/tl/boc.tlb#L25).
 
 <br></br>
 <ThemedImage
@@ -30,7 +30,7 @@ sources={{
 />
 <br></br>
 
-On TON, everything consists of cells, including contract code, stored data, blocks, achieving streamline and robust flexibility in the process.
+На TON, все состоит из ячеек, включая код контракта, хранимые данные, блоки, достигая упорядоченной и надежной гибкости в процессе.
 
 <br></br>
 <ThemedImage
@@ -42,9 +42,9 @@ sources={{
 />
 <br></br>
 
-### Cell serialization
+### Сериализация ячеек
 
-Let's analyze our first example of a Bag of Cells :
+Давайте проанализируем наш первый пример мешка ячеек :
 
 <br></br>
 <ThemedImage
@@ -65,9 +65,9 @@ sources={{
 }
 ```
 
-In this example we have a 1-bit size root cell that has 2 links: the first to a 24-bit cell and the second to a 7-bit cell which possesses 1 link to a 24-bit cell.
+В данном примере у нас есть 1-битная корневая ячейка, которая имеет 2 ссылки: первая к 24-битной ячейке и вторая к 7-битной ячейке, которая имеет 1 ссылку на 24-битную ячейку.
 
-For this framework to work as intended, it’s necessary to turn the cells into a single sequence of bytes. To accomplish this, first, we leverage only unique cell types, below 3 out of 4 are presented as follows:
+Для этого фреймворка необходимо преобразовать ячейки в одну последовательность байтов. Для достижения этой цели сначала мы используем только уникальные типы ячеек, ниже 3 из 4 представлены следующим образом:
 
 ```json
 1[8_]
@@ -76,46 +76,46 @@ For this framework to work as intended, it’s necessary to turn the cells into 
 ```
 
 :::note
-In order to leave only unique cells they need to be compared. To do this, we need to compare the [hashes](#cell-hash) of the cells.
+Для того чтобы оставить только уникальные клетки, их нужно сравнить. To do this, we need to compare the [hashes](#cell-hash) of the cells.
 :::
 
 ```json
-1[8_]      -> index 0 (root cell)
-7[FE]      -> index 1
-24[0AAAAA] -> index 2
+1[8_]      -> индекс 0 (корневая ячейка)
+7[FE]      -> индекс 1
+24[0AAAAA] -> индекс 2
 ```
 
-Now, let's calculate descriptions for each of the 3 cells touched on above. These descriptions are made up of 2 bytes that store flags composed of information about the length of the data and the number of data linkages.
+Теперь давайте посчитаем описания для каждого из трех ячеек, прикоснувшихся выше. Эти описания состоят из 2 байт, в которых флаги хранят информацию о длине данных и количестве ссылок на данные.
 
 The first byte - **refs descriptor** - is calculated as `r+8s+32l`, where `0 ≤ r ≤ 4` is amount of the Cell references (links), `0 ≤ s ≤ 1` is 1 for [exotic](#special-exotic-cells) cells and 0 for ordinary ones, and `0 ≤ l ≤ 3` is the [level](#cell-level) of the Cell.
 
-The second one - **bits descriptor** - is equals `floor(b / 8) + ceil (b / 8)` where `0 <= b <= 1023` is number of bits in the Cell. This descriptor represents the length of the full 4-bit groups of the Cell data (but at least 1 if it isn’t empty).
+Второй - **битный дескриптор** - равен `floor(b / 8) + потолку (b / 8)`, где `0 <= b <= 1023` — количество битов в ячейке. Этот дескриптор отображает длину всех 4-х битных групп данных ячейки (но не менее 1, если она не пуста).
 
-The result is:
-
-```json
-1[8_]      -> 0201 -> 2 refs, length 1
-7[FE]      -> 0101 -> 1 ref, length 1
-24[0AAAAA] -> 0006 -> 0 refs, length 6
-```
-
-For data with incomplete 4-bit groups, 1 bit is added to the end of the sequence. This means it denotes the end bit of the group and is used to determine the true size of incomplete groups. Let's add the bits below:
+Результат:
 
 ```json
-1[8_]      -> C0     -> 0b10000000->0b11000000
-7[FE]      -> FF     -> 0b11111110->0b11111111
-24[0AAAAA] -> 0AAAAA -> do not change (full groups)
+1[8_]      -> 0201 -> 2 refs, длина 1
+7[FE]      -> 0101 -> 1 ref, длина 1
+24[0AAAAA] -> 0006 -> 0 refs, длина 6
 ```
 
-Now let's add the refs indexes:
+Для данных с неполными 4-х битными группами добавляется 1 бит в конец последовательности. Это означает, что он обозначает конечный бит группы и используется для определения истинного размера неполных групп. Давайте добавим биты ниже:
 
 ```json
-0 1[8_]      -> 0201 -> refers to 2 cells with such indexes
-1 7[FE]      -> 02 -> refers to cells with index 2
-2 24[0AAAAA] -> no refs
+1[8_]      -> C0 -> 0b10000000->0b1100000000
+7[FE]      -> FF -> 0b11111110->0b111111
+24[0AAAAA] -> 0AAAA -> не изменять (полные группы)
 ```
 
-And put it all together:
+Теперь давайте добавим реф-индексы:
+
+```json
+0 1[8_]      -> 0201 -> ссылается на 2 ячейки с такими индексами
+1 7[FE]      -> 02 -> ссылается на ячейки с индексом 2
+2 24[0AAAAA] -> не возвращает
+```
+
+И поместите все вместе:
 
 ```json
 0201 C0     0201
@@ -123,24 +123,24 @@ And put it all together:
 0006 0AAAAA
 ```
 
-And concat it by joining the corresponding strings into a single array of bytes:
-`0201c002010101ff0200060aaaaa`, size 14 bytes.
+И сокопайте его, присоединив соответствующие строки в единый массив байтов:
+`0201c002010101ff0200060aaaa`, размер 14 байт.
 
 <details>
-  <summary><b>Show example</b></summary>
+  <summary><b>Показать пример</b></summary>
 
 ```golang
 func (c *Cell) descriptors() []byte {
   ceilBytes := c.bitsSz / 8
-  if c.bitsSz%8 ! = 0 {
+  if c. itsSz%8 ! = 0 {
     ceilBytes++
   }
 
 	// calc size
-	ln := ceilBytes + c.bitsSz / 8
+	ln := ceilBytes + c. itsSz / 8
 
-	specBit := byte(0)
-	if c.special {
+	спецификация := byte(0)
+	если c. pecial {
 	  specBit = 8
 	}
 
@@ -152,107 +152,107 @@ func (c *Cell) descriptors() []byte {
 
 </details>
 
-### Packing a Bag of Cells
+### Упаковка мешка ячеек
 
-Let's pack the cell from the section directly above. We have already serialized it into a flat 14 byte array.
+Давайте упакуем ячейку из секции прямо выше. Мы уже сериализовали его в плоский 14-байтный массив.
 
-Therefore, we build the header according to its [schema](https://github.com/ton-blockchain/ton/blob/24dc184a2ea67f9c47042b4104bbb4d82289fac1/crypto/tl/boc.tlb#L25).
+Поэтому мы строим заголовок согласно его [schema](https://github.com/ton-blockchain/ton/blob/24dc184a2ea67f9c47042b4104bbb4d82289fac1/crypto/tl/boc.tlb#L25).
 
 ```
-b5ee9c72                      -> id tl-b of the BoC structure
-01                            -> flags and size:(## 3), in our case the flags are all 0,
-                                 and the number of bytes needed to store the number of cells is 1.
-                                 we get - 0b0_0_0_00_001
-01                            -> number of bytes to store the size of the serialized cells
-03                            -> number of cells, 1 byte (defined by 3 bits size:(## 3), equal to 3.
-01                            -> number of root cells - 1
-00                            -> absent, always 0 (in current implementations)
-0e                            -> size of serialized cells, 1 byte (size defined above), equal to 14
-00                            -> root cell index, size 1 (determined by 3 size:(## 3) bits from header),
-                                 always 0
-0201c002010101ff0200060aaaaa  -> serialized cells
+b5ee9c72 -> id tl-b структуры BoC
+01 -> флаги и размер:(## 3), в нашем случае все флаги - 0,
+                                 и количество байт, необходимых для хранения ячеек равно 1.
+                                 получим - 0b0_0_0_00_001
+01 -> количество байт для хранения размера сериализованных ячеек
+03 -> количество ячеек, 1 байт (определяется 3 бит размер:(## 3), равный 3.
+01 -> количество корневых ячеек - 1
+00 -> отсутствие, всегда 0 (в текущих реализациях)
+0e -> размер сериализованных ячеек, 1 байт (указанный выше размер), равно 14
+00 -> индекс корневых ячеек, - размер 1 (определяется 3 размера:(## 3) бит от заголовка),
+                                 всегда 0
+0201c002010101ff0200060aaaaa -> сериализованные ячейки
 ```
 
-Next, we concat everything above into an array of bytes into our final BoC:
-`b5ee9c7201010301000e000201c002010101ff0200060aaaaa`
+Далее мы соединяем всё выше в массив байтов в наш финальный BoC:
+`b5ee9c7201010301000e000201c002010101ff0200060aaaa`
 
-Bag of Cells Implementation Examples: [Serialization](https://github.com/xssnick/tonutils-go/blob/master/tvm/cell/serialize.go), [Deserialization](https://github.com/xssnick/tonutils-go/blob/master/tvm/cell/parse.go)
+Примеры реализации генов: [Serialization](https://github.com/xssnick/tonutils-go/blob/master/tvm/cell/serialize.go), [Deserialization](https://github.com/xssnick/tonutils-go/blob/master/tvm/cell/parse.go)
 
-## Special (Exotic) Cells
+## Специальные (дополнительные) Гены
 
-Generally, cells operating on TON are divided into two main types: ordinary cells and special cells. Most of the cells that the users work with are ordinary cells responsible for carrying information.
+Как правило, клетки, работающие на ТОН, подразделяются на два основных типа: обычные клетки и специальные клетки. Большинство камер, с которыми работают пользователи, являются обычными клетками, ответственными за перенос информации.
 
-Nevertheless, to realize internal functionality of the network, special cells are sometimes needed and are used for a diverse range of purposes, depending on their subtype.
+Тем не менее для реализации внутренней функциональности сети, иногда требуются специальные клетки и используются для различных целей в зависимости от их субтитра.
 
-## Cell Level
+## Уровень ячейки
 
-Every Cell has an attribute called `Level`, which is represented by an integer from 0 to 3.
+Каждая ячейка имеет атрибут «Level», который представлен целым числом от 0 до 3.
 
-### Ordinary cells level
+### Обычный уровень ячеек
 
-The Level of an ordinary Cell is always equal to the maximum of the levels of all its references:
+Уровень обычной ячейки всегда равен максимальному уровню всех его ссылок:
 
 ```cpp
 Lvl(c) = max(Lvl(r_0), ..., Lvl(r_i), ..., Lvl(r_e))
 ```
 
-Where `i` is a `c` reference index, `e` is a `c` reference amount.
+Где `i` - справочный индекс `c`, `e` - это исходная сумма `c`.
 
-_Ordinary Cell without refs level is zero_
+_Ген обычного, без уровня рефератов равна нулю_
 
-### Exotic cells level
+### Уровень экзотических клеток
 
-Exotic cells have different rules for setting their level, which are described in [this](/v3/documentation/data-formats/tlb/exotic-cells) article.
+Экзотические ячейки имеют разные правила установки их уровня, которые описаны в статье [this](/v3/documentation/data-formats/tlb/exotic-cells).
 
-## Cell hash
+## Хэш ячейки
 
-In most cases users work with ordinary cells with level 0 which have only one hash, called representation hash (or hash infinity).
+В большинстве случаев пользователи работают с обычными клетками с уровнем 0, который имеет только один хэш, называемый хэш представления (или хэш бесконечность).
 
-Cell `c` with level `Lvl(c) = l`, where `1 ≤ l ≤ 3` has representation hash and `l` **"higher"** hashes.
+Ячейка `c` с уровнем `Lvl(c) = l`, где `1 ≤ l ≤ 3` имеет представление хэша и `l` **"выше"** хэшей.
 
-### Standard Cell representation hash calculation
+### Стандартный расчет хэша представления ячеек
 
-First, we need to calculate Cell representation (which is similar to Cell serialization described above)
+Во-первых, нам необходимо рассчитать представительство ячеек (аналогично приведенной выше сериализации)
 
-1. Compute descriptors bytes
-2. Add serialized Cell data
-3. For every Cell's refs add its depth
-4. For every Cell's refs add its representation hash
-5. Compute SHA256 hash of the result
+1. Вычислить байты дескрипторов
+2. Добавить сериализованные данные ячейки
+3. Для каждой рефлектограммы добавить глубину
+4. Для каждой рефералы добавить его хэш представительства
+5. Вычислить SHA256 хэш результата
 
-Let's analyze the following examples:
+Давайте проанализируем следующие примеры:
 
-#### Cell without references
+#### Ячейка без ссылок
 
 ```json
 32[0000000F]
 ```
 
-1. Descriptors computation
+1. Расчет дескрипторов
 
-The reference descriptor is equals to `r+8s+32l = 0 + 0 + 0 = 0 = 00`
+Исходный дескриптор равен `r+8s+32l = 0 + 0 + 0 = 0 = 00`
 
-The bits descriptor is equals to `floor(b / 8) + ceil (b / 8) = 8 = 08`
+Дескриптор бит равен `floor(b / 8) + потолку (b / 8) = 8 = 08`
 
-Concatenating these bytes we get `0008`
+Объединение этих байтов мы получим `0008`
 
-2. Cell data serialization
+2. Сериализация данных в ячейках
 
-In this case we have complete 4-bit groups, so we don't have to add any bits to the Cell data. The result is `0000000f`
+В этом случае мы завершили 4-х битные группы, поэтому нам не нужно добавлять какие-либо биты в данные ячеек. Результат `0000000f`
 
-3. Refs depth
+3. Глубина обращений
 
-We skip this part, because our Cell doesn't have any refs
+Мы пропустили эту часть, потому что у нашей ячейки нет никаких рефералов
 
-4. Refs hashes
+4. Хэш ссылок
 
-We skip this part, because our Cell doesn't have any refs
+Мы пропустили эту часть, потому что у нашей ячейки нет никаких рефералов
 
-5. SHA256 computation
+5. Расчет SHA256
 
-Concatenating bytes from the previous steps we get `00080000000f` and the SHA256 from this bytestring is `57b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f9` - that's the Cell representation hash.
+Захватывающие байты от предыдущих шагов мы получаем `00080000000f` и SHA256 из этого байта `57b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f9` - вот что Клеток представляет хэш.
 
-#### Cell with references
+#### Ген со ссылками
 
 ```json
 24[00000B] -> {
@@ -261,41 +261,41 @@ Concatenating bytes from the previous steps we get `00080000000f` and the SHA256
 }
 ```
 
-1. Descriptors computation
+1. Расчет дескрипторов
 
-The reference descriptor is equals to `r+8s+32l = 2 + 0 + 0 = 0 = 02`
+Исходный дескриптор равен `r+8s+32l = 2 + 0 + 0 = 0 = 02`
 
-The bits descriptor is equals to `floor(b / 8) + ceil (b / 8) = 6 = 06`
+Дескриптор бит равен `floor(b / 8) + потолку (b / 8) = 6 = 06`
 
-Concatenating these bytes we get `0206`
+Объединение этих байтов мы получим `0206`
 
-2. Cell data serialization
+2. Сериализация данных в ячейках
 
-In this case we have complete 4-bit groups, so we don't have to add any bits to the Cell data. The result is `00000b`
+В этом случае мы завершили 4-х битные группы, поэтому нам не нужно добавлять какие-либо биты в данные ячеек. Результат `00000b`
 
-3. Refs depth
+3. Глубина обращений
 
-The depth is represented by 2 bytes. Our Cell has 2 refs and depth of each is zero so the result of this step is `00000000`.
+Глубина представлена 2 байтами. Наша ячейка имеет 2 ответа и глубина каждого равна нулю, поэтому результат этого шага составляет `00000000`.
 
-4. Refs hashes
+4. Хэш ссылок
 
-For every reference we add its hash (we computed above), so the result is `57b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f957b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f9`
+Для каждого упоминания добавим его хэш (мы вычислили выше), поэтому результатом является `57b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f957b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f9`
 
-5. SHA256 computation
+5. Расчет SHA256
 
-Concatenating bytes from the previous steps we get `020600000b0000000057b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f957b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f9`
-and the SHA256 from this bytestring is `f345277cc6cfa747f001367e1e873dcfa8a936b8492431248b7a3eeafa8030e7` - that's the Cell representation hash.
+Захватывая байты от предыдущих шагов, мы получим `020600000b00000057b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f957b520dbcb9d135863fc33963cde9f6db2ded1430d88056810a2c9434a3860f9`
+и SHA256 этого байта `f345277cc6cfa747f001367e1e873dcfa8a936b8492431248b7a3eeafa8030e7` - это хэш для представления ячей.
 
-### Higher hashes calculation
+### Более высокий расчет хэшей
 
-Higher hashes of an Ordinary Cell `c` are computed similarly to its representation hash,
-but using the higher hashes of its references instead of their representation hashes.
+Более высокие хэши обычных ячеек `c` вычисляются аналогично его хешу представления,
+но используя более высокие хэши в своих ссылках вместо хэшей представления.
 
 Exotic cells have their own rules for computing their higher hashes, which are described in [this](/v3/documentation/data-formats/tlb/exotic-cells) article.
 
-## See Also
+## Смотреть также
 
-[//]: # "* [Original article on RU](https://github.com/xssnick/ton-deep-doc/blob/master/Cells-BoC.md)"
+[//]: # "* [Оригинальная статья на RU](https://github.com/xssnick/ton-deep-doc/blob/master/Cells-BoC.md)"
 
-- [Exotic (Special) Cells](/v3/documentation/data-formats/tlb/exotic-cells)
-- [Merkle Proofs verifying](/v3/documentation/data-formats/tlb/proofs)
+- [Экзотические (особенные) ячейки](/v3/documentation/data-formats/tlb/exotic-cells)
+- [Проверка проверки](/v3/documentation/data-formats/tlb/proofs)
