@@ -1,129 +1,128 @@
-# Функции
+# Functions
 
-Программа FunC - это по сути список объявлений/определений функций и глобальных объявлений переменных. Этот раздел посвящен первой теме.
+FunC program is essentially a list of function declarations/definitions and global variable declarations. This section covers the first topic.
 
-Любое определение функции или определение начинается с общего шаблона, и одна из трех вещей идет дальше:
+Any function declaration or definition starts with a common pattern and one of the three things goes next:
 
-- единственный `;`, что означает, что функция объявлена, но еще не определена. Он может быть определен позже в том же файле или в другом файле, который передается перед текущим компилятором FunC. Например,
+- single `;`, which means that the function is declared but not defined yet. It may be defined later in the same file or in some other file which is passed before the current one to the FunC compiler. For example,
   ```func
   int add(int x, int y);
   ```
-  это простое объявление функции с именем `add` типа `(int, int) -> int`.
+  is a simple declaration of a function named `add` of type `(int, int) -> int`.
 
-- определение функционального кузова сборщика. Это способ определения функций низкоуровневого TVM примитива для последующего использования в программе FunC. Например,
+- assembler function body definition. It is the way to define functions by low-level TVM primitives for later use in FunC program. For example,
   ```func
   int add(int x, int y) asm "ADD";
   ```
-  является определением ассемблера той же функции `add` типа `(int, int) -> int`, которая будет переведена на опкод TVM `ADD`.
+  is an assembler definition of the same function `add` of type `(int, int) -> int` which will translate to the TVM opcode `ADD`.
 
-- обычное определение описания блока функции. Это обычный способ определения функций. Например,
+- ordinary block statement function body definition. It is the usual way to define functions. For example,
   ```func
   int add(int x, int y) {
     return x + y;
   }
   ```
-  является обычным определением функции «add».
+  is an ordinary definition of the `add` function.
 
-## Объявление функции
+## Function declaration
 
-Как отмечалось ранее, любое определение функции или определение начинается с общей структуры. Следующий шаблон:
+As said before, any function declaration or definition starts with a common pattern. The following is the pattern:
 
 ```func
 [<forall declarator>] <return_type> <function_name>(<comma_separated_function_args>) <specifiers>
 ```
 
-где `[ ... ]` соответствует необязательной записи.
+where `[ ... ]` corresponds to an optional entry.
 
-### Имя функции
+### Function name
 
-Имя функции может быть любым [identifier](/v3/documentation/smart-contracts/func/docs/literals_identifiers#identifiers) и может начинаться с символа `.` или `~`. Знаком этих символов является [explained](/v3/documentation/smart-contracts/func/docs/statements#methods-calls) в разделе операторов.
+Function name can be any [identifier](/v3/documentation/smart-contracts/func/docs/literals_identifiers#identifiers) and also it can start with `.` or `~` symbols. The meaning of those symbols is [explained](/v3/documentation/smart-contracts/func/docs/statements#methods-calls) in the statements section.
 
-Например, `udict_add_builder?`, `dict_set` и `~dict_set` являются допустимыми и разными именами функций. (Они определены в [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib).)
+For example, `udict_add_builder?`, `dict_set` and `~dict_set` are valid and different function names. (They are defined in [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib).)
 
-#### Специальные имена функций
+#### Special function names
 
-У FunC (на самом деле Fift assembler) несколько зарезервированных функций с предустановленным [ids](/v3/documentation/smart-contracts/func/docs/functions#method_id).
+FunC (actually Fift assembler) has several reserved function names with predefined [ids](/v3/documentation/smart-contracts/func/docs/functions#method_id).
 
-- `main` и `recv_internal` имеют id = 0
-- `recv_external` имеет id = -1
-- `run_ticktock` имеет id = -2
+- `main` and `recv_internal` have id = 0
+- `recv_external` has id = -1
+- `run_ticktock` has id = -2
 
-Каждая программа должна иметь функцию id 0, то есть функцию `main` или `recv_internal`.
-`run_ticktock` называется в транзакциях ticktock специальных смарт-контрактов.
+Every program must have a function with id 0, that is, `main` or `recv_internal` function.
+`run_ticktock` is called in ticktock transactions of special smart contracts.
 
-#### Получить внутренние
+#### Receive internal
 
-`recv_internal` вызывается, когда смарт-контракт получает входящее внутреннее сообщение.
-В стеке есть несколько переменных, когда [TVM initiates](/v3/documentation/tvm/tvm-overview#initialization-of-tvm), установив аргументы в `recv_internal` мы даем знать о некоторых из них. Эти аргументы о том, какой код не знает, будет просто лежать в нижней части стека никогда не трогать.
+`recv_internal` is called when a smart contract receives an inbound internal message.
+There are some variables at the stack when [TVM initiates](/v3/documentation/tvm/tvm-overview#initialization-of-tvm), by setting arguments in `recv_internal` we give smart-contract code awareness about some of them. Those arguments about which code will not know, will just lie at the bottom of the stack never touched.
 
-Таким образом, каждое из следующих утверждений `recv_internal` верно, но те, у которых меньше переменных, тратят немного меньше газа (каждый неиспользуемый аргумент добавляет дополнительные инструкции `DROP`)
+So each of the following `recv_internal` declarations is correct, but those with less variables will spend slightly less gas (each unused argument adds additional `DROP` instructions)
 
 ```func
 
 () recv_internal(int balance, int msg_value, cell in_msg_cell, slice in_msg) {}
-() recv_internal(int msg_value, ячейка in_msg_cell, срез in_msg) {}
+() recv_internal(int msg_value, cell in_msg_cell, slice in_msg) {}
 () recv_internal(cell in_msg_cell, slice in_msg) {}
 () recv_internal(slice in_msg) {}
 ```
 
-#### Получить внешние
+#### Receive external
 
-`recv_external` предназначен для входящих внешних сообщений.
+`recv_external` is for inbound external messages.
 
-### Тип возврата
+### Return type
 
-Return type can be any atomic or composite type as described in the [types](/v3/documentation/smart-contracts/func/docs/types) section. Например,
+Return type can be any atomic or composite type as described in the [types](/v3/documentation/smart-contracts/func/docs/types) section. For example,
 
 ```func
 int foo();
 (int, int) foo'();
 [int, int] foo''();
 (int -> int) foo'''();
-foo<unk> (); 
- () foo<unk> ();
+() foo''''();
 ```
 
-являются допустимыми декларированием функций.
+are valid function declarations.
 
-Разрешена также установка по типу конструкции. Например,
+Type inference is also allowed. For example,
 
 ```func
 _ pyth(int m, int n) {
-  return (m * m - n * n, 2 * м * n, m * m + n * n);
+  return (m * m - n * n, 2 * m * n, m * m + n * n);
 }
 ```
 
-является допустимым определением функции «pyth» типа «(int, int) -> (int, int, int)», которая вычисляет тройки Pythagorean.
+is a valid definition of function `pyth` of type `(int, int) -> (int, int, int)`, which computes Pythagorean triples.
 
-### Аргументы функции
+### Function arguments
 
-Аргументы функции разделяются запятыми. Допустимыми заявлениями аргумента являются:
+Function arguments are separated by commas. The valid declarations of an argument are following:
 
-- Обычное объявление: тип + имя. Например, `int x` -- это объявление типа `int` и имени `x` в объявлении функции `() foo(int x);`
-- Неиспользованное объявление аргумента: только тип. Например,
+- Ordinary declaration: type + name. For example, `int x` is a declaration of argument of type `int` and name `x` in the function declaration `() foo(int x);`
+- Unused argument declaration: only type. For example,
   ```func
   int first(int x, int) {
     return x;
   }
   ```
-  является допустимым определением функции типа `(int, int) -> int`
-- Аргумент с объявлением типа inferred : только имя.
-  Например,
+  is a valid function definition of type `(int, int) -> int`
+- Argument with an inferred type declaration: only name.
+  For example,
   ```func
   int inc(x) {
     return x + 1;
   }
   ```
-  является допустимым определением функции типа `int -> int`. Тип `int` `x` задан типом checker.
+  is a valid function definition of type `int -> int`. The `int` type of `x` is inferred by the type-checker.
 
-Обратите внимание, что хотя функция может выглядеть как функция нескольких аргументов, она на самом деле является функцией одного [tensor-type](/v3/documentation/smart-contracts/func/docs/types#tensor-types). Чтобы увидеть разницу, обратитесь к [приложению функций](/v3/documentation/smart-contracts/func/docs/statements#function-application). Тем не менее компоненты аргумента обычно называются функциональными аргументами.
+Note that although a function may look like a function of several arguments, it's actually a function of one [tensor-type](/v3/documentation/smart-contracts/func/docs/types#tensor-types) argument. To see the difference, please refer to [function application](/v3/documentation/smart-contracts/func/docs/statements#function-application). Nevertheless, the components of the argument tensor are conventionally called function arguments.
 
-### Функциональные вызовы
+### Function calls
 
-#### Неизменяемые методы
+#### Non-modifying methods
 
 :::info
-Неизменяемая функция поддерживает короткую форму вызова функции с помощью `.`
+Non-modifying function supports short function call form with `.`
 :::
 
 ```func
@@ -131,10 +130,10 @@ example(a);
 a.example();
 ```
 
-Если у функции есть хотя бы один аргумент, то она может быть вызвана как метод немодификации. Например, у `store_uint` есть тип `(builder, int, int) -> builder` (второй аргумент должен храниться, а третий — битовая длина). `begin_cell` - это функция, создающая нового конструктора. Следующие коды эквивалентны:
+If a function has at least one argument, it can be called as a non-modifying method. For example, `store_uint` has type `(builder, int, int) -> builder` (the second argument is the value to store, and the third is the bit length). `begin_cell` is a function that creates a new builder. The following codes are equivalent:
 
 ```func
-строитель b = begin_cell();
+builder b = begin_cell();
 b = store_uint(b, 239, 8);
 ```
 
@@ -143,13 +142,13 @@ builder b = begin_cell();
 b = b.store_uint(239, 8);
 ```
 
-Таким образом, первый аргумент функции может быть передан ей перед именем функции, если она разделена `.`. Код можно дополнительно упростить:
+So the first argument of a function can be passed to it being located before the function name, if separated by `.`. The code can be further simplified:
 
 ```func
 builder b = begin_cell().store_uint(239, 8);
 ```
 
-Возможны также несколько вызовов методов:
+Multiple calls of methods are also possible:
 
 ```func
 builder b = begin_cell().store_uint(239, 8)
@@ -157,36 +156,36 @@ builder b = begin_cell().store_uint(239, 8)
                         .store_uint(0xff, 10);
 ```
 
-#### Изменение функций
+#### Modifying functions
 
 :::info
-Модификация функции поддерживает короткую форму операторами `~` и `.`.
+Modifying function supports short form with `~` and `.` operators.
 :::
 
-Если первый аргумент функции имеет тип «A», а возвращаемое значение функции имеет форму «(A, B)`, где `B\` - некоторый произвольный тип, то функция может быть вызвана в качестве модификационного метода.
+If the first argument of a function has type `A` and the return value of the function has the shape of `(A, B)` where `B` is some arbitrary type, then the function can be called as a modifying method.
 
-Изменение вызовов функций может принимать некоторые аргументы и возвращать некоторые значения, но они изменяют их первый аргумент, то есть назначить первую часть возвращаемого значения переменной из первого аргумента.
+Modifying function calls may take some arguments and return some values, but they modify their first argument, that is, assign the first component of the returned value to the variable from the first argument.
 
 ```func
 a~example();
 a = example(a);
 ```
 
-Например, предположим, что `cs` является частью ячейки, а `load_uint` имеет тип `(slice, int) -> (slice, int)`: требуется кусочек ячеек и количество битов для загрузки и возвращает оставшуюся часть маски и загруженное значение. Следующие коды эквивалентны:
+For example, suppose `cs` is a cell slice and `load_uint` has type `(slice, int) -> (slice, int)`: it takes a cell slice and number of bits to load and returns the remainder of the slice and the loaded value. The following codes are equivalent:
 
 ```func
-сс, int x) = load_uint(сs, 8);
+(cs, int x) = load_uint(cs, 8);
 ```
 
 ```func
-сс, int x) = cs.load_uint(8);
+(cs, int x) = cs.load_uint(8);
 ```
 
 ```func
 int x = cs~load_uint(8);
 ```
 
-В некоторых случаях мы хотим использовать функцию в качестве модификационного метода, который не возвращает ни одно значение и только изменяет первый аргумент. Это может быть сделано с помощью типов единиц следующим образом: Предположим, мы хотим определить функцию `inc` типа `int -> int`, , который увеличивает целое число, и использовать его в качестве модификационного метода. Затем мы должны определить «inc» как функцию типа «int -> (int, ()»:
+In some cases we want to use a function as a modifying method that doesn't return any value and only modifies the first argument. It can be done using unit types as follows: Suppose we want to define function `inc` of type `int -> int`, which increments an integer, and use it as a modifying method. Then we should define `inc` as a function of type `int -> (int, ())`:
 
 ```func
 (int, ()) inc(int x) {
@@ -194,21 +193,21 @@ int x = cs~load_uint(8);
 }
 ```
 
-При таком определении он может быть использован в качестве модификационного метода. Ниже будет прибавлено значение `x`.
+When defined like that, it can be used as a modifying method. The following will increment `x`.
 
 ```func
 x~inc();
 ```
 
-#### `.` и `~` в именах функций
+#### `.` and `~` in function names
 
-Предположим, мы хотим использовать «inc» в качестве немодифицирующего метода. Мы можем написать что-то вроде следующего:
+Suppose we want to use `inc` as a non-modifying method too. We can write something like that:
 
 ```func
 (int y, _) = inc(x);
 ```
 
-Но можно переопределить определение «inc» как модификационный метод.
+But it is possible to override the definition of `inc` as a modifying method.
 
 ```func
 int inc(int x) {
@@ -219,7 +218,7 @@ int inc(int x) {
 }
 ```
 
-А затем именуйте это так:
+And then call it like that:
 
 ```func
 x~inc();
@@ -227,33 +226,33 @@ int y = inc(x);
 int z = x.inc();
 ```
 
-Первый вызов будет модифицировать x; второй и третий не будут.
+The first call will modify x; the second and third won't.
 
-Короче говоря, когда функция с именем «foo» называется методом немодификации или изменения (i). с синтаксисом `.foo` или `~foo`), компилятор FunC использует определение `. oo` или `~foo` соответственно, если такое определение представлено, а если нет, то оно использует определение `foo`.
+In summary, when a function with the name `foo` is called as a non-modifying or modifying method (i.e. with `.foo` or `~foo` syntax), the FunC compiler uses the definition of `.foo` or `~foo` correspondingly if such a definition is presented, and if not, it uses the definition of `foo`.
 
-### Спецификаторы
+### Specifiers
 
-Есть три типа спецификаторов: `impure`, `inline`/`inline_ref` и `method_id`. Одни, несколько, или никто из них не может быть помещен в объявление функции, но в настоящее время они должны быть представлены в правильном порядке. Например, после 'inline' поместить `impure` запрещено.
+There are three types of specifiers: `impure`, `inline`/`inline_ref`, and `method_id`. One, several, or none of them can be put in a function declaration but currently they must be presented in the right order. For example, it is not allowed to put `impure` after `inline`.
 
-#### 5.2 Нечистый указатель
+#### Impure specifier
 
-Параметр `impure` означает, что функция может иметь некоторые побочные эффекты, которые нельзя игнорировать. Например, мы должны поместить спецификатор `impure`, если функция может изменить хранение контракта, отправить сообщения, или выбросить исключение, когда некоторые данные недействительны и функция предназначена для проверки этих данных.
+`impure` specifier means that the function can have some side effects which can't be ignored. For example, we should put `impure` specifier if the function can modify contract storage, send messages, or throw an exception when some data is invalid and the function is intended to validate this data.
 
-Если `impure` не указан и результат вызова функции не используется, , то компилятор FunC может и удалит этот вызов функции.
+If `impure` is not specified and the result of the function call is not used, then the FunC compiler may and will delete this function call.
 
-Например, в функции [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib)
+For example, in the [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib) function
 
 ```func
 int random() impure asm "RANDU256";
 ```
 
-определено. `impure` используется, потому что `RANDU256` изменяет внутреннее состояние генератора случайных чисел.
+is defined. `impure` is used because `RANDU256` changes the internal state of the random number generator.
 
-#### Встроенный спецификатор
+#### Inline specifier
 
-Если у функции есть спецификатор 'inline', то ее код на самом деле заменяется на каждом месте, где функция вызывается. Само собой разумеется, что неоднократные призывы к внутренним функциям невозможны.
+If a function has `inline` specifier, its code is actually substituted in every place where the function is called. It goes without saying that recursive calls to inlined functions are not possible.
 
-Например,
+For example,
 
 ```func
 (int) add(int a, int b) inline {
@@ -261,52 +260,52 @@ int random() impure asm "RANDU256";
 }
 ```
 
-так как функция "add" помечена спецификатором "inline". Компилятор попытается заменить вызовы в `add` фактическим кодом `a + b`, избегая переадресации функции вызова.
+as the `add` function is marked with the `inline` specifier. The compiler will try to replace calls to `add` with the actual code `a + b`, avoiding the function call overhead.
 
-Еще один пример того, как вы можете использовать inline, взятый из [ICO-Minter.fc](https://github.com/ton-blockchain/token-contract/blob/f2253cb0f0e1ae0974d7dc0cef3a62cb6e19f806/ft/jetton-minter-ICO.fc#L16):
+Here is another example of how you can use inline, taken from [ICO-Minter.fc](https://github.com/ton-blockchain/token-contract/blob/f2253cb0f0e1ae0974d7dc0cef3a62cb6e19f806/ft/jetton-minter-ICO.fc#L16):
 
 ```func
-() save_data(int total_supply, slice admin_address, содержимое ячейки, клеточный jetton_wallet_code) impure inline {
+() save_data(int total_supply, slice admin_address, cell content, cell jetton_wallet_code) impure inline {
   set_data(begin_cell()
-            . tore_coins(сумма_supply)
-            . tore_slice(admin_address)
-            . tore_ref(content)
-            . tore_ref(jetton_wallet_code)
-           . nd_cell()
+            .store_coins(total_supply)
+            .store_slice(admin_address)
+            .store_ref(content)
+            .store_ref(jetton_wallet_code)
+           .end_cell()
           );
 }
 ```
 
-#### Inline_ref спецификатор
+#### Inline_ref specifier
 
-Код функции с спецификатором 'inline_ref' помещается в отдельную ячейку, и каждый раз, когда функция вызывается, команда «CALLREF» выполняется TVM. Таким образом, она похожа на 'inline', но потому что ячейка может использоваться повторно без дублирования в нескольких местах, в терминах размера кода почти всегда более эффективно использовать спецификатор `inline_ref` вместо `inline`, если только функция не называется ровно один раз. Рекурсивные вызовы функции inline_ref'а до сих пор невозможны, так как в ячейках TVM нет циклических ссылок.
+The code of a function with the `inline_ref` specifier is put into a separate cell, and every time when the function is called, a `CALLREF` command is executed by TVM. So it's similar to `inline`, but because a cell can be reused in several places without duplicating it, it is almost always more efficient in terms of code size to use `inline_ref` specifier instead of `inline` unless the function is called exactly once. Recursive calls of `inline_ref`'ed functions are still impossible because there are no cyclic references in the TVM cells.
 
 #### method_id
 
-Каждая функция программы TVM имеет внутренний целочисленный идентификатор, с помощью которого она может быть вызвана. Обычные функции обычно нумеруются последующими целыми числами, но get-методы контракта пронумерованы crc16 хэшами. `method_id(<some_number>)` спецификатор позволяет задать id функции в указанное значение, и `method_id` использует значение `(crc16(<function_name>) & 0xffff) | 0x10000`. Если у функции есть спецификатор `method_id`, то она может быть вызвана в lite-client или ton-explorer в качестве get-метода по его имени.
+Every function in TVM program has an internal integer id by which it can be called. Ordinary functions are usually numbered by subsequent integers starting from 1, but get-methods of the contract are numbered by crc16 hashes of their names. `method_id(<some_number>)` specifier allows to set the id of a function to specified value, and `method_id` uses the default value `(crc16(<function_name>) & 0xffff) | 0x10000`. If a function has `method_id` specifier, then it can be called in lite-client or ton-explorer as a get-method by its name.
 
-Например,
+For example,
 
 ```func
 (int, int) get_n_k() method_id {
-  (_, int n, int k, _, _, _) = unpack_state();
+  (_, int n, int k, _, _, _, _) = unpack_state();
   return (n, k);
 }
 ```
 
-является get-методом многостороннего контракта.
+is a get-method of multisig contract.
 
-### Полиморфизм со всеми
+### Polymorphism with forall
 
-Перед любым декларированием или определением функции может быть декларирование переменных типа `forall`. Он имеет следующий синтаксис:
+Before any function declaration or definition, there can be `forall` type variables declarator. It has the following syntax:
 
 ```func
-forall <comma_separated_type_variables_names>->
+forall <comma_separated_type_variables_names> ->
 ```
 
-где имя переменной типа может быть любым [identifier](/v3/documentation/smart-contracts/func/docs/literals_identifiers#identifiers). Обычно они называются прописными буквами.
+where type variable name can be any [identifier](/v3/documentation/smart-contracts/func/docs/literals_identifiers#identifiers). Usually, they are named with capital letters.
 
-Например,
+For example,
 
 ```func
 forall X, Y -> [Y, X] pair_swap([X, Y] pair) {
@@ -315,82 +314,82 @@ forall X, Y -> [Y, X] pair_swap([X, Y] pair) {
 }
 ```
 
-является функцией, которая принимает трубку длины ровно 2, , но со значениями любых (одного стека) типов в компонентах и изменяет их друг с другом.
+is a function that takes a tuple of length exactly 2, but with values of any (single stack entry) types in components, and swaps them with each other.
 
-`pair_swap([2, 3])` будет производиться `[3, 2]` и `pair_swap([1, [2, 3, 4]])` будет производиться `[[2, 3, 4], 1]`.
+`pair_swap([2, 3])` will produce `[3, 2]` and `pair_swap([1, [2, 3, 4]])` will produce `[[2, 3, 4], 1]`.
 
-В данном примере `X` и `Y` [тип переменных](/v3/documentation/smart-contracts/func/docs/types#polymorphism-with-type-variables). При вызове функции переменные типа заменяются фактическими типами, и выполняется код функции. Обратите внимание, что хотя эта функция является полиморфической, фактический код сборки для каждой подстановки одинаков. Это достигается по сути полиморфизмом стека манипулирующих примитивами. В настоящее время другие формы полиморфизма (например, ad-hoc полиморфизм с типовыми классами) не поддерживаются.
+In this example `X` and `Y` are [type variables](/v3/documentation/smart-contracts/func/docs/types#polymorphism-with-type-variables). When the function is called, type variables are substituted with actual types, and the code of the function is executed. Note that although the function is polymorphic, the actual assembler code for it is the same for every type substitution. It is achieved essentially by the polymorphism of stack manipulation primitives. Currently, other forms of polymorphism (like ad-hoc polymorphism with type classes) are not supported.
 
-Также стоит отметить, что ширина типа `X` и `Y` должна быть равна 1; то есть значения «X» или «Y» должны занять одну запись в стеке. Таким образом, на самом деле вы не можете вызвать функцию `pair_swap` на трубке типа `[(int, int), int]`, потому что тип `(int, int)` имеет ширину 2, i. ., она занимает 2 записи стека.
+Also, it is worth noticing that the type width of `X` and `Y` is supposed to be equal to 1; that is, the values of `X` or `Y` must occupy a single stack entry. So you actually can't call the function `pair_swap` on a tuple of type `[(int, int), int]`, because type `(int, int)` has width 2, i.e., it occupies 2 stack entries.
 
-## Определение тела сборщика
+## Assembler function body definition
 
-Как упоминалось выше, функцию можно определить с помощью кода сборщика. Синтаксис представляет собой ключевое слово `asm`, за которым следуют один или несколько команд assembler, представленных в виде строк.
-Например, можно определить:
+As mentioned above, a function can be defined by the assembler code. The syntax is an `asm` keyword followed by one or several assembler commands, represented as strings.
+For example, one can define:
 
 ```func
 int inc_then_negate(int x) asm "INC" "NEGATE";
 ```
 
-– функция, которая увеличивает целое число, а затем отрицает его. Звонки этой функции будут переведены на 2 команды сборщика `INC` и `NEGATE`. Альтернативный способ определения функции:
+– a function that increments an integer and then negates it. Calls to this function will be translated to 2 assembler commands `INC` and `NEGATE`. Alternative way to define the function is:
 
 ```func
 int inc_then_negate'(int x) asm "INC NEGATE";
 ```
 
-`INC NEGATE` будет рассматриваться FunC как одна команда сборщика, но это нормально, потому что Fift assembler знает, что это 2 отдельных команды.
+`INC NEGATE` will be considered by FunC as one assembler command, but it is OK, because Fift assembler knows that it is 2 separate commands.
 
 :::info
-Список команд ассемблера можно найти здесь: [инструкции TVM](/v3/documentation/tvm/instructions).
+The list of assembler commands can be found here: [TVM instructions](/v3/documentation/tvm/instructions).
 :::
 
-### Перестроенные записи в стеке
+### Rearranging stack entries
 
-В некоторых случаях мы хотим передать аргументы функции сборщика в том порядке, в котором требует команда сборки, или/и взять результат в другой последовательности записей, чем возвращается команда. Мы могли бы вручную изменить расположение стека, добавив соответствующие примитивы стека, но FunC может сделать это автоматически.
+In some cases, we want to pass arguments to the assembler function in a different order than the assembler command requires, or/and take the result in a different stack entry order than the command returns. We could manually rearrange the stack by adding corresponding stack primitives, but FunC can do it automatically.
 
 :::info
-Обратите внимание, что при реорганизации вручную аргументы будут вычислены в переоборудованном порядке. Для перезаписи этого поведения используйте `#pragma compute-asm-ltr`: [compute-asm-ltr](/v3/documentation/smart-contracts/func/docs/compiler_directives#pragma-compute-asm-ltr)
+Note, that in case of manual rearranging, arguments will be computed in the rearranged order. To overwrite this behavior use `#pragma compute-asm-ltr`: [compute-asm-ltr](/v3/documentation/smart-contracts/func/docs/compiler_directives#pragma-compute-asm-ltr)
 :::
 
-Например, предположим, что команда сборщика STUXQ принимает целое число, конструктор и целое; затем он возвращает конструктор вместе с флагом integer (integer flag), указывающим на успех или неудачу операции.
-Мы можем определить функцию:
+For example, suppose that the assembler command STUXQ takes an integer, builder, and integer; then it returns the builder, along with the integer flag, indicating the success or failure of the operation.
+We may define the function:
 
 ```func
 (builder, int) store_uint_quite(int x, builder b, int len) asm "STUXQ";
 ```
 
-Однако предполагается, что мы хотим переставить аргументы. Затем мы можем определить:
+However, suppose we want to rearrange arguments. Then we can define:
 
 ```func
 (builder, int) store_uint_quite(builder b, int x, int len) asm(x b len) "STUXQ";
 ```
 
-Таким образом, после ключевого слова `asm` можно указать требуемый порядок аргументов.
+So you can indicate the required order of arguments after the `asm` keyword.
 
-Также, мы можем переставить возвращаемые значения:
+Also, we can rearrange return values like this:
 
 ```func
 (int, builder) store_uint_quite(int x, builder b, int len) asm( -> 1 0) "STUXQ";
 ```
 
-Номера соответствуют индексам возвращаемых значений (0 - это самый глубокий элемент стека среди возвращаемых значений).
+The numbers correspond to the indexes of returned values (0 is the deepest stack entry among returned values).
 
-Также возможно объединение этих техник.
+Combining this techniques is also possible.
 
 ```func
 (int, builder) store_uint_quite(builder b, int x, int len) asm(x b len -> 1 0) "STUXQ";
 ```
 
-### Многострочные асмы
+### Multiline asms
 
-Мультистрочная команда ассемблера или даже пятистрочные сниппеты могут быть определены через многострочные строки, которые начинаются и заканчиваются `"""`.
+Multiline assembler command or even Fift-code snippets can be defined via multiline strings which starts and ends with `"""`.
 
 ```func
-срез hello_world() asm """
+slice hello_world() asm """
   "Hello"
   " "
-  "Мир"
-  $+ $>s
+  "World"
+  $+ $+ $>s
   PUSHSLICE
 """;
 ```
