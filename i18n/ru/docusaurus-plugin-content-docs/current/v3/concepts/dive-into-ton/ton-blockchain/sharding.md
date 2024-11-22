@@ -1,24 +1,24 @@
-# Sharding in the TON Blockchain
+# Шифрование в блокчейне TON
 
-[//]: # "TODO, this is from gpt"
+[//]: # "TODO, это из gpt"
 
-The TON Blockchain employs advanced sharding mechanisms to enhance scalability and performance, allowing it to efficiently process a massive number of transactions.
-The core concept is splitting the blockchain into smaller, independent pieces called **shards**. These shards can handle transactions in parallel, ensuring high throughput even as the network grows.
+TON Blockchain использует расширенные механизмы для увеличения масштабируемости и производительности, что позволяет эффективно обрабатывать большое количество транзакций.
+Ядро разделяет блокчейн на меньшие, независимые части **шарды**. Эти шарды могут обрабатывать транзакции параллельно, обеспечивая высокую пропускную способность, даже по мере роста сети.
 
-In TON, sharding is highly dynamic. Unlike other blockchains, which have a fixed number of shards, TON can create new shards on demand.
-As the transaction load increases, shards split, and as the load decreases, they merge.
-This flexibility ensures that the system can adapt to varying workloads while maintaining efficiency.
+В ТОН резкое резкое развитие является весьма динамичным. В отличие от других блокчейнов, у которых зафиксировано количество осколков, TON может создать новые осколки по требованию.
+По мере увеличения нагрузки на транзакцию осколки разделяются и по мере уменьшения нагрузки они сливаются.
+Такая гибкость обеспечивает возможность адаптации системы к различным нагрузкам при сохранении эффективности.
 
-The **Masterchain** plays a crucial role, maintaining the network configuration and the final state of all **workchains** and **shardchains**.
-While the masterchain is responsible for overall coordination, **workchains** operate under their specific rules, each of which can be split further into shardchains.
-Currently, only one workchain (the **Basechain**) operates on TON.
+**Masterchain** играет решающую роль, поддерживая конфигурацию сети и окончательное состояние всех **рабочих цепи** и **shardchains**.
+В то время как шедевр отвечает за общую координацию, **цепочки работников** работают в соответствии с их конкретными правилами, каждый из которых может быть разделен на шардинги.
+В настоящее время на ТОН работает только одна цепочка работ (**Basechain**).
 
-At the heart of TON's efficiency is the **Infinity Sharding Paradigm**, which treats each account as part of its own "accountchain."
-These accountchains are then aggregated into shardchain blocks, facilitating efficient transaction processing.
+Серьезным фактором эффективности TON является **Бесконечный Парадигм**, который рассматривает каждый аккаунт как часть своей "бухгалтерской цепочки".
+Затем эти системы бухгалтерского учета агрегируются в блоки шардинга, что облегчает эффективную обработку транзакций.
 
-In addition to the dynamic creation of shards, TON uses **Split Merge** functionality, which allows the network to efficiently respond to changing transaction loads. This system enhances scalability and interaction within the blockchain network, exemplifying TON's approach to resolving common blockchain challenges with a focus on efficiency and global consistency.
+Помимо динамического создания шардов, TON использует функциональность **Split Merge**, которая позволяет сети эффективно реагировать на изменение нагрузки на транзакции. Эта система улучшает масштабируемость и взаимодействие в сети блокчейна, Пример подхода ТОН к решению общих проблем блокчейна с акцентом на эффективность и глобальную согласованность.
 
-## See Also
+## Смотреть также
 
-- [Shards Dive In](/v3/documentation/smart-contracts/shards/shards-intro)
-- [# Infinity Sharding Paradigm](/v3/documentation/smart-contracts/shards/infinity-sharding-paradigm)
+- [Погрузиться в осколки](/v3/documentation/smart-contracts/shards/shards-intro)
+- [# Парадигма Бесконечности](/v3/documentation/smart-contracts/shards/infinity-sharding-paradigm)
