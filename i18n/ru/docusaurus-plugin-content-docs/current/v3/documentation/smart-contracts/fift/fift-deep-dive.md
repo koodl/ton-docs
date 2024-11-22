@@ -1,106 +1,106 @@
 # Fift deep dive
 
-Для локальных манипуляций с клетками и другими примитивами ТВМ используется высокоуровневый стек языковой "Fif", для преобразования кода сборки ТВМ в пакетный пакет клеток.
+A high-level stack-based language Fift is used for local manipulation with cells and other TVM primitives, mostly for converting TVM assembly code into contract code bag-of-cells.
 
 :::caution
-Этот раздел описывает взаимодействие с особенностями TON на **очень** низком уровне.
-Серьезное понимание основ стека языков.
+This section describes interacting with TON-specific features at **very** low level.
+Serious understanding of stack languages' basics required.
 :::
 
-## Простая арифметика
+## Simple arithmetic
 
-Вы можете использовать интерпретатор Fift в качестве калькулятора, записывая в выражениях [обратная польская нотация](https://en.wikipedia.org/wiki/Reverse_Polish_notation).
+You are able to use Fift interpreter as calculator, writing in expressions in [reverse Polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation).
 
 ```
 6 17 17 * * 289 + .
 2023 ok
 ```
 
-## Стандартный выход
+## Standard output
 
 ```
-27 излучает ."[30;1mgrey текст" 27 излучает ."[37m"
-серый текст ОК
+27 emit ."[30;1mgrey text" 27 emit ."[37m"
+grey text ok
 ```
 
-`emit` принимает номер сверху стека и печатает символ Unicode с указанным кодом в stdout.
-`."..."` выводит постоянную строку.
+`emit` takes number from top of stack and prints Unicode character with the specified code into stdout.
+`."..."` prints constant string.
 
-## Определение функций (Фифтовые слова)
+## Defining functions (Fift words)
 
-Основной способ определения слова - заключить его в фигурные скобки, затем написать имя `:` и слово `:`.
+The main way of defining a word is to enclose its effects in curly braces then write `:` and word name.
 
 ```
-{ minmax drop } : мин
-{ minmax nip } : макс.
+{ minmax drop } : min
+{ minmax nip } : max
 ```
 
 > Fift.fif
 
-Однако существует несколько _определяющих слов_, а не только `:`. Смысл этих слов не совпадает с **активными** (работа в фигурных скобках), а некоторые - **префикс** (после них не требуют пробела):
+Though, there are several _defining words_, not only `:`. They're different in the sense words defined with some of them are **active** (work inside curly braces) and some are **prefix** (don't require space character to be after them):
 
 ```
 { bl word 1 2 ' (create) } "::" 1 (create)
 { bl word 0 2 ' (create) } :: :
-{ bl word 2 ' (create) } :: :_
-{ bl word 3 2 ' (create) } :: :_
+{ bl word 2 2 ' (create) } :: :_
+{ bl word 3 2 ' (create) } :: ::_
 { bl word 0 (create) } : create
 ```
 
 > Fift.fif
 
-## Условное исполнение
+## Conditional execution
 
-Блоки кода (разделенные фигурными скобками) могут быть выполнены либо условно, либо безоговорочно.
+Code blocks (those delimited by curly braces) can be executed, either conditionally or unconditionally.
 
 ```
-{ { ."true " } { ."false " } cond } : ?. 4 5 = ?. 4 5 < ?.
-false true ok
-{ ."Привет" } выполнить ."world"
+{ { ."true " } { ."false " } cond } : ?.   4 5 = ?.  4 5 < ?.
+false true  ok
+{ ."hello " } execute ."world"
 hello world ok
 ```
 
-## Циклы
+## Loops
 
 ```
-// ( l c -- l') удаляет первые с элементов из списка l
+// ( l c -- l')  deletes first c elements from list l
 { ' safe-cdr swap times } : list-delete-first
 ```
 
 > GetOpt.fif
 
-Циклическое слово `times` принимает два аргумента - давайте назовем их `cont` и `n` - выполняем `cont` `n` раз.
-Здесь `list-delete-first` принимает продолжение `safe-cdr` (удаляя заголовок из Lisp-style list), ставит его под `c`, а затем `c` раз удаляет головы из списка присутствующих на стеке.
+Loop word `times` takes two arguments - let's call them `cont` and `n` - and executes `cont` `n` times.
+Here `list-delete-first` takes continuation of `safe-cdr` (command deleting head from Lisp-style list), places it under `c` and then `c` times removes head from list present on stack.
 
-Есть также слова `while` и `until`.
+There are also words `while` and `until`.
 
-## Комментарии
+## Comments
 
 ```
 { 0 word drop 0 'nop } :: //
-{ char " word 1 { swap { abort } if drop } ::_ abort"
+{ char " word 1 { swap { abort } if drop } } ::_ abort"
 { { bl word dup "" $= abort"comment extends after end of file" "*/" $= } until 0 'nop } :: /*
 ```
 
 > Fift.fif
 
-Комментарии определяются в разделе 'Fift.fif'. Коммент с одной строкой начинается с `//` и продолжается до конца строки; многострочный комментарий начинается с `/*` и заканчивается символом `*/`.
+Comments are defined in `Fift.fif`. Single-line comment starts with `//` and continues to the end of line; multiline comment starts with `/*` and ends with `*/`.
 
-Давайте поймем, почему они так работают.\
-Fift program is a program that allows you to translate words from English into Russian and from English into Russian. Первая строка `Fift.fif` (код, показанный выше) является объявлением нового слова `//`.
-Комментарии должны работать даже при определении новых слов, поэтому они должны работать в вложенной среде. Поэтому они определяются как **активные** слова, используя `:`. Действия создаваемого слова перечислены в фигурных скобках:
+Let's understand why they work so.\
+Fift program is essentially sequence of words, each of those transforming stack in some way or defining new words. First line of `Fift.fif` (code shown above) is declaration of new word `//`.
+Comments have to work even when defining new words, so they must work in nested environment. That's why they are defined as **active** words, by means of `::`. Actions of the word being created are listed in the curly braces:
 
-1. `0`: ноль выталкивается в стек
-2. `word`: эта команда читает символы до тех пор, пока не будет достигнута одна равная началу стека и не будет загружена данные, прочитанные как строка. Особый случай — здесь «слово» пропускает ведущие пробелы, а затем читает до конца текущей строки ввода.
-3. `drop`: верхний элемент (данные комментариев) удаляется из стека.
-4. `0`: ноль снова вставляется в стек - количество результатов, используется, потому что слово определяется с помощью `::`.
-5. `'nop` толкает токен выполнения ничего не делая при вызове. Это почти эквивалентно `{ nop }`.
+1. `0`: zero is pushed onto stack
+2. `word`: this command reads chars until one equal to top of stack is reached and pushes the data read as String. Zero is special case: here `word` skips leading spaces and then reads until the end of the current input line.
+3. `drop`: top element (comment data) is dropped from stack.
+4. `0`: zero is pushed onto stack again - number of results, used because word is defined with `::`.
+5. `'nop` pushes execution token doing nothing when called. It's pretty much equivalent to `{ nop }`.
 
-## Использование Fift для определения кодов сборки ТВМ
+## Using Fift for defining TVM assembly codes
 
 ```
 x{00} @Defop NOP
-{ 1 ' @addop создает } : @Defop
+{ 1 ' @addop does create } : @Defop
 { tuck sbitrefs @ensurebitrefs swap s, } : @addop
 { @havebitrefs ' @| ifnot } : @ensurebitrefs
 { 2 pick brembitrefs 1- 2x<= } : @havebitrefs
@@ -108,30 +108,30 @@ x{00} @Defop NOP
 ...
 ```
 
-> Asm.fif (обратный порядок строк)
+> Asm.fif (lines order reversed)
 
-`@Defop` проверяет, достаточно ли свободного места для opcode (`@havebitrefs`), и если нет, то он идет на запись другому строителю (`@|`; также известный как неявный прыжок). Поэтому вы обычно не хотите писать `x{A988} с как опкод: может быть недостаточно места для размещения этого опкода, поэтому компиляция не удалась; вместо этого напишите `x{A988} @addop\`.
+`@Defop` takes care of checking if there is enough space for opcode (`@havebitrefs`), and if there is not, it goes on writing to another builder (`@|`; also known as implicit jump). That's why you generally don't want to write `x{A988} s,` as an opcode: there could be insufficient space to place this opcode, so compilation would fail; you should write `x{A988} @addop` instead.
 
-Вы можете использовать Fift для включения в контракт сумки больших ячеек:
+You may use Fift for including big bag-of-cells into contract:
 
 ```
 <b 8 4 u, 8 4 u, "fift/blob.boc" file>B B>boc ref, b> <s @Defop LDBLOB
 ```
 
-Эта команда определяет опкод, который при включении в программу записывает `x{88}` (`PUSHREF`) и ссылку на предоставленные ячейки. Таким образом, когда берутся инструкция «LDBLOB», она толкает клетку в стек TVM.
+This command defines opcode which, when being included into program, writes `x{88}` (`PUSHREF`) and a reference to provided bag-of-cells. So when `LDBLOB` instruction is ran, it pushes the cell to TVM stack.
 
-## Особые функции
+## Special features
 
-- Ed25519 криптография
-  - newkeypair - генерирует пару частных и публичных ключей
-  - priv>pub - генерирует открытый ключ из частного
-  - ed25519_sign[_uint] - генерирует данные о подписи и приватный ключ
+- Ed25519 cryptography
+  - newkeypair - generates private-public key pair
+  - priv>pub   - generates public key from private
+  - ed25519_sign[_uint] - generates signature given data and private key
   - ed25519_chksign     - checks Ed25519 signature
-- Взаимодействие с TVM
-  - runvmcode и подобный - вызывает TVM с кодовым фрагментом взятым из стека
-- Запись BOC в файлы:
+- Interaction with TVM
+  - runvmcode and similar - invokes TVM with code slice taken from stack
+- Writing BOC into files:
   `boc>B ".../contract.boc" B>file`
 
-## Продолжить обучение
+## Continue learning
 
-- [Пятью: Краткое введение](https://docs.ton.org/fiftbase.pdf) от Nikolai Durov
+- [Fift: A Brief Introduction](https://docs.ton.org/fiftbase.pdf) by Nikolai Durov
