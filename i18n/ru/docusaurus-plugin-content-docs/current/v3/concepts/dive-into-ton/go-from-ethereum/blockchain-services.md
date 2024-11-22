@@ -1,31 +1,31 @@
-# Blockchain сервисы
+# Blockchain Services
 
-## Система имени домена
+## Domain Name Systems
 
-В Ethereum, пользователи используют службу имен Ethereum (ENS), которая является децентрализованной системой именования, построенной поверх блокчейна Ethereum.
+In Ethereum, users use the Ethereum Name Service (ENS), which is a decentralized naming system built on top of the Ethereum blockchain.
 
-Блокчейн TON включает в себя встроенную систему имён домена, известную как TON DNS. Это децентрализованный сервис, который позволяет пользователям регистрировать человекочитаемые доменные имена для своих смарт-контрактов, веб-сайтов или любого другого сетевого контента. Такое устройство облегчает взаимодействие с децентрализованными приложениями (dApps) и другими ресурсами блокчейна TON. DNS система в TON функционирует аналогично традиционным Internet DNS системам, но его децентрализованный характер устраняет необходимость централизованных полномочий по контролю и управлению доменными именами, тем самым уменьшая риски захвата цензуры, мошенничества и хищения доменных имен.
+The TON blockchain includes an embedded domain name system known as the TON DNS. It is a decentralized service that allows users to register human-readable domain names for their smart contracts, websites, or any other online content. Such a device facilitates interaction with decentralized applications (dApps) and other resources on the TON blockchain. The DNS system in TON functions similarly to traditional Internet DNS systems, but its decentralized nature eliminates the need for a centralized authority to control and manage domain names, thereby reducing the risks of censorship, fraud, and domain name hijacking.
 
 ## WWW
 
-TON WWW является частью блокчейна TON, который позволяет создавать и взаимодействовать с децентрализованными веб-сайтами непосредственно через блокчейн. В отличие от традиционных веб-сайтов, веб-сайты на TON доступны по специальным URL, заканчивающимся на `. on` и поддерживают уникальные гиперссылки формата `ton://`, которые позволяют транзакции и другие операции непосредственно из URL.
+TON WWW is a part of the TON blockchain that allows you to create and interact with decentralized websites directly through the blockchain. Unlike traditional websites, websites on TON are accessible via special URLs ending in `.ton` and support unique hyperlinks of the `ton://` format that allow transactions and other operations directly from the URL.
 
-Одной из ключевых особенностей TON WWW является возможность привязки криптовалютных кошельков к доменным именам, которая позволяет пользователям отправлять криптовалюты на такие адреса, как алис. lace.ton без дополнительных деталей. Это значительно упрощает процесс пожертвований и платежей, что делает его более интуитивно понятным и удобным.
+One of the key features of TON WWW is the ability to directly bind crypto wallets to domain names, which allows users to send cryptocurrency to addresses like alice.place.ton without additional details. This greatly simplifies the process of donations and payments, making it more intuitive and convenient.
 
-## Прокси
+## Proxy
 
-TON Proxy - это инструмент, основанный на протоколе TON, который обеспечивает высокий уровень безопасности и анонимности. Все данные, передаваемые через TON Proxy, зашифрованы и защищены конфиденциальной информацией пользователей.
+TON Proxy is a tool based on the TON protocol that offers a high level of security and anonymity. All data transmitted through TON Proxy is encrypted, thus protecting users' confidential information.
 
-Одним из ключевых преимуществ прокси TON является возможность обойти блокады, навязанные ISP или правительственными агентствами. Это делает его важным инструментом для пользователей, которым необходим свободный доступ к информации в Интернете без ограничений.
+One of the key advantages of TON Proxy is its ability to bypass blockades imposed by ISPs or government agencies. This makes it an essential tool for users who need free access to information on the Internet without restrictions.
 
-Кроме того, TON Proxy помогает ускорить скорость подключения к Интернету. Он автоматически выбирает сервера с наименьшей нагрузкой, что улучшает качество соединения и скорость доступа к Интернету.
+In addition, TON Proxy helps to speed up Internet connection speeds. It automatically selects the servers with the lowest load, which improves the quality of connection and the speed of Internet access.
 
-## Децентрализованное хранилище
+## Decentralized storage
 
-Ethereum не подходит для хранения большого объема данных. Поэтому децентрализованное хранилище на Ethereum обычно предполагает использование распределенных файловых систем для хранения и извлечения данных децентрализованным и защищенным образом. Одним из популярных подходов к децентрализованному хранению на Ethereum является InterPlanetary File System (IPFS), , которая является файловой системой peer-to-peer, которая позволяет пользователям хранить и извлекать файлы из сети распределенных узлов.
+Ethereum is not suitable for storing large amounts of data. Therefore, decentralized storage on Ethereum typically involves using distributed file systems to store and retrieve data in a decentralized and secure manner. One popular approach to decentralized storage on Ethereum is the  InterPlanetary File System (IPFS), which is a peer-to-peer file system that allows users to store and retrieve files from a network of distributed nodes.
 
-Сеть TON имеет собственную децентрализованную службу хранения, которая используется TON Blockchain для хранения архивных копий блоков и статусных данных (снимки), но также доступно для хранения файлов пользователей или других сервисов, работающих на платформе, с технологией доступа к торрентам. Наиболее популярным вариантом использования является хранение метаданных NFT непосредственно на TON хранении, а не использование дополнительных распределенных сервисов хранения файлов, таких как IPFS.
+TON network has its own decentralized storage service, that is used by the TON Blockchain to store archive copies of blocks and status data (snapshots), but also available for storing users’ files or other services running on the platform, with torrent-like access technology. The most popular use case is to store NFT metadata directly on TON storage, not using additional distributed file storage services like IPFS.
 
-## Платежные услуги
+## Payment services
 
-TON Payments - это решение для молниеносно быстрой транзакции с нулевой сетевой комиссией на TON блокчейне. Хотя блокчейн TON достаточно для большинства задач, некоторые приложения, такие как TON Proxy, TON Storage или определенное децентрализованное приложение, требуют микротранзакции с гораздо более высокой скоростью и меньшими затратами. Для решения этой проблемы были созданы платёжные каналы, также известные как Lightning сети. Каналы платежей позволяют двум сторонам совершать транзакции вне цепи путем создания специального смарт-контракта в блокчейне с их первоначальным балансом. Затем они могут выполнять столько транзакций, сколько они хотят, без каких-либо ограничений скорости или комиссий. Плата за сеть взимается только при открытии и закрытии канала. Технология также гарантирует правильное функционирование, позволяя стороне закрыть канал самостоятельно, если другая сторона обманула или исчезает.
+TON Payments is a solution for lightning-fast transactions with zero network fees on the TON blockchain. While the TON blockchain is sufficient for most tasks, some applications, such as TON Proxy, TON Storage or a certain decentralized application, require micro-transactions with much higher speed and lower costs. Payment channels, also known as the Lightning network, were created to solve this problem. Payment channels allow two parties to make transactions off-chain by creating a special smart contract on the blockchain with their initial balances. They can then perform as many transactions between them as they want without any speed limits or fees. The network's fees are only charged when the channel is opened and closed. The technology also guarantees proper operation by allowing a party to close the channel on its own if the other party cheats or disappears.
