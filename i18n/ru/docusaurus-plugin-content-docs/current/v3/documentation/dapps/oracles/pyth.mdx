@@ -1,116 +1,116 @@
 import ThemedImage from '@theme/ThemedImage';
 
-# Пятый Оракл
+# Pyth Oracles
 
-## Как использовать данные в реальном времени в контрактах TON
+## How to Use Real-Time Data in TON Contracts
 
-Пять ценовых фидов на TON управляются с помощью основного контракта TON Pyth
-, что обеспечивает плавное взаимодействие с данными по цепочке. In TON,
+Pyth price feeds on TON are managed through the main TON Pyth smart
+contract, enabling seamless interaction with on-chain data. In TON,
 these interactions are facilitated by specific functions within the
-Pyth receiver contract. Этот контракт выступает в качестве интерфейса к фидам цен на Pyth
-и обрабатывает поиск и обновление данных о ценах.
+Pyth receiver contract. This contract acts as an interface to Pyth
+price feeds, handling the retrieval and updating of price data.
 
-## Установите Pyth SDK
+## Install the Pyth SDK
 
-Установите Pyth TON SDK и другие необходимые зависимости с помощью npm или пряжки:
+Install the Pyth TON SDK and other necessary dependencies using npm or yarn:
 
 ```ts
    npm install @pythnetwork/pyth-ton-js @pythnetwork/hermes-client
    @ton/core @ton/ton @ton/crypto
 ```
 
-   или
+   or
 
 ```ts
    yarn add @pythnetwork/pyth-ton-js @pythnetwork/hermes-client
    @ton/core @ton/ton @ton/crypto
 ```
 
-## Написать код клиента
+## Write Client Code
 
-Следующий фрагмент кода демонстрирует, как получать обновления цен, взаимодействовать с контрактом Pyth на TON, и обновлять ценовые фиды:
+The following code snippet demonstrates how to fetch price updates, interact with the Pyth contract on TON, and update price feeds:
 
 - TON Mainnet: [EQBU6k8HH6yX4Jf3d18swWbnYr31D3PJI7PgjXT-flsKHqql](https://docs.pyth.network/price-feeds/contract-addresses/ton)
 - TON Testnet: [EQB4ZnrI5qsP_IUJgVJNwEGKLzZWsQOFhiaqDbD7pTt_f9oU](https://docs.pyth.network/price-feeds/contract-addresses/ton)
 
-В следующем примере используется testnet контракт. Для использования mainnet измените `PYTH_CONTRACT_ADDRESS_TESTNET` на `PYTH_CONTRACT_ADDRESS_MAINNET`. 
+The following example uses testnet contract. For mainnet usage, change the `PYTH_CONTRACT_ADDRESS_TESTNET` to `PYTH_CONTRACT_ADDRESS_MAINNET` accordingly. 
 
 ```ts
-импортировать { TonClient, Address, WalletContractV4 } из "@ton/ton";
-импортировать { toNano } из "@ton/core";
-импортировать { mnemonicToPrivateKey } из "@ton/crypto";
-импортировать { HermesClient } из "@pythnetwork/hermes-client";
+import { TonClient, Address, WalletContractV4 } from "@ton/ton";
+import { toNano } from "@ton/core";
+import { mnemonicToPrivateKey } from "@ton/crypto";
+import { HermesClient } from "@pythnetwork/hermes-client";
 import {
   PythContract,
   PYTH_CONTRACT_ADDRESS_TESTNET,
   calculateUpdatePriceFeedsFee,
-} с "@pythnetwork/pyth-ton-js";
+} from "@pythnetwork/pyth-ton-js";
 const BTC_PRICE_FEED_ID =
   "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43";
 async function main() {
-  // Инициализация TonClient
+  // Initialize TonClient
   const client = new TonClient({
-    endpoint: "https://testnet. центр. om/api/v2/jsonRPC",
+    endpoint: "https://testnet.toncenter.com/api/v2/jsonRPC",
     apiKey: "your-api-key-here", // Optional
   });
-  // Создание экземпляра PythContract
-  const contractAddress = Address. arse(PYTH_CONTRACT_ADDRESS_TESTNET);
+  // Create PythContract instance
+  const contractAddress = Address.parse(PYTH_CONTRACT_ADDRESS_TESTNET);
   const contract = client.open(PythContract.createFromAddress(contractAddress));
-  // Получить индекс текущего хранителя
-  const guardianSetIndex = await contract. etCurrentGuardianSetIndex();
-  консоли. og("Индекс хранителя:", guardianSetIndex);
-  // Получить цену BTC от TON контракта
-  const цена = ожидание контракта. etPriceUnsafe(BTC_PRICE_FEED_ID);
-  консоли. og("Цена BTC от TON contract:", price);
-  // Получение последних обновлений цен от Hermes
-  const hermesEndpoint = "https://hermes. yth.network";
-  const hermesClient = новый HermesClient(hermesEndpoint);
+  // Get current guardian set index
+  const guardianSetIndex = await contract.getCurrentGuardianSetIndex();
+  console.log("Guardian Set Index:", guardianSetIndex);
+  // Get BTC price from TON contract
+  const price = await contract.getPriceUnsafe(BTC_PRICE_FEED_ID);
+  console.log("BTC Price from TON contract:", price);
+  // Fetch latest price updates from Hermes
+  const hermesEndpoint = "https://hermes.pyth.network";
+  const hermesClient = new HermesClient(hermesEndpoint);
   const priceIds = [BTC_PRICE_FEED_ID];
-  constlatestPriceUpdates = ожидание клиента hermesent. etLatestPriceUpdates(
+  const latestPriceUpdates = await hermesClient.getLatestPriceUpdates(
     priceIds,
     { encoding: "hex" }
   );
-  консоли. og("Цена BTC Гермес:", latestPriceUpdates.[0].price);
-  // Подготовка данных обновления
+  console.log("Hermes BTC price:", latestPriceUpdates.parsed?.[0].price);
+  // Prepare update data
   const updateData = Buffer.from(latestPriceUpdates.binary.data[0], "hex");
-  консоли. og("Данные обновления:", updateData);
-  // Получение платы за обновление
+  console.log("Update data:", updateData);
+  // Get update fee
   const updateFee = await contract.getUpdateFee(updateData);
-  консоли. og("Плата обновления:", updateFee);
-  совпало с общей комиссией =
-    рассчитано Прайс-FeedsFee(BigInt(updateFee)) + BigInt(updateFee);
-  // Обновление ценовых фидов
-  const mnemonic = "Ваш мнемонический здесь";
-  const key = await mnemonicToPrivateKey(mnemonic. plit(" "));
-  const кошелек = WalletContractV4. reate({
+  console.log("Update fee:", updateFee);
+  const totalFee =
+    calculateUpdatePriceFeedsFee(BigInt(updateFee)) + BigInt(updateFee);
+  // Update price feeds
+  const mnemonic = "your mnemonic here";
+  const key = await mnemonicToPrivateKey(mnemonic.split(" "));
+  const wallet = WalletContractV4.create({
     publicKey: key.publicKey,
     workchain: 0,
   });
-  const provider = client.open(кошелек);
+  const provider = client.open(wallet);
   await contract.sendUpdatePriceFeeds(
-    provider.sender(key. ecretKey),
+    provider.sender(key.secretKey),
     updateData,
-    totale
+    totalFee
   );
-  консоли. og("Ленты цен успешно обновлены.");
+  console.log("Price feeds updated successfully.");
 }
 main().catch(console.error);
 ```
 
-Этот фрагмент кода делает следующее:
+This code snippet does the following:
 
-1. Инициализирует «TonClient» и создает экземпляр «PythContract».
-2. Возвращает из контракта TON индекс действующего хранителя и цену BTC.
-3. Получает последние обновления цен от Hermes.
-4. Подготавливает обновленные данные и рассчитывает плату за обновление.
-5. Обновляет ценовые фиды на контракте TON.
+1. Initializes a `TonClient` and creates a `PythContract` instance.
+2. Retrieves the current guardian set index and BTC price from the TON contract.
+3. Fetches the latest price updates from Hermes.
+4. Prepares the update data and calculates the update fee.
+5. Updates the price feeds on the TON contract.
 
-## Дополнительные ресурсы
+## Additional Resources
 
-Вы можете найти эти дополнительные ресурсы, полезные для разработки вашего TON-приложения:
+You may find these additional resources helpful for developing your TON application:
 
-- [TON документация](https://ton.org/docs/)
+- [TON Documentation](https://ton.org/docs/)
 - [Pyth Price Feed IDs](https://pyth.network/developers/price-feed-ids)
 - [Pyth TON Contract](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ton/contracts)
 - [Pyth TON SDK](https://github.com/pyth-network/pyth-crosschain/tree/main/target_chains/ton/sdk)
-- [Pyth TON Пример](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/sdk_js_usage)
+- [Pyth TON Example](https://github.com/pyth-network/pyth-examples/tree/main/price_feeds/ton/sdk_js_usage)
