@@ -1,58 +1,58 @@
-# Доп. валюта добычи
+# Extra Currency Minting
 
-## Извлечение
+## Extracurrency
 
-Согласно [Белой бумаге Ton Blockchain 3.1.6](https://ton-blockchain.github.io/docs/tblkch. df#page=55), TON Blockchain позволяет своим пользователям определять произвольные криптовалюты или токены отдельно от Toncoin, при условии соблюдения некоторых условий. Такие дополнительные криптовалюты идентифицируются по _currency\_ids_. The list of defined additional cryptocurrencies is a part of the blockchain configuration,
-stored in the masterchain. Каждое внутреннее сообщение, а также остаток на счете содержат специальное поле для "ExtraCurrencyCollection" (набор извлечений, прикрепленных к сообщению или сохраненных на балансе):
+According to [Ton Blockchain Whitepaper 3.1.6](https://ton-blockchain.github.io/docs/tblkch.pdf#page=55), TON Blockchain allows its users to define arbitrary cryptocurrencies or tokens apart from the Toncoin, provided some conditions are met. Such additional cryptocurrencies are identified by 32-bit _currency\_ids_. The list of defined additional cryptocurrencies is a part of the blockchain configuration,
+stored in the masterchain. Each internal message as well as account balance contains a special field for `ExtraCurrencyCollection` (set of extracurrencies attached to a message or kept on balance):
 
 ```tlb
 extra_currencies$_ dict:(HashmapE 32 (VarUInteger 32)) = ExtraCurrencyCollection;
-валюты$_ граммы:Grams other:ExtraCurrencyCollection = ВалютКоллекция;
+currencies$_ grams:Grams other:ExtraCurrencyCollection = CurrencyCollection;
 ```
 
-## Настройка извлечения
+## Extracurrency config
 
-Словарь «ExtraCurrencyCollection» всех валют, которые должны быть добыты, хранится в `ConfigParam7`:
+A dictionary, or to be precise `ExtraCurrencyCollection`, of all currencies that should be minted is stored in `ConfigParam7`:
 
 ```tlb
 _ to_mint:ExtraCurrencyCollection = ConfigParam 7;
 ```
 
-`ConfigParam 6` содержит данные, касающиеся майнинга:
+`ConfigParam 6` contains data related to minting:
 
 ```tlb
 _ mint_new_price:Grams mint_add_price:Grams = ConfigParam 6;
 ```
 
-`ConfigParam2` содержит адрес _Minter_.
+`ConfigParam2` contains address of _Minter_.
 
-## Поток горняков низкого уровня
+## Low-level minting flow
 
-В каждом блоке коллаж сравнивает старый глобальный баланс (глобальный баланс всех валют в конце блока prev) с `ConfigParam7`. Если сумма для любой валюты в `ConfigParam7` меньше, чем в глобальном балансе - конфигурация недействительна. Если какая-либо валюта в `ConfigParam7` выше, чем в глобальном балансе, будет создано minting сообщение.
+In each block, the collator compares the old global balance (global balance of all currencies at the end of prev block) with `ConfigParam7`. If any amount for any currency in `ConfigParam7` is less than it is in the global balance - the config is invalid. If any amount of any currency in `ConfigParam7` is higher than it is in the global balance a minting message will be created.
 
-Это сообщение имеет источник `-1:0000000000000000000000000000000000000000000000000000000000000000000000000000000000` и _Minter_ из `ConfigParam2` как назначения и содержит excesses извлечений в `ConfigParam7` на старом глобальном балансе.
+This minting message has source `-1:0000000000000000000000000000000000000000000000000000000000000000` and _Minter_ from `ConfigParam2` as destination and contains excesses of extracurrencies in `ConfigParam7` over old global balance.
 
-Проблема здесь заключается в том, что горняковое сообщение содержит только дополнительные валюты и нет монет TON. Это означает, что даже если _Minter_ установлен как фундаментальный смарт-контракт (представлен в `ConfigParam31`), сообщение может привести к прерванной транзакции: `compute_ph:(tr_phase_compute_skip_no_gas)`.
+The issue here is that the minting message contains extra currencies only and no TON coins. That means that even if _Minter_ is set as a fundamental smart contract (presented in `ConfigParam31`), a minting message will cause the aborted transaction: `compute_ph:(tr_phase_compute_skipped reason:cskip_no_gas)`.
 
-## Высокоуровневый горный поток
+## High-level minting flow
 
-_Minter_ смарт-контракт при получении запроса на создание новых извлечений или майнинг дополнительных токенов для существующих контрактов должны:
+_Minter_ smart contract upon receiving a request for the creation of new extracurrencies or minting additional tokens for existing ones should:
 
-1. Проверьте, что комиссия, определенная в 'ConfigParam6', может быть снята из сообщения запроса
-2. 1. для существующих токенов: проверьте авторизацию для майнинга (только _владелец_ может занимать новые)
-   2. для создания новых валют: проверьте, что идентификатор криптовалюты не занят и хранит владельца новой валюты
-3. отправить сообщение в конфигурационный контракт (такое сообщение должно привести к добавлению в `ExtraCurrencyCollection` в `ConfigParam7`)
-4. отправьте сообщение на `0:0000...0000` (которое гарантированно отскакивается в следующих или следующих блоках) с идентификатором extra_currency
+1. Check that fee determined in `ConfigParam6` can be deducted from the request message
+2. 1. for existing tokens: check authorization for minting (only the _owner_ can mint new ones)
+   2. for the creation of new currencies: check that id of the cryptocurrency is not occupied and store owner of the new currency
+3. send message to config contract (such message should cause the addition to `ExtraCurrencyCollection` in `ConfigParam7`)
+4. send message to `0:0000...0000` (which is guaranteed to bounce in the next or following blocks) with extra_currency id
 
-По получении сообщения от `0:0000...0000`
+Upon receiving message from `0:0000...0000`
 
-1. читать extra_currency id из сообщения о возврате
-2. если есть токены с соответствующим идентификатором на minter балансе отправьте их владельцу этой валюты с сообщением `ok`
-3. иначе отправить владельцу валюты сообщение `fail`
+1. read extra_currency id from the bounce message
+2. if there are tokens with corresponding id on minter balance send them to this currency owner with `ok` message
+3. otherwise send to currency owner `fail` message
 
-## Замечания, подлежащие разрешению
+## Issues to be resolved
 
-1. Обсуждение с отправкой сообщения на `0:0000...0000` для отсрочки обработки запроса довольно грязное.
-2. Случаи, когда майнинг не удался, должны быть продуманы. На данный момент это выглядит как единственная возможная ситуация, когда сумма валюты равна 0 или такой, что текущий баланс плюс minted сумма не вписывается в `(VarUInteger 32)`
-3. Как сжечь? На первый взгляд нет ни одного пути.
-4. Должны ли гонорары быть запрещенными? Другими словами, опасно ли иметь миллионы извлечений (большой конфигурации, потенциальный DoS из-за несвязанного количества операций выкупа при столкновении?)
+1. Workaround with sending a message to `0:0000...0000` for postponement of request processing is quite dirty.
+2. Cases, when minting failed, should be thought out. For now, it looks like the only possible situation is when a currency amount is 0 or such that the current balance plus a minted amount doesn't fit into `(VarUInteger 32)`
+3. How to burn? At first glance, there are no ways.
+4. Should minting fees be prohibitive? In other words, is it dangerous to have millions of extracurrencies (big config, potential DoS due to unbound number of dict operations on collation?)
