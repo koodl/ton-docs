@@ -1,17 +1,17 @@
-Импортировать кнопку из '@site/src/components/button'
+import Button from '@site/src/components/button'
 
 # TON Connect for Telegram Bots - Python
 
-:::warning устаревшее
-В этом руководстве описывается устаревший метод интеграции TON Connect с Telegram Bots. Для более безопасного и современного подхода попробуйте использовать [Telegram Mini Apps](/v3/guidelines/dapps/tma/overview для более современной и безопасной интеграции.
+:::warning deprecated
+This guide explains an outdated method of integrating TON Connect with Telegram bots. For a more secure and modern approach, consider using [Telegram Mini Apps](/v3/guidelines/dapps/tma/overview for a more modern and secure integration.
 :::
 
-В этом руководстве мы создадим образец телеграммы бота, который поддерживает TON Connect 2.0 аутентификацию с помощью Python TON Connect SDK [pytonconnect](https://github.com/XaBbl4/pytonconnect).
-Мы анализируем подключение кошелька, отправку транзакции, получение данных о подключенном кошельке и отключение кошелька.
+In this tutorial, we’ll create a sample telegram bot that supports TON Connect 2.0 authentication using Python TON Connect SDK [pytonconnect](https://github.com/XaBbl4/pytonconnect).
+We will analyze connecting a wallet, sending a transaction, getting data about the connected wallet, and disconnecting a wallet.
 
 <Button href="https://t.me/test_tonconnect_bot" colorType={'primary'} sizeType={'sm'}>
 
-Открыть демо бота
+Open Demo Bot
 
 </Button>
 
@@ -21,23 +21,23 @@ Check out GitHub
 
 </Button>
 
-## Подготовка
+## Preparing
 
-### Установить библиотеки
+### Install libraries
 
-Чтобы заставить бота использовать `aiogram` 3.0 Python библиотеку.
-Чтобы начать интеграцию TON Connect в ваш Telegram bot, необходимо установить пакет `pytonconnect`.
-И для использования примитивов TON и разбора адреса пользователя нам нужно `pytoniq-core`.
-Вы можете использовать Pip для этой цели:
+To make bot we are going to use `aiogram` 3.0 Python library.
+To start integrating TON Connect into your Telegram bot, you need to install the `pytonconnect` package.
+And to use TON primitives and parse user address we need `pytoniq-core`.
+You can use pip for this purpose:
 
 ```bash
-pip установить aiogram pytoniq-core python-dotenv
+pip install aiogram pytoniq-core python-dotenv
 pip install pytonconnect
 ```
 
-### Настройка конфигурации
+### Set up config
 
-Укажите в файле `.env` [токен бота](https://t.me/BotFather) и ссылку на файл TON Connect [манифест](https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest). После загрузки в `config.py`:
+Specify in `.env` file [bot token](https://t.me/BotFather) and link to the TON Connect [manifest file](https://github.com/ton-connect/sdk/tree/main/packages/sdk#add-the-tonconnect-manifest). After load them in `config.py`:
 
 ```dotenv
 # .env
@@ -49,18 +49,18 @@ MANIFEST_URL='https://raw.githubusercontent.com/XaBbl4/pytonconnect/main/pytonco
 ```python
 # config.py
 
-из os импортировать как env
+from os import environ as env
 
-из dotenv импортировать load_dotenv
+from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = env['TOKEN']
 MANIFEST_URL = env['MANIFEST_URL']
 ```
 
-## Создать простого бота
+## Create simple bot
 
-Создайте файл `main.py`, который будет содержать основной код бота:
+Create `main.py` file which will contain the main bot code:
 
 ```python
 # main.py
@@ -72,37 +72,37 @@ import asyncio
 import config
 
 from aiogram import Bot, Dispatcher, F
-from aiogram. numes of import ParseMode
-from aiogram. ilters import CommandStart, Command
-из aiogram.types import Message, CallbackQuery
+from aiogram.enums import ParseMode
+from aiogram.filters import CommandStart, Command
+from aiogram.types import Message, CallbackQuery
 
 
-logger = logging. etLogger(__file__)
+logger = logging.getLogger(__file__)
 
 dp = Dispatcher()
 bot = Bot(config.TOKEN, parse_mode=ParseMode.HTML)
     
 
-@dp. essage(CommandStart())
+@dp.message(CommandStart())
 async def command_start_handler(message: Message):
-    ожидает сообщения. nswer(text='Привет!')
+    await message.answer(text='Hi!')
 
-async def main() -> Нет:
-    ожидает бота. elete_webhook(drop_pending_updates=True) # skip_updates = True
-    await dp. tart_polling(bot)
+async def main() -> None:
+    await bot.delete_webhook(drop_pending_updates=True)  # skip_updates = True
+    await dp.start_polling(bot)
 
 
 if __name__ == "__main__":
-    журналирования. asicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())
 
 ```
 
-## Подключение к кошельку
+## Wallet connection
 
-### Хранилище подключения TON
+### TON Connect Storage
 
-Давайте создадим простое хранилище для TON Connect
+Let's create simple storage for TON Connect
 
 ```python
 # tc_storage.py
@@ -132,9 +132,9 @@ class TcStorage(IStorage):
 
 ```
 
-### Обработчик соединения
+### Connection handler
 
-Во-первых, нам нужна функция, которая возвращает разные экземпляры для каждого пользователя:
+Firstly, we need function which returns different instances for each user:
 
 ```python
 # connector.py
@@ -147,37 +147,36 @@ from tc_storage import TcStorage
 
 def get_connector(chat_id: int):
     return TonConnect(config.MANIFEST_URL, storage=TcStorage(chat_id))
- 
 
 ```
 
-Давай добавим обработчик подключения в `command_start_handler()`:
+Secondary, let's add connection handler in `command_start_handler()`:
 
 ```python
 # main.py
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message):
-    chat_id = message. hat.id
-    коннектор = get_connector(chat_id)
-    подключён = ожидающий коннектор. estore_connection()
+    chat_id = message.chat.id
+    connector = get_connector(chat_id)
+    connected = await connector.restore_connection()
 
     mk_b = InlineKeyboardBuilder()
-    при подключении:
-        mk_b. utton(text='Send Transaction', callback_data='send_tr')
+    if connected:
+        mk_b.button(text='Send Transaction', callback_data='send_tr')
         mk_b.button(text='Disconnect', callback_data='disconnect')
-        ожидает сообщения. nswer(text='Вы уже подключены!', reply_markup=mk_b.as_markup())
+        await message.answer(text='You are already connected!', reply_markup=mk_b.as_markup())
     else:
-        wallets_list = TonConnect. et_wallets()
-        для кошелька в wallets_list:
-            mk_b. utton(text=wallet['name'], callback_data=f'connect:{wallet["name"]}')
-        mk_b. djust(1, )
-        await message.answer(text='Выберите кошелек для подключения', reply_markup=mk_b.as_markup())
+        wallets_list = TonConnect.get_wallets()
+        for wallet in wallets_list:
+            mk_b.button(text=wallet['name'], callback_data=f'connect:{wallet["name"]}')
+        mk_b.adjust(1, )
+        await message.answer(text='Choose wallet to connect', reply_markup=mk_b.as_markup())
 
 ```
 
-Теперь для пользователя, который еще не подключился к кошельку, бот отправляет сообщение с кнопками для всех доступных кошельков.
-Поэтому нам нужно написать функцию `connect:{wallet["name"]}` callbacks:
+Now, for a user who has not yet connected a wallet, the bot sends a message with buttons for all available wallets.
+So we need to write function to handle `connect:{wallet["name"]}` callbacks:
 
 ```python
 # main.py
@@ -185,44 +184,44 @@ async def command_start_handler(message: Message):
 async def connect_wallet(message: Message, wallet_name: str):
     connector = get_connector(message.chat.id)
 
-    wallets_list = соединитель. et_wallets()
-    кошелек = Нет
+    wallets_list = connector.get_wallets()
+    wallet = None
 
-    для w в кошельке:
+    for w in wallets_list:
         if w['name'] == wallet_name:
-            кошелек = w
+            wallet = w
 
-    если кошелек пуст:
-        raise Exception(f'Неизвестный кошелек: {wallet_name}')
+    if wallet is None:
+        raise Exception(f'Unknown wallet: {wallet_name}')
 
-    generated_url = await connector. onnect(wallet)
-
-    mk_b = InlineKeyboardBuilder()
-    mk_b. utton(text='Connect', url=generated_url)
-
-    await message.answer(text='Подключить кошелек в течение 3 минут', reply_markup=mk_b. s_markup())
+    generated_url = await connector.connect(wallet)
 
     mk_b = InlineKeyboardBuilder()
-    mk_b. utton(text='Start', callback_data='start')
+    mk_b.button(text='Connect', url=generated_url)
 
-    для i в диапазоне (1, 180):
-        ожидают асинсио. leep(1)
-        если коннектор. подключено:
-            если connector.account. ddress:
-                wallet_address = connector.account. ddress
-                wallet_address = Address(wallet_address). o_str(is_bounceable=False)
-                ожидает сообщения. nswer(f'Вы подключены к адресу <code>{wallet_address}</code>', reply_markup=mk_b. s_markup())
-                логгер. nfo(f'Connected with address: {wallet_address}')
+    await message.answer(text='Connect wallet within 3 minutes', reply_markup=mk_b.as_markup())
+
+    mk_b = InlineKeyboardBuilder()
+    mk_b.button(text='Start', callback_data='start')
+
+    for i in range(1, 180):
+        await asyncio.sleep(1)
+        if connector.connected:
+            if connector.account.address:
+                wallet_address = connector.account.address
+                wallet_address = Address(wallet_address).to_str(is_bounceable=False)
+                await message.answer(f'You are connected with address <code>{wallet_address}</code>', reply_markup=mk_b.as_markup())
+                logger.info(f'Connected with address: {wallet_address}')
             return
 
-    await message. nswer(f'Timeout error!', reply_markup=mk_b. s_markup())
+    await message.answer(f'Timeout error!', reply_markup=mk_b.as_markup())
 
 
 @dp.callback_query(lambda call: True)
 async def main_callback_handler(call: CallbackQuery):
-    await call. nswer()
+    await call.answer()
     message = call.message
-    data = call. ata
+    data = call.data
     if data == "start":
         await command_start_handler(message)
     elif data == "send_tr":
@@ -230,16 +229,16 @@ async def main_callback_handler(call: CallbackQuery):
     elif data == 'disconnect':
         await disconnect_wallet(message)
     else:
-        данные = данные. plit(':')
-        если данные[0] == 'connect':
-            ожидают connect_wallet(сообщение, данные[1])
+        data = data.split(':')
+        if data[0] == 'connect':
+            await connect_wallet(message, data[1])
 ```
 
-Бот предоставляет пользователю 3 минуты для подключения кошелька, после чего сообщает об ошибке.
+Bot gives user 3 minutes to connect a wallet, after which it reports a timeout error.
 
-## Выполнить запрос транзакции
+## Implement Transaction requesting
 
-Давайте возьмем один пример из [сборщиков сообщений](/v3/guidelines/ton-connect/guidelines/preparing-messages) статьи:
+Let's take one of examples from the [Message builders](/v3/guidelines/ton-connect/guidelines/preparing-messages) article:
 
 ```python
 # messages.py
@@ -268,68 +267,68 @@ def get_comment_message(destination_address: str, amount: int, comment: str) -> 
 
 ```
 
-И добавьте функцию `send_transaction()` в файл `main.py`:
+And add `send_transaction()` function in the `main.py` file:
 
 ```python
 # main.py
 
 @dp.message(Command('transaction'))
 async def send_transaction(message: Message):
-    connector = get_connector(message. hat.id)
-    подключено = ожидающий соединитель. estore_connection()
-    , если не подключено:
-        ожидает сообщения. nswer('Подключить кошелек сначала! )
+    connector = get_connector(message.chat.id)
+    connected = await connector.restore_connection()
+    if not connected:
+        await message.answer('Connect wallet first!')
         return
     
     transaction = {
-        'valid_until': int(time. ime() + 3600),
+        'valid_until': int(time.time() + 3600),
         'messages': [
             get_comment_message(
-                destination_address='0:000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000',
-                amount=int(0. 1 * 10 ** 9),
-                comment='hello world!
+                destination_address='0:0000000000000000000000000000000000000000000000000000000000000000',
+                amount=int(0.01 * 10 ** 9),
+                comment='hello world!'
             )
         ]
     }
 
-    ожидает сообщения. nswer(text='Подтвердите транзакцию в вашем приложении кошелька!')
-    ожидают подключения. end_transaction(
-        транзакция
-)
+    await message.answer(text='Approve transaction in your wallet app!')
+    await connector.send_transaction(
+        transaction=transaction
+    )
 ```
 
-Но нам также следует обработать возможные ошибки, поэтому мы обернем метод `send_transaction` в заявление `try - except`:
+But we also should handle possible errors, so we wrap the `send_transaction` method into `try - except` statement:
 
 ```python
 @dp.message(Command('transaction'))
 async def send_transaction(message: Message):
     ...
-    ожидает сообщения. nswer(text='Подтвердить транзакцию в вашем приложении кошелька!')
+    await message.answer(text='Approve transaction in your wallet app!')
     try:
-        ждут asyncio. ait_for(коннектор). end_transaction(
-            транзакция=транзакция
+        await asyncio.wait_for(connector.send_transaction(
+            transaction=transaction
         ), 300)
-    кроме асинчио. imeoutError:
-        ожидает message.answer(text='Timeout error!')
-    кроме pytonconnect. xceptions.UserRejectsError:
-        ожидает сообщения. nswer(text='Вы отклонили транзакцию!')
-    за исключением исключения как e:
-        ожидают сообщения. nswer(text=f'Неизвестная ошибка: {e}')
+    except asyncio.TimeoutError:
+        await message.answer(text='Timeout error!')
+    except pytonconnect.exceptions.UserRejectsError:
+        await message.answer(text='You rejected the transaction!')
+    except Exception as e:
+        await message.answer(text=f'Unknown error: {e}')
 ```
 
-## Добавить обработчик отключения
+## Add disconnect handler
 
-Реализация этой функции достаточно проста:
+This function implementation is simple enough:
 
 ```python
 async def disconnect_wallet(message: Message):
     connector = get_connector(message.chat.id)
     await connector.restore_connection()
     await connector.disconnect()
-    await message.answer('Вы были успешно отключены!')
+    await message.answer('You have been successfully disconnected!')
 ```
 
-В настоящее время проект имеет следующую структуру:
+Currently, the project has the following structure:
 
 ```bash
 .
@@ -341,7 +340,7 @@ async def disconnect_wallet(message: Message):
 └── tc_storage.py
 ```
 
-И `main.py` выглядит так:
+And the `main.py` looks like this:
 
 <details>
 <summary>Show main.py</summary>
@@ -500,20 +499,20 @@ if __name__ == "__main__":
 
 </details>
 
-## Улучшение
+## Improving
 
-### Добавить постоянное хранилище - Redis
+### Add permanent storage - Redis
 
-В настоящее время TON Connect Storage использует dict, который приводит к потере сеансов после перезапуска бота.
-Давайте добавим постоянное хранилище данных с помощью Redis:
+Currently, our TON Connect Storage uses dict which causes to lost sessions after bot restart.
+Let's add permanent database storage with Redis:
 
-После запуска базы данных Redis установите библиотеку python для взаимодействия с ней:
+After you launched Redis database install python library to interact with it:
 
 ```bash
-pip установить redis
+pip install redis
 ```
 
-И обновите класс `TcStorage` в `tc_storage.py`:
+And update `TcStorage` class in `tc_storage.py`:
 
 ```python
 import redis.asyncio as redis
@@ -542,13 +541,13 @@ class TcStorage(IStorage):
 
 ### Add QR Code
 
-Установите пакет python `qrcode` для их создания:
+Install python `qrcode` package to generate them:
 
 ```bash
-pip установить qrcode
+pip install qrcode
 ```
 
-Измените функцию `connect_wallet()` так, что она генерирует qrcode и отправляет его как фото пользователю:
+Change `connect_wallet()` function so it generates qrcode and sends it as a photo to the user:
 
 ```python
 from io import BytesIO
@@ -557,26 +556,26 @@ from aiogram.types import BufferedInputFile
 
 
 async def connect_wallet(message: Message, wallet_name: str):
-    . .
+    ...
     
-    img = qrcode. ake(generated_url)
+    img = qrcode.make(generated_url)
     stream = BytesIO()
-    img. ave(stream)
-    файл = BufferedInputFile(file=stream.getvalue(), filename='qrcode')
+    img.save(stream)
+    file = BufferedInputFile(file=stream.getvalue(), filename='qrcode')
 
-    ожидает сообщения. nswer_photo(photo=file, caption='Подключить кошелек в течение 3 минут', reply_markup=mk_b.as_markup())
+    await message.answer_photo(photo=file, caption='Connect wallet within 3 minutes', reply_markup=mk_b.as_markup())
     
-...
+    ...
 ```
 
 ## Summary
 
-Что дальше?
+What is next?
 
-- Вы можете добавить улучшенную обработку ошибок в боте.
-- Вы можете добавить начальный текст и что-то вроде команды `/connect_wallet`.
+- You can add better errors handling in the bot.
+- You can add start text and something like `/connect_wallet` command.
 
-## Смотреть также
+## See Also
 
-- [Полный код бота](https://github.com/yungwine/ton-connect-bot)
-- [Подготовка сообщений](/v3/guidelines/ton-connect/guidelines/preparing-messages)
+- [Full bot code](https://github.com/yungwine/ton-connect-bot)
+- [Preparing messages](/v3/guidelines/ton-connect/guidelines/preparing-messages)
