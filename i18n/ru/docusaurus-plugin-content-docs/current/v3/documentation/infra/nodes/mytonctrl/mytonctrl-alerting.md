@@ -1,68 +1,68 @@
 # MyTonCtrl Alert Bot
 
-## Overview
+## Общий обзор
 
-MyTonCtrl Alert Bot is a tool that allows you to receive notifications about the status of your node via Telegram Bot.
-It is a part of the MyTonCtrl toolset and is available for both validators and liteservers.
+MyTonCtrl Alert Bot - это инструмент, позволяющий получать уведомления о состоянии вашего узла через Telegram Bot.
+Он является частью набора инструментов MyTonCtrl и доступен как для валидаторов, так и для liteserver.
 
-## Setup
+## Настройка
 
-To set up the MyTonCtrl Alerting Bot, follow these steps:
+Чтобы настроить MyTonCtrl Alerting Bot, выполните следующие действия:
 
 ### Prepare bot
 
-1. Go to https://t.me/BotFather and create bot using command `/newbot`. After that, you will receive a `BotToken`.
-2. Go to your bot and press the `Start` button. This will allow you to receive messages from the bot.
-3. If you want to receive messages from the bot in a group (chat), add the bot to the group and give it the necessary rights (make group admin).
-4. Go to https://t.me/getmyid_bot and press the `Start` button. It will reply you with your `ChatId`, use that if you want to receive messages directly to your Telegram account.
-   If you want to receive messages in a group, add the bot to the group, and it will reply with the `ChatId` of the group.
+1. Перейдите на https://t.me/BotFaather и создайте бота с помощью команды `/newbot`. После этого вы получите `BotToken`.
+2. Перейдите в свой бот и нажмите кнопку `Start`. Это позволит вам получать сообщения от бота.
+3. Если вы хотите получать сообщения от бота в группе (чат), добавьте бота в группу и предоставьте ему необходимые права (make group admin).
+4. Перейдите на https://t.me/getmyid_bot и нажмите кнопку `Start`. Он ответит вам с вашим `ChatId`, используйте это если вы хотите получать сообщения непосредственно на ваш счет Telegram.
+   Если вы хотите получать сообщения в группу, добавьте бота в группу, и он ответит в `ChatId` группы.
 
-### Enable the Alert Bot
+### Включить оповещение бота
 
-1. Enable `alert-bot` via command
-
-   ```bash
-   MyTonCtrl> enable_mode alert-bot
-   ```
-
-2. Run command
+1. Включить `alert-bot` с помощью команды
 
    ```bash
-   MyTonCtrl> set BotToken <BotToken>
+   MyTonCtrl> включение_режима бота оповещений
    ```
 
-3. Run command
+2. Выполнить команду
 
    ```bash
-   MyTonCtrl> set ChatId <ChatId>
+   MyTonCtrl> установить BotToken <BotToken>
    ```
 
-4. Check that the bot is able to send messages by running the command
+3. Выполнить команду
 
    ```bash
-   MyTonCtrl> test_alert
+   MyTonCtrl> установить ChatId <ChatId>
    ```
 
-   You should receive a message from the bot in your Telegram account or chat.
+4. Проверьте, что бот может отправлять сообщения, выполнив команду
 
-## Supported Alerts
+   ```bash
+   MyTonCtrl> предупреждение теста
+   ```
 
-The MyTonCtrl Alert Bot supports the following alerts:
+   Вы должны получить сообщение от бота в вашем аккаунте Telegram или чате.
 
-- Validator's wallet balance is low
-- Node's db usage is more than 80%
-- Node's db usage is more than 95%
-- Validator had low efficiency in the round
-- Node is out of sync
-- Node is not running (service is down)
-- Node is not answering to ADNL connection
-- Validator created zero blocks for past 6 hours
-- Validator has been slashed in the previous validation round
+## Поддерживаемые оповещения
 
-## En(dis)bling Alerts
+MyTonCtrl Alert Bot поддерживает следующие оповещения:
 
-To enable or disable alerts, use the following commands:
+- Баланс Валидатора невелик
+- Использование узла более 80%
+- Использование узла более чем 95%
+- Валидатор имел низкую эффективность в раунде
+- Узел не синхронизирован
+- Узел не запущен (служба недоступна)
+- Узел не отвечает на ADNL соединение
+- Validator создал нулевые блоки за последние 6 часов
+- В предыдущем раунде проверки был срыт валидатор
 
-- To enable an alert, use the command `enable_alert <alert-name>`.
-- To disable an alert, use the command `disable_alert <alert-name>`.
-- To check the status of alerts, use the command `list_alerts`.
+## En(dis)bling оповещения
+
+Для включения или отключения оповещений используйте следующие команды:
+
+- Чтобы включить оповещение, используйте команду `enable_alert <alert-name>`.
+- Чтобы отключить оповещение, используйте команду `disable_alert <alert-name>`.
+- Для проверки состояния оповещений используйте команду `list_alerts`.
