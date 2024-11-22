@@ -1,18 +1,18 @@
 import ThemedImage from '@theme/ThemedImage';
 
-# Язык TL-B
+# TL-B Language
 
-TL-B (Тип языка - Binary) служит для описания типовой системы, конструкторов и существующих функций. Например, мы
-можем использовать TL-B схемы для построения бинарных структур, связанных с TON Blockchain. Специальные парсеры TL-B могут читать схемы
-десериализации двоичных данных в различные объекты. TL-B описывает схемы данных для объектов «Cell». If you not familiar
+TL-B (Type Language - Binary) serves to describe the type system, constructors and existing functions. For example, we
+can use TL-B schemes to build binary structures associated with TON Blockchain. Special TL-B parsers can read schemes to
+deserialize binary data into different objects. TL-B describes data schemes for `Cell` objects. If you not familiar
 with `Cells`, please read [Cell & Bag of Cells(BOC)](/v3/documentation/data-formats/tlb/cell-boc#cell) article.
 
-## Общий обзор
+## Overview
 
-Мы называем любой набор TL-B документами TL-B. A TL-B document usually consists of declarations of types (
-i.e. their constructors) and functional combinators. Объявление каждого комбинатора заканчивается точкой с запятой (`;`).
+We refer to any set of TL-B constructs as TL-B documents. A TL-B document usually consists of declarations of types (
+i.e. their constructors) and functional combinators. The declaration of each combinator ends with a semicolon (`;`).
 
-Вот пример возможного объявления комбинатора:
+Here is an example of a possible combinator declaration:
 
 <br></br>
 <ThemedImage
@@ -24,10 +24,10 @@ i.e. their constructors) and functional combinators. Объявление каж
 />
 <br></br>
 
-## Построители
+## Constructors
 
 The left-hand side of each equation describes the way to define, or serialize, a value of the type indicated on the
-right-hand side. Такое описание начинается с названия конструктора.
+right-hand side. Such a description begins with the name of a constructor.
 
 <br></br>
 <ThemedImage
@@ -39,8 +39,8 @@ right-hand side. Такое описание начинается с назва�
 />
 <br></br>
 
-Конструкторы используются для указания типа комбинатора, в том числе состояния при сериализации. Например, конструкторы
-также могут использоваться когда вы хотите указать `op`(операционный код) в запросе к смарт-контракту в TON.
+Constructors are used to specify the type of combinator, including the state at serialization. For example, constructors
+can also be used when you want to specify an `op`(operation code) in query to a smart contract in TON.
 
 ```tlb
 // ....
@@ -48,16 +48,16 @@ transfer#5fcc3d14 <...> = InternalMsgBody;
 // ....
 ```
 
-- имя конструктора: `transfer`
-- префикс конструктора: `#5fcc3d14`
+- constructor name: `transfer`
+- constructor prefix code: `#5fcc3d14`
 
-Заметьте, что имя конструктора сразу же за ним следует необязательный тег конструктора, например `#_` или `$10`, который
-описывает битрейт, используемый для кодирования (сериализации) соответствующего конструктора.
+Notice, every constructor name immediately followed by an optional constructor tag, such as `#_` or `$10`, which
+describes the bitstring used to encode (serialize) the constructor in question.
 
 ```tlb
-message#3f5476ca значение:# = Крутое сообщение;
-bool_true$0 = Бул;
-bool_false$1 = Бул;
+message#3f5476ca value:# = CoolMessage;
+bool_true$0 = Bool;
+bool_false$1 = Bool;
 ```
 
 The left-hand side of each equation describes the way to define, or serialize, a value of the type indicated on the
@@ -66,22 +66,22 @@ followed by an optional constructor tag, such as `#3f5476ca` or `$0`, which desc
 serialize)
 the constructor in question.
 
-| конструктор                      | сериализация                                                       |
-| -------------------------------- | ------------------------------------------------------------------ |
-| `некоторый#3f5476ca`             | 32-разрядная сериализация uint из шестнадцатеричного значения      |
-| `некоторый#5fe`                  | 12-битная сериализация uint из шестнадцатибитного значения         |
-| `некоторые$0101`                 | сериализовать сырые биты `0101`                                    |
-| `some` или `some#`               | сериализовать `crc32(уравнение) \| 0x80000000`                     |
-| `some#_` или `some$_` или `_`    | сериализовать ничего                                               |
+| constructor                 | serialization                             |
+| --------------------------- | ----------------------------------------- |
+| `some#3f5476ca`             | 32-bit uint serialize from hex value      |
+| `some#5fe`                  | 12-bit uint serialize from hex value      |
+| `some$0101`                 | serialize `0101` raw bits                 |
+| `some` or `some#`           | serialize `crc32(equation) \| 0x80000000` |
+| `some#_` or `some$_` or `_` | serialize nothing                         |
 
-Имена конструкторов (`некоторые` в этом примере) используются в качестве переменных в коде. Например:
+Constructor names (`some` in this example) are used as variables in codegen. For example:
 
 ```tlb
 bool_true$1 = Bool;
 bool_false$0 = Bool;
 ```
 
-Тип `Bool` имеет два тега `0` и `1`. Псевдокод кодега может выглядеть так:
+Type `Bool` has two tags `0` and `1`. Codegen pseudocode might look like:
 
 ```python3
 
@@ -90,27 +90,27 @@ class Bool:
     tags_names = ['bool_true', 'bool_false']
 ```
 
-Если вы не хотите определить любое имя текущего конструктора, просто передайте `_`, например `_ a:(## 32) = 32Int;`
+If you don't want to define any name for current constructor, just pass `_`, e.g. `_ a:(## 32) = 32Int;`
 
-Тэги конструктора могут быть введены либо в двоичном (после указателя доллара), либо в шестнадцатеричном (после знака хэша). Если
-тег не
-явно предоставлен, парсер TL-B должен вычислить 32-битный конструкторский тэг по умолчанию, хэшируя с помощью алгоритма CRC32
-текста «уравнения» с `| 0x80000000` определенно определяющим этого конструктора. Поэтому пустые теги
-должны быть явно предоставлены `#_` или `$_`.
+Constructor tags may be given in either binary (after a dollar sign) or hexadecimal notation (after a hash sign). If a
+tag is not
+explicitly provided, the TL-B parser must compute a default 32-bit constructor tag by hashing with CRC32 algorithm
+the text of the “equation” with `| 0x80000000` defining this constructor in a certain fashion. Therefore, empty tags
+must be explicitly provided by `#_` or `$_`.
 
-Этот тег используется для угадывания текущего типа битрейта в процессе десериализации. Например, у нас есть 1 бит битрейт `0`,
-если мы покажем TLB разобрать этот битрейт в типе `Bool`, он будет разбирать его как `Bool.bool_false`.
+This tag willies used to guess current type of bitstring in deserialization process. E.g. we have 1 bit bitstring `0`,
+if we tell TLB to parse this bitstring in type of `Bool` it will parse it as `Bool.bool_false`.
 
-Давайте скажем, что у нас есть более сложные примеры:
+Let's say we have more complex examples:
 
 ```tbl
 tag_a$10 val:(## 32) = A;
 tag_b$00 val(## 64) = A;
 ```
 
-Если мы разобраем `100000000000000000000000000000000001` (1 и 32 ноли и 1) в типе TLB `A` - сначала нам нужно получить первые
-два бита для определения тега. В этом примере `10` есть два первых бита, которые представляют `tag_a`. Итак, теперь мы знаем, что следующие 32
-бита являются переменной `val`, `1` в нашем примере. Некоторые переменные "parsed" могут выглядеть так:
+If we parse `1000000000000000000000000000000001` (1 and 32 zeroes and 1) in TLB type `A` - firstly we need to get first
+two bits to define tag. In this example `10` is two first bits and they represent `tag_a`. So now we know that next 32
+bits are `val` variable, `1` in our example. Some "parsed" pseudocode variables may look like:
 
 ```python3
 A.tag = 'tag_a'
@@ -121,10 +121,10 @@ A.val = 1
 All constructor names must be distinct and constructor tags for the same type must constitute a prefix code (otherwise
 the deserialization would not be unique); i.e. no tag can be a prefix of any other in same type.
 
-Максимальное количество конструкторов одного типа: `64`
-Максимальное количество битов для тега: `63`
+Maximum number of constructors per one type: `64`
+Maximum bits for tag: `63`
 
-<b>Двоичный пример:</b>
+<b>Binary example:</b>
 
 ```tlb
 example_a$10 = A;
@@ -133,16 +133,16 @@ example_c$11 = A;
 example_d$00 = A;
 ```
 
-Псевдокод кодега может выглядеть так:
+Codegen pseudocode might look like:
 
 ```python3
 
-класса A:
-    тегов = [2, 1, 3, 0]
+class A:
+    tags = [2, 1, 3, 0]
     tags_names = ['example_a', 'example_b', 'example_c', 'example_d']
 ```
 
-<b>Hex тег:</b>
+<b>Hex tag example:</b>
 
 ```tlb
 example_a#0 = A;
@@ -150,17 +150,17 @@ example_b#1 = A;
 example_c#f = A;
 ```
 
-Псевдокод кодега может выглядеть так:
+Codegen pseudocode might look like:
 
 ```python3
 
-класса A:
-    тегов = [0, 1, 15]
+class A:
+    tags = [0, 1, 15]
     tags_names = ['example_a', 'example_b', 'example_c']
 ```
 
-Если вы используете тег `hex`, имейте в виду, что он будет сериализован как 4 бит для каждого шестнадцатеричного символа. Максимальное значение 63-битного
-не знакомого целого. Это означает:
+If you use `hex` tag, keep in mind that it will be serialized as 4 bits for each hex symbol. Maximum value is 63-bit
+unsigned integer. This means:
 
 ```tlb
 a#32 a:(## 32) = AMultiTagInt;
@@ -169,94 +169,94 @@ c#5FE a:(## 32) = AMultiTagInt;
 d#3F5476CA a:(## 32) = AMultiTagInt;
 ```
 
-| конструктор  | сериализация                                                  |
-| ------------ | ------------------------------------------------------------- |
-| `a#32`       | 8-битная сериализация uint из шестнадцатеричного значения     |
-| `b#1111`     | 16-битная сериализация uint из шестнадцатибитного значения    |
-| `c#5FE`      | 12-битная сериализация uint из шестнадцатибитного значения    |
-| `d#3F5476CA` | 32-разрядная сериализация uint из шестнадцатеричного значения |
+| constructor  | serialization                        |
+| ------------ | ------------------------------------ |
+| `a#32`       | 8-bit uint serialize from hex value  |
+| `b#1111`     | 16-bit uint serialize from hex value |
+| `c#5FE`      | 12-bit uint serialize from hex value |
+| `d#3F5476CA` | 32-bit uint serialize from hex value |
 
-Также шестнадцатеричные значения допускаются как в верхнем числе, так и в нижнем регистре.
+Also hex values allowed both in upper and lower case.
 
-#### Подробнее о шестнадцатеричных тегах
+#### More about hex tags
 
-В дополнение к классическому определению шестнадцатеричного тега за ним может последовать шестнадцатеричный номер подчеркивания.
-Это означает, что тег равен указанному шестнадцатеричному числу, без наименьшего значения.
-Например, существует схема:
+In addition to the classic hex tag definition, a hexadecimal number can be followed by the underscore character.
+This means that the tag is equal to the specified hexadecimal number without the least significant bit.
+For example there is a scheme:
 
 ```tlb
-vm_stk_int#0201_ значение:int257 = VmStackValue;
+vm_stk_int#0201_ value:int257 = VmStackValue;
 ```
 
-И тег на самом деле не равен `0x0201`. Для вычисления необходимо удалить LSb из двоичного представления `0x0201`:
+And the tag is not actually equal to `0x0201`. To compute it we need to remove LSb from the binary representation of `0x0201`:
 
 ```
 0000001000000001 -> 000000100000000
 ```
 
-Таким образом, тэг равен 15-битному битному числу `0b000010000000000`.
+So the tag equals to the 15-bit binary number `0b000000100000000`.
 
-## Определения полей
+## Field definitions
 
-За конструктором и его дополнительным тегом следуют определения полей. Each field definition is of the
+The constructor and its optional tag are followed by field definitions. Each field definition is of the
 form `ident:type-expr`, where ident is an identifier with the name of the field (replaced by an underscore for
-anonymous fields), and type-expr is the field’s type. Здесь указан тип выражения, который может включать
-простые типы, параметры с подходящими параметрами или сложными выражениями.
+anonymous fields), and type-expr is the field’s type. The type provided here is a type expression, which may include
+simple types, parametrized types with suitable parameters or complex expressions.
 
-<b>В сумме все поля, заданные типом не должны быть больше, чем ячейка (`1023` бит и `4` refs)</b>
+<b>In sum up all fields defined in type must not be greater than Cell (`1023` bits and `4` refs)</b>
 
-### Простые типы
+### Simple types
 
-- `_ a:# = Type;` - `Type.a` здесь 32-битное целое число
-- `_ a:(## 64) = Type;` - `Type.a` здесь 64-битное целое число
-- `_ a:Владелец = NFT;` - `NFT.a` тип `Владелец`
-- `_ a:^Владелец = NFT;` - `NFT.a` здесь ячейка типа `Владелец` означает `Владелец` хранится в следующей ссылке.
+- `_ a:# = Type;` - `Type.a` here is 32-bit integer
+- `_ a:(## 64) = Type;` - `Type.a` here is 64-bit integer
+- `_ a:Owner = NFT;` - `NFT.a` here is `Owner` type
+- `_ a:^Owner = NFT;` - `NFT.a` here is cell ref to `Owner` type means `Owner` is stored in next cell reference.
 
-### Анонимные поля
+### Anonymous fields
 
-- `_ _:# = A;` - первое поле анонимно 32-битное целое
+- `_ _:# = A;` - first field is anonymous 32-bit integer
 
-### Расширить ячейку со ссылками
+### Extend cell with references
 
 ```tlb
-_ а:(##32) ^[ b:(##32) c:(## 32) d:(## 32)] = A;
+_ a:(##32) ^[ b:(##32) c:(## 32) d:(## 32)] = A;
 ```
 
-- Если по какой-то причине мы хотим разделить некоторые поля на другую ячейку
-  мы можем использовать `^[ ... ]` синтаксис.
-  В данном примере `A.a` / `A.b` / `A.c` / `A.d` - 32-битные числа, но `A. ` хранится в первой ячейке,
-  и `A.b` / `A.c` / `A.d` хранится в следующей ячейке (1 ref)
+- If for some reason we want to separate some fields to another
+  cell we can use `^[ ... ]` syntax.
+  In this example `A.a` / `A.b` / `A.c` / `A.d` are 32-bit unsigned integers, but `A.a` is stored in first cell,
+  and `A.b` / `A.c` / `A.d` are stored in next cell (1 ref)
 
 ```tlb
 _ ^[ a:(## 32) ^[ b:(## 32) ^[ c:(## 32) ] ] ] = A;
 ```
 
-- Также разрешена цепочка ссылок. В этом примере каждая из переменныхformat@@0
-  (`a`, `b`, `c`) хранится в разделенных ячейках
+- Chain of references are also allowed. In this example each of
+  variables (`a`, `b`, `c`) are stored in separated cells
 
-### Типы параметров
+### Parametrized types
 
-Предположим, у нас есть тип `IntWithObj`:
+Suppose we have `IntWithObj` type:
 
 ```tlb
 _ {X:Type} a:# b:X = IntWithObj X;
 ```
 
-Теперь мы можем использовать его другими типами:
+Now we can use it in other types:
 
 ```tlb
 _ a:(IntWithObj uint32) = IntWithUint32;
 ```
 
-### Сложные выражения
+### Complex expressions
 
-- Условные поля (только для `Nat`) (`E?T` означает если выражение `E` верно, чем поле `T`)
+- Conditional fields (only for `Nat`) (`E?T` means if expression `E` is True than field has type `T`)
   ```tlb
-  _ а:(## 1) b:a?(## 32) = Пример;
+  _ a:(## 1) b:a?(## 32) = Example;
   ```
-  В «Пример» сериализована переменная `b`, только если `a` является `1`
+  In `Example` type variable `b` serialized only if `a` is `1`
 
-- Умножение выражения для создания труб (`x * T` означает создание трубки длины `x` типа `T`):
+- Multiply expression for tuples creation (`x * T` means create tuple of length `x` of type `T`):
 
   ```tlb
   a$_ a:(## 32) = A;
@@ -265,116 +265,116 @@ _ a:(IntWithObj uint32) = IntWithUint32;
 
   ```tlb
   _ (## 1) = Bit;
-  _ 2бит:(2 * бит) = 2бит;
+  _ 2bits:(2 * Bit) = 2Bits;
   ```
 
-- Выбор битов (только для `Nat`) (\`E . B" означает «B» из «Nat» «E»
+- Bit selection (only for `Nat`) (`E . B` means take bit `B` of `Nat` `E`)
   ```tlb
-  _ а:(## 2) b:(a . 1)?(## 32) = Пример;
+  _ a:(## 2) b:(a . 1)?(## 32) = Example;
   ```
-  В `Пример` сериализована переменная `b` только если второй бит `a` это `1`
+  In `Example` type variable `b` serialized only if second bit `a` is `1`
 
-- Другие операторы «Nat» также разрешены (см. «Разрешенные константы»)
+- Other `Nat` operators also allowed (look `Allowed contraints`)
 
-Примечание: вы можете комбинировать несколько сложных выражений:
-
-```tlb
-_ а:(## 1) b:(## 1) c:(## 2) d:(a?(b?(c . 1)?(## 64)))) = A;
-```
-
-## Встроенные типы
-
-- `#` - `Nat` 32 бит беззнакомое целое число
-- `## x` - `Nat` с `x` битами
-- `#< x` - `Nat` меньше, чем `x` бит без знаков числа, хранимый как `lenBits(x - 1)` бит, до 31 бит
-- `#<= x` - `Nat` меньше или равен биту `x` без знаков числа, хранимое как `lenBits(x)` бит, до 32 бит
-- `Any` / `Cell` - остаток битов ячеек
-- `Int` - 257 бит
-- `UInt` - 256 бит
-- `Bits` - 1023 бита
-- `uint1` - `uint256` - 1 - 256 бит
-- `int1` - `int257` - 1 - 257 бит
-- `bits1` - `bits1023` - 1 - 1023 бит
-- `uint X` / `int X` / `bits X` - то же самое, что и `uintX`, но вы можете использовать параметр `X` в этом типе
-
-## Ограничения
+Note: you can combine several complex expressions:
 
 ```tlb
-_ флаги:(## 10) { flags <= 100 } = Flag;
+_ a:(## 1) b:(## 1) c:(## 2) d:(a?(b?((c . 1)?(## 64)))) = A;
 ```
 
-Поле `Nat` разрешено в ограничениях. В данном примере ограничение `{ flags <= 100 }` означает, что переменная `flags` меньше
-или
-равняется `100`.
+## Built-in types
 
-Допустимые константы: `E` | `E = E` | `E <= E` | `E < E` | `E >= E` | `E > E` | `E + E` | `E * E` | `E * E` | `E ? E`
+- `#` - `Nat` 32 bits unsigned integer
+- `## x` - `Nat` with `x` bits
+- `#< x` - `Nat` less than `x` bit unsigned integer stored as `lenBits(x - 1)` bits, up to 31 bits
+- `#<= x` - `Nat` less or equal than `x` bit unsigned integer stored as `lenBits(x)` bits, up to 32 bits
+- `Any` / `Cell` - rest of cell bits&refs
+- `Int` - 257 bits
+- `UInt` - 256 bits
+- `Bits` - 1023 bits
+- `uint1` - `uint256` - 1 - 256 bits
+- `int1` - `int257` - 1 - 257 bits
+- `bits1` - `bits1023` - 1 - 1023 bits
+- `uint X` / `int X` / `bits X` - same as `uintX` but you can use parametrized `X` in this types
 
-## Неявные поля
+## Constraints
 
-Некоторые поля могут быть неявными. Their definitions are surrounded by curly
+```tlb
+_ flags:(## 10) { flags <= 100 } = Flag;
+```
+
+`Nat` fields allowed in constraints. In this example `{ flags <= 100 }` constraint means that `flags` variable is less
+or
+equal `100`.
+
+Allowed contraints: `E` | `E = E` | `E <= E` | `E < E` | `E >= E` | `E > E` | `E + E` | `E * E` | `E ? E`
+
+## Implicit fields
+
+Some fields may be implicit. Their definitions are surrounded by curly
 brackets(`{`, `}`), which indicate that the field is not actually present in the serialization, but that its value must
-be deduced from other data (usually the parameters of the type being serialized). Например:
+be deduced from other data (usually the parameters of the type being serialized). Example:
 
 ```tlb
-ничего$0 {X:Type} = Может быть X;
-just$1 {X:Type} значение:X = Может быть X;
+nothing$0 {X:Type} = Maybe X;
+just$1 {X:Type} value:X = Maybe X;
 ```
 
 ```tlb
-_ {x:#} a:(## 32) { ~x = a + 1 } = Пример;
+_ {x:#} a:(## 32) { ~x = a + 1 } = Example;
 ```
 
-## Типы параметров
+## Parametrized types
 
 Variables — i.e. the (identifiers of the) previously
 defined fields of types `#` (natural numbers) or `Type` (type of types) — may be used as parameters for the parametrized
-types. Процесс сериализации рекурсивно сериализует каждое поле в соответствии с его типом и сериализацией значения
-в конечном итоге состоит из объединения битов, представляющих конструктор (i. . тег конструктора) и значения
-полей.
+types. The serialization process recursively serializes each field according to its type and the serialization of a
+value ultimately consists of the concatenation of bits representing the constructor (i.e. the constructor tag) and
+the field values.
 
-### Природные числа (`Прит`)
+### Natural numbers (`Nat`)
 
 ```tlb
 _ {x:#} my_val:(## x) = A x;
 ```
 
-Это означает, что «A» параметризовано «x» «Nat». При десериализации мы получим `x`-bit unsigned integer E.g.:
+Means that `A` is parametrized by `x` `Nat`. In deserialization process we will fetch `x`-bit unsigned integer E.g.:
 
 ```tlb
-_ значение:(A 32) = My32UintValue;
+_ value:(A 32) = My32UintValue;
 ```
 
-Средства, чем в процессе десериализации типа `My32UintValue`, мы получим 32-битное неподписанное целое (из-за параметра `32`
-в тип `A`)
+Means than in deserialization process of `My32UintValue` type we will fetch 32-bit unsigned integer (because of `32`
+parameter to `A` type)
 
-### Типы
+### Types
 
 ```tlb
 _ {X:Type} my_val:(## 32) next_val:X = A X;
 ```
 
-Это означает, что `A` параметризован по типу `X`. В процессе десериализации мы получим 32-битное неподписанное целое и чем
-разбор
-битов типа `X`.
+Means that `A` is parametrized by `X` type. In deserialization process we will fetch 32-bit unsigned integer and than
+parse
+bits&refs of type `X`.
 
-Пример использования таких параметров может быть:
+Usage example of such parametrized type can be:
 
 ```tlb
 _ bit:(## 1) = Bit;
 _ 32intwbit:(A Bit) = 32IntWithBit;
 ```
 
-В этом примере мы передаем тип `Bit` в `A` в качестве параметра.
+In this example we pass type `Bit` to `A` as parameter.
 
-Если вы не хотите определять тип, но хотите десериализовать с помощью этой схемы, вы можете использовать «Любое слово»:
+If you don't want to define type, but want to deserialize by this scheme you may use `Any` word:
 
 ```tlb
-_ my_val:(A Any) = Пример;
+_ my_val:(A Any) = Example;
 ```
 
-Это означает, что если мы десериализуем тип `Example`, мы получим 32-битное целое, а затем оставляем ячейку (bits&refs) в `my_val`.
+Means that if we deserialize `Example` type we will fetch 32-bit integer and then rest of cell (bits&refs) to `my_val`.
 
-Вы можете создать сложные типы с несколькими параметрами:
+You can create complex types with several parameters:
 
 ```tlb
 _ {X:Type} {Y:Type} my_val:(## 32) next_val:X next_next_val:Y = A X Y;
@@ -382,7 +382,7 @@ _ bit:(## 1) = Bit;
 _ a_with_two_bits:(A Bit Bit) = AWithTwoBits;
 ```
 
-Также можно использовать частичное применение таких параметров:
+Also you can use partial apply on such parametrized types:
 
 ```tlb
 _ {X:Type} {Y:Type} v1:X v2:Y = A X Y;
@@ -390,61 +390,61 @@ _ bit:(## 1) = Bit;
 _ {X:Type} bits:(A Bit X) = BitA X;
 ```
 
-Или даже сами параметры типов:
+Or even parametrized types itself:
 
 ```tlb
 _ {X:Type} v1:X = A X;
 _ {X:Type} d1:X = B X;
-_ {X:Type} бит:(A (B X)) = AB X;
+_ {X:Type} bits:(A (B X)) = AB X;
 ```
 
-### Использование полей NAT для параметризованных типов
+### NAT fields usage for parametrized types
 
-Вы можете использовать поля, определенные ранее похожие на параметры для типов. Сериализация будет определяться во время выполнения.
+You can use fields defined previously like parameters to types. Serialization will be determinate in runtime.
 
-Простой пример:
+Simple example:
 
 ```tlb
-_ а:(## 8) b:(## a) = A;
+_ a:(## 8) b:(## a) = A;
 ```
 
-Это означает, что мы храним размер поля `b` внутри поля `a`. Таким образом, когда мы хотим сериализовать тип `A` нам нужно загрузить 8
-бит беззнаковое целое поле `a`, а затем использовать это число для определения размера поля `b`.
+This means that we store size of `b` field inside of `a` field. So when we want to serialize type `A` we need to load 8
+bit unsigned integer of `a` field and then use this number to determinate size of `b` field.
 
-Эта стратегия работает также и в отношении параметров типов:
+This strategy works for parametrized types as well:
 
 ```tlb
 _ {input:#} c:(## input) = B input;
 _ a:(## 8) c_in_b:(B a) = A;
 ```
 
-### Выражение в параметрах типов
+### Expression in parametrized types
 
 ```tlb
-_ {x:#} значение:(## x) = Пример (x * 2);
-_ _:(Пример 4) = 2BitInteger;
+_ {x:#} value:(## x) = Example (x * 2);
+_ _:(Example 4) = 2BitInteger;
 ```
 
-В этом примере определен тип `Example.value` во время выполнения.
+In this example `Example.value` type is determinate in runtime.
 
-В определении `2BitInteger` мы устанавливаем значение типа `Example 4`. Для определения этого типа мы используем определение `Пример (x * 2)`
-и вычисляем `x` по формуле (`y = 2`, `z = 4`):
+In `2BitInteger` definition we set value `Example 4` type. To determinate this type we use `Example (x * 2)`
+definition and calculate `x` by formula (`y = 2`, `z = 4`):
 
 ```c++
 static inline bool mul_r1(int& x, int y, int z) {
-  return y && ! z % y) && (x = z / y) >= 0;
+  return y && !(z % y) && (x = z / y) >= 0;
 }
 ```
 
-Мы также можем использовать добавить оператора:
+We can also use add operator:
 
 ```tlb
-_ {x:#} значение:(## x) = Пример Sum (x + 3);
-_ _:(Пример 4) = 1BitInteger;
+_ {x:#} value:(## x) = ExampleSum (x + 3);
+_ _:(ExampleSum 4) = 1BitInteger;
 ```
 
-В определении `1BitInteger` задаем значение типа `ExampleSum 4`. Для определения этого типа мы используем `ExampleSum (x + 3)`
-и вычисляем `x` по формуле (`y = 3`, `z = 4`):
+In `1BitInteger` definition we set value `ExampleSum 4` type. To determinate this type we use `ExampleSum (x + 3)`
+definition and calculate `x` by formula (`y = 3`, `z = 4`):
 
 ```c++
 static inline bool add_r1(int& x, int y, int z) {
@@ -452,22 +452,22 @@ static inline bool add_r1(int& x, int y, int z) {
 }
 ```
 
-## Отрицательный оператор (`~`)
+## Negate operator (`~`)
 
-Некоторые случаи "переменных" (т.е. уже определенные поля) префиксы префикса tilde(`~`). Это означает, что вхождение переменной
-используется противоположным способом к поведению по умолчанию: слева от уравнения, это
-означает, что переменная будет вычтена (вычисленная) на основе этого случая, вместо замены ранее вычисленного значения
-; в правой стороне, наоборот, это означает, что переменная не будет вычтена из типа
-сериализована, но скорее то, что он будет вычислен в ходе процесса десериализации. In other words, a tilde transforms
+Some occurrences of “variables” (i.e. already-defined fields) are prefixed by a tilde(`~`). This indicates that the
+variable’s occurrence is used in the opposite way to the default behavior: on the left-hand side of the equation, it
+means that the variable will be deduced (computed) based on this occurrence, instead of substituting its previously
+computed value; in the right-hand side, conversely, it means that the variable will not be deduced from the type being
+serialized, but rather that it will be computed during the deserialization process. In other words, a tilde transforms
 an “input argument” into an “output argument” or vice versa.
 
-Простой пример для negate оператора - определение новой переменной базы на другой переменной:
+Simple example for negate operator is definition of new variable base on another variable:
 
 ```tlb
-_ а:(## 32) { b:# } { ~b = a + 100 } = B_Calc_Example;
+_ a:(## 32) { b:# } { ~b = a + 100 } = B_Calc_Example;
 ```
 
-После определения вы можете использовать новую переменную для передачи в `Nat` типы:
+After definition, you can use new variable for passing it to `Nat` types:
 
 ```tlb
 _ a:(## 8) { b:# } { ~b = a + 10 }
@@ -477,7 +477,7 @@ _ a:(## 8) { b:# } { ~b = a + 10 }
 The size of `example_dynamic_var` will be computed in runtime, when we load `a` variable and use it value for
 determination of `example_dynamic_var` size.
 
-Или другим типам:
+Or to other types:
 
 ```tlb
 _ {X:Type} a:^X = PutToRef X;
@@ -485,30 +485,30 @@ _ a:(## 32) { b:# } { ~b = a + 100 }
   my_ref: (PutToRef b) = B_Calc_Example;
 ```
 
-Также вы можете определить переменные с помощью отрицательного оператора в добавлении или умножении сложных выражений:
+Also you can define variables with negate operator in add or multiply complex expressions:
 
 ```tlb
-_ а:(## 32) { b:# } { ~b + 100 = a } = B_Calc_Example;
+_ a:(## 32) { b:# } { ~b + 100 = a }  = B_Calc_Example;
 ```
 
 ```tlb
-_ a:(## 32) { b:# } { ~b * 5 = a } = B_Calc_Example;
+_ a:(## 32) { b:# } { ~b * 5 = a }  = B_Calc_Example;
 ```
 
-### Отрицать оператора (`~`) в определении типа
+### Negate operator (`~`) in type definition
 
 ```tlb
-_ {m:#} n:(## m) = Определение ~n м;
-_ {n_from_define:#} defined_val:(Определите ~n_from_define 8) real_value:(## n_from_define) = Пример;
+_ {m:#} n:(## m) = Define ~n m;
+_ {n_from_define:#} defined_val:(Define ~n_from_define 8) real_value:(## n_from_define) = Example;
 ```
 
-Предположим, у нас есть класс `Определить ~n m`, который принимает `m` и вычисляет его загрузку из числа `m` бит не подписанного числа.
+Assume we have class `Define ~n m` which takes `m` and compute `n` loading it from `m` bit unsigned integer.
 
-В типе `Пример` мы храним переменную, рассчитанную по типу `Define` в `n_from_define`, также мы знаем, что это `8` бит
-unsigned integer, потому что мы применяем тип `Define` с помощью `Define ~n_from_define 8`. Теперь мы можем использовать `n_from_define` переменную
-в других типах для определения процесса сериализации.
+In `Example` type we store variable computed by `Define` type into `n_from_define`, also we know that it's `8` bit
+unsigned integer, because we apply `Define` type with `Define ~n_from_define 8`. Now we can use `n_from_define` variable
+in other types to determinate serialization process.
 
-Эта техника приводит к более сложным определениям типов (например, Unions, Hashmaps).
+This technic lead to more complex type definitions (such as Unions, Hashmaps).
 
 ```tlb
 unary_zero$0 = Unary ~0;
@@ -516,28 +516,28 @@ unary_succ$1 {n:#} x:(Unary ~n) = Unary ~(n + 1);
 _ u:(Unary Any) = UnaryChain;
 ```
 
-Этот пример хорошо описывает [типы TL-B](/v3/documentation/data-formats/tlb/tl-b-types#unary)
-статью. Основная идея здесь заключается в том, что `UnaryChain` рекурсивно десериализует до достижения `unary_zero$0` (потому что мы
-знаем последний элемент типа `unary X` по определению `unary_zero$0 = Unary ~0; и `X`рассчитывается в режиме runtime
-due`Unary ~(n + 1)\`).
+This is example has good explanation in [TL-B Types](/v3/documentation/data-formats/tlb/tl-b-types#unary)
+article. The main idea here is that `UnaryChain` will recursively deserialize until reach of `unary_zero$0` (because we
+know last element of `Unary X` type by definition `unary_zero$0 = Unary ~0;` and `X` is calculated in runtime
+due `Unary ~(n + 1)` definition).
 
-Примечание: `x:(Unary ~n)` означает, что `n` определен в процессе сериализации класса `Unary`.
+Note: `x:(Unary ~n)` means that `n` is defined in process of serialization of `Unary` class.
 
-## Специальные типы
+## Special types
 
-В настоящее время TVM разрешает типы камер:
+Currently, TVM allow types of cells:
 
-- Обычный
-- ПруннедВетвь
-- Библиотека
+- Ordinary
+- PrunnedBranch
+- Library
 - MerkleProof
 - MerkleUpdate
 
-По умолчанию все ячейки являются `Обычными`. И все клетки, описанные в tlb, являются "обычными".
+By default, all cells are `Ordinary`. And all cells described in tlb are `Ordinary`.
 
-Чтобы разрешить загрузку специальных типов в конструкторе, необходимо добавить `!` перед конструктором.
+To allow load of special types in constructor you need to add `!` before constructor.
 
-Например:
+Example:
 
 ```tlb
 !merkle_update#02 {X:Type} old_hash:bits256 new_hash:bits256
@@ -549,12 +549,12 @@ due`Unary ~(n + 1)\`).
 This technic allow codegen code to mark `SPECIAL` cells when you want to print structure, also it allow to correctly
 validate structures with special cells.
 
-## Несколько экземпляров одного типа без проверки уникальности конструкции
+## Several instances for one type without constructor uniqueness tag check
 
-Допускается создание нескольких экземпляров одного типа в зависимости только от параметров типа.
-Таким образом определение конструкторского тэга уникальная проверка не применяется.
+It's allowed to create several instances of one type depending only on type parameters.
+In this way of definition constructor tag unique check will not be applied.
 
-Например:
+Example:
 
 ```tlb
 _ = A 1;
@@ -563,57 +563,57 @@ b$01 = A 3;
 _ test:# = A 4;
 ```
 
-Это означает, что фактический тег для десериализации будет определяться параметром типа `A`:
+Means that actual tag for deserialization will be determinate by `A` type parameter:
 
 ```python3
-# класс для типа `A`
-класса A(TLBComplex):
-    тег класса (Enum):
+# class for type `A`
+class A(TLBComplex):
+    class Tag(Enum):
         a = 0
         b = 1
         cons1 = 2
         cons4 = 3
 
     cons_len = [2, 2, 0, 0]
-    cons_tag = [1, 1, 0, 0, 0]
+    cons_tag = [1, 1, 0, 0]
 
     m_: int = None
 
-    def __init__(себя, самое, m: int):
-        себя. _ = m
+    def __init__(self, m: int):
+        self.m_ = m
 
-    def get_tag(self, cs: CellSlice) -> Необязательно["A. ag"]:
-        тэг = себя. _
+    def get_tag(self, cs: CellSlice) -> Optional["A.Tag"]:
+        tag = self.m_
 
         if tag == 1:
-            return A. ag. ons1
+            return A.Tag.cons1
 
         if tag == 2:
-            return A. ag.a
+            return A.Tag.a
 
         if tag == 3:
-            return A. ag.
+            return A.Tag.b
 
-        если тег == 4:
-            возврат А. ag.cons4
+        if tag == 4:
+            return A.Tag.cons4
 
-        не возвращает
+        return None
 ```
 
-То же самое работает с несколькими параметрами:
+Same works with several parameters:
 
 ```tlb
 _ = A 1 1;
 a$01 = A 2 1;
 b$01 = A 3 3;
-_ тест:# = A 4 2;
+_ test:# = A 4 2;
 ```
 
-Имейте в виду, что при добавлении определения типа параметра теги между предопределенным определением типа (`a`
-и `b` в нашем примере) и
-параметризованное определение типа (`c` в нашем примере) должны быть уникальными:
+Please, keep in mind that when you add parametrized type definition, tags between predefined type definition (`a`
+and `b` in our example) and
+parametrized type definition (`c` in our example) must be unique:
 
-_Неправильный пример:_
+_Not valid example:_
 
 ```
 a$01 = A 2 1;
@@ -621,7 +621,7 @@ b$11 = A 3 3;
 c$11 {X:#} {Y:#} = A X Y;
 ```
 
-_Допустимый пример:_
+_Valid example:_
 
 ```tlb
 a$01 = A 2 1;
@@ -629,28 +629,28 @@ b$01 = A 3 3;
 c$11 {X:#} {Y:#} = A X Y;
 ```
 
-## Комментарии
+## Comments
 
-Комментарии совпадают с C++
+Comments are the same as in C++
 
 ```tlb
 /*
-Это
-комментарий
+This is
+a comment
 */
 
-// Это комментарий в одной строке
+// This is one line comment
 ```
 
-## Полезные источники
+## Useful sources
 
-- [Описание старой версии TL](https://core.telegram.org/mtproto/TL)
+- [A description of an older version of TL](https://core.telegram.org/mtproto/TL)
 - [block.tlb](https://github.com/ton-blockchain/ton/blob/master/crypto/block/block.tlb)
 - [tlbc tool](https://github.com/ton-blockchain/ton/blob/master/crypto/tl/tlbc.cpp)
-- [Код CPP](https://github.com/ton-blockchain/ton/blob/master/crypto/tl/tlbc-gen-cpp.cpp)
-- [тесты tlb тонны](https://github.com/disintar/tonpy/blob/main/src/tonpy/tests/test_tlb.py)
-- [кодовый код](https://github.com/disintar/ton/blob/master/crypto/tl/tlbc-gen-py.cpp)
+- [CPP Codegen](https://github.com/ton-blockchain/ton/blob/master/crypto/tl/tlbc-gen-cpp.cpp)
+- [tonpy tlb tests](https://github.com/disintar/tonpy/blob/main/src/tonpy/tests/test_tlb.py)
+- [tonpy py codegen](https://github.com/disintar/ton/blob/master/crypto/tl/tlbc-gen-py.cpp)
 
 <hr/>
 
-Документация предоставлена командой [Disintar](https://dton.io/).
+Documentation provided by [Disintar](https://dton.io/) team.
