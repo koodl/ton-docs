@@ -1,146 +1,146 @@
 # RLDP
 
-Осуществление:
+Implementation:
 
 - https://github.com/ton-blockchain/ton/tree/master/rldp
 - https://github.com/ton-blockchain/ton/tree/master/rldp2
 - https://github.com/ton-blockchain/ton/tree/master/rldp-http-proxy
 
-## Общий обзор
+## Overview
 
-RLDP - надежный большой протокол датаграмм - это протокол, который запускается поверх ADNL UDP, , который используется для передачи больших блоков данных, и
-включает алгоритмы коррекции Forward Error Correction (FEC) в качестве замены принятых пакетов на другой стороне.
-Это позволяет передавать данные между сетевыми компонентами более эффективно, но с большим потреблением трафика.
+RLDP - Reliable Large Datagram Protocol - is a protocol that runs on top of ADNL UDP, which is used to transfer large data blocks and
+includes Forward Error Correction (FEC) algorithms as a replacement of acknowledgment packets on the other side.
+This makes it possible to transfer data between network components more efficiently, but with more traffic consumption.
 
-RLDP используется везде в инфраструктуре TON, например, для загрузки блоков с других узлов и передачи им данных,
-для доступа к сайтам TON и TON Storage.
+RLDP is used everywhere in TON infrastructure, for example, to download blocks from other nodes and transfer data to them,
+to access TON websites and TON Storage.
 
 ## Protocol
 
-RLDP использует для связи следующие TL структуры:
+RLDP uses the following TL structures for communication:
 
 ```tlb
 fec.raptorQ data_size:int symbol_size:int symbols_count:int = fec.Type;
 fec.roundRobin data_size:int symbol_size:int symbols_count:int = fec.Type;
-fec. nline data_size:int symbol_size:int symbols_count:int = fec.Type;
+fec.online data_size:int symbol_size:int symbols_count:int = fec.Type;
 
 rldp.messagePart transfer_id:int256 fec_type:fec.Type part:int total_size:long seqno:int data:bytes = rldp.MessagePart;
-rldp. onfirm transfer_id:int256 part:int seqno:int = rldp.MessagePart;
+rldp.confirm transfer_id:int256 part:int seqno:int = rldp.MessagePart;
 rldp.complete transfer_id:int256 part:int = rldp.MessagePart;
 
-rldp.message id:int256 data:bytes = rldp. essage;
+rldp.message id:int256 data:bytes = rldp.Message;
 rldp.query query_id:int256 max_answer_size:long timeout:int data:bytes = rldp.Message;
 rldp.answer query_id:int256 data:bytes = rldp.Message;
 ```
 
-Сериализованная структура завернута в схему `adnl.message.custom` TL и отправлена по ADNL UDP.
-RLDP Transfers используются для передачи больших данных, генерируется случайный `transfer_id` и сами данные обрабатываются алгоритмом FEC.
-Полученные части завернуты в структуру `rldp.messagePart` и отправляются пиру до тех пор, пока пир не отправит нам `rldp.complete` или до истечения времени.
+The serialized structure is wrapped in the `adnl.message.custom` TL schema and sent over ADNL UDP.
+RLDP Transfers are used to transfer big data, a random `transfer_id` is generated, and the data itself is processed by the FEC algorithm.
+The resulting pieces are wrapped in a `rldp.messagePart` structure and sent to the peer until the peer sends us `rldp.complete` or until timeout.
 
-Когда получатель собрал фрагменты `rldp. essagePart` необходим для сборки полного сообщения, он скомбинирует их вместе, декодирует использование FEC и
-десериализирует результирующий массив байтов в один из `rldp. Структуры uery` или `rldp.answer` в зависимости от типа (ID префикса tl).
+When the receiver has collected the pieces of `rldp.messagePart` necessary to assemble a complete message, it concat them all together, decodes using FEC and
+deserializes the resulting byte array into one of the `rldp.query` or `rldp.answer` structures, depending on the type (tl prefix id).
 
 ### FEC
 
-Валидные алгоритмы коррекции Forward Error для использования в RLDP являются RoundRobin, Online и RaptorQ.
+Valid Forward Error Correction algorithms for use with RLDP are RoundRobin, Online, and RaptorQ.
 Currently for data encoding [RaptorQ](https://www.qualcomm.com/media/documents/files/raptorq-technical-overview.pdf) is used.
 
-#### Раптор
+#### RaptorQ
 
-Суть РапторQ заключается в том, что данные разделены на так называемые символы - блоки того же и предопределенного размера.
+The essence of RaptorQ is that the data is divided into so-called symbols - blocks of the same, predetermined size.
 
-Матрицы создаются из блоков, и к ним применяются дискретные математические операции. Это позволяет нам создать почти бесконечное количество символов.
-из тех же данных. Все символы смешиваются, и можно восстановить потерянные пакеты без запроса дополнительных данных с сервера, в то время как использование пакетов меньше, чем если бы мы отправили те те же части в цикле.
+Matrices are created from blocks, and discrete mathematical operations are applied to them. This allows us to create an almost infinite number of symbols.
+from the same data. All symbols are mixed, and it is possible to recover lost packets without requesting additional data from the server, while using fewer packets than it would be if we sent the same pieces in a loop.
 
-Созданные символы отправляются пиру до тех пор, пока не сообщит, что все данные были получены и восстановлены (декодированы), применяя одни и те же дискретные операции.
+The generated symbols are sent to the peer until he reports that all data has been received and restored (decoded) by applying the same discrete operations.
 
-[[Пример реализации RaptorQ на Голанге]](https://github.com/xssnick/tonutils-go/tree/46dbf5f820af066ab10c5639a508b4295e5aa0fb/adnl/rldp/raptorq)
+[[Implementation example of RaptorQ in Golang]](https://github.com/xssnick/tonutils-go/tree/46dbf5f820af066ab10c5639a508b4295e5aa0fb/adnl/rldp/raptorq)
 
 ## RLDP-HTTP
 
-Для взаимодействия с сайтами TON используется HTTP, завернутый в RLDP. Хост запускает свой сайт на любом HTTP веб-сервере и запускает рядом с ним rldp-http-http-proxy.
-Все запросы от сети TON поступают по протоколу RLDP на прокси, и прокси перекомпилирует запрос в простой HTTP и вызывает оригинальный веб-сервер локально.
+To interact with TON Sites, HTTP wrapped in RLDP is used. The hoster runs his site on any HTTP webserver and starts rldp-http-proxy next to it.
+All requests from the TON network come via the RLDP protocol to the proxy, and the proxy reassembles the request into simple HTTP and calls the original web server locally.
 
-Пользователь со своей стороны запускает прокси, например, [Tonutils Proxy](https://github.com/xssnick/TonUtils-Proxy) и использует \`. весь трафик завершается в обратном порядке, запросы переходят на локальный HTTP-прокси, и он отправляет их через RLDP на удаленный сайт TON.
+The user on his side launches the proxy, for example, [Tonutils Proxy](https://github.com/xssnick/TonUtils-Proxy), and uses the `.ton` sites, all traffic is wrapped in the reverse order, requests go to the local HTTP proxy, and it sends them via RLDP to the remote TON site.
 
-HTTP внутри RLDP реализован с использованием структур TL:
+HTTP inside RLDP is implemented using TL structures:
 
 ```tlb
 http.header name:string value:string = http.Header;
 http.payloadPart data:bytes trailer:(vector http.header) last:Bool = http.PayloadPart;
-http.response http_version:string status_code:int reason:string headers:(vector http. eader) no_payload:Bool = http.Response;
+http.response http_version:string status_code:int reason:string headers:(vector http.header) no_payload:Bool = http.Response;
 
 http.request id:int256 method:string url:string http_version:string headers:(vector http.header) = http.Response;
 http.getNextPayloadPart id:int256 seqno:int max_chunk_size:int = http.PayloadPart;
 ```
 
-Это не просто HTTP в текстовой форме, все упаковано в двоичный TL и распаковано для отправки на веб-сервер или браузер самим прокси.
+This is not pure HTTP in text form, everything is wrapped in binary TL and unwrapped back to be sent to the web server or browser by the proxy itself.
 
-Ниже приводится схема работы:
+The scheme of work is as follows:
 
-- Клиент отправляет `http.request`
-- Сервер проверяет заголовок `Content-Length` при получении запроса
-- - Если не 0, отправляет запрос `http.getNextPayloadPart` клиенту
-- - При получении запроса клиент отправляет `http.payloadPart` - запрошенную часть тела в зависимости от `seqno` и `max_chunk_size`.
-- - Сервер повторяет запросы, увеличивая `seqno`, пока он не получит все чанки от клиента, i. . до тех пор, пока поле `last:Bool` последнего полученного чанка не верно.
-- После обработки запроса сервер отправляет `http.response`, клиент проверяет заголовок `Content-Length`
-- - Если это не 0, то посылает `http. etNextPayloadPart` запрос на сервер, и операции повторяются, как в случае с клиентом, но наоборот.
+- Client sends `http.request`
+- The server checks the `Content-Length` header when receiving a request
+- - If not 0, sends a `http.getNextPayloadPart` request to the client
+- - When receiving a request, the client sends `http.payloadPart` - the requested body piece depending on `seqno` and `max_chunk_size`.
+- - The server repeats requests, incrementing `seqno`, until it receives all the chunks from the client, i.e. until the `last:Bool` field of the last chunk received is true.
+- After processing the request, the server sends `http.response`, the client checks the `Content-Length` header
+- - If it is not 0, then sends a `http.getNextPayloadPart` request to the server, and the operations are repeated, as in the case of the client but vice-versa.
 
-## Запросить сайт TON
+## Request the TON Site
 
-Чтобы понять, как работает RLDP, давайте рассмотрим пример получения данных с сайта TON `foundation.ton`.
-Допустим, у нас уже есть ADNL адрес, вызвав метод контракта с NFT-DNS, [определил адрес и порт службы RLDP с помощью DHT](https://github. om/xssnick/ton-deep-doc/blob/master/DHT.md), и [подключен к нему](https://github.com/xssnick/ton-deep-doc/blob/master/ADNL-UDP-Internal.md).
+To understand how RLDP works, let's look at an example of getting data from the TON site `foundation.ton`.
+Let's say we have already got its ADNL address by calling the Get method of the NFT-DNS contract, [determined the address and port of the RLDP service using DHT](https://github.com/xssnick/ton-deep-doc/blob/master/DHT.md), and [connected to it over ADNL UDP](https://github.com/xssnick/ton-deep-doc/blob/master/ADNL-UDP-Internal.md).
 
-### Отправить GET запрос на `foundation.ton`
+### Send a GET request to `foundation.ton`
 
-Для этого заполните структуру:
+To do this, fill in the structure:
 
 ```tlb
-http.request id:int256 метод:string url:string http_version:string заголовки:(vector http.header) = http.Response;
+http.request id:int256 method:string url:string http_version:string headers:(vector http.header) = http.Response;
 ```
 
-Заполните поля для заселения `http.request`:
+Serialize `http.request` by filling in the fields:
 
 ```
-e191b161 -- TL ID http. equest      
-116505dac8a9a3cdb464f9b5dd9af78594f23f1c295099a9b50c8245de471194 -- id = {random}
-03 474554 -- метод = string `GET`
-16 687474703a2f2f666f756e646174696f6e2e746f6e2f6e2f 00 -- url = строка `http://foundation. on/`
-08 485454502f312e31 000000 -- http_version = string `HTTP/1. `
-01000000 -- заголовки (1)
-   04 486f7374 000000 -- name = Host
-   0e 666f756e646174696f6e2e746f6e 00 -- значение = foundation.ton
+e191b161                                                           -- TL ID http.request      
+116505dac8a9a3cdb464f9b5dd9af78594f23f1c295099a9b50c8245de471194   -- id           = {random}
+03 474554                                                          -- method       = string `GET`
+16 687474703a2f2f666f756e646174696f6e2e746f6e2f 00                 -- url          = string `http://foundation.ton/`
+08 485454502f312e31 000000                                         -- http_version = string `HTTP/1.1`
+01000000                                                           -- headers (1)
+   04 486f7374 000000                                              -- name         = Host
+   0e 666f756e646174696f6e2e746f6e 00                              -- value        = foundation.ton
 ```
 
-Теперь давайте обернем сериализованный `http.request` в `rldp.query` и сериализируем его тоже:
+Now let's wrap our serialized `http.request` into `rldp.query` and serialize it too:
 
 ```
-694d798a -- TL ID rldp. ery
-184c01cb1a1e4dc9322e5cabe8a2d2a0a4dd82011edaf59eb66f3d4d15b1c5c -- query_id = {random}
-0004040000000000-- max_answer_size = 257 KB, может быть любой размер заголовков
-258f9063 -- тайм-аут (unix) = 1670418213
-34 e191b161116505dac8a9a3cdb464f9b5dd9af78594f23f1c295099a9b50c8245 -- данные (http. equest)
+694d798a                                                              -- TL ID rldp.query
+184c01cb1a1e4dc9322e5cabe8aa2d2a0a4dd82011edaf59eb66f3d4d15b1c5c      -- query_id        = {random}
+0004040000000000                                                      -- max_answer_size = 257 KB, can be any sufficient size that we accept as headers
+258f9063                                                              -- timeout (unix)  = 1670418213
+34 e191b161116505dac8a9a3cdb464f9b5dd9af78594f23f1c295099a9b50c8245   -- data (http.request)
    de4711940347455416687474703a2f2f666f756e646174696f6e2e746f6e2f00
    08485454502f312e310000000100000004486f73740000000e666f756e646174
-   696f6e2e746f6e00 00000000
+   696f6e2e746f6e00 000000
 ```
 
-### Кодирование и отправка пакетов
+### Encoding and sending packets
 
-Теперь нам нужно применить к этим данным алгоритм FEC RaptorQ.
+Now we need to apply the FEC RaptorQ algorithm to this data.
 
-Создадим кодировщик, для чего мы должны превратить результирующий байтовый массив в символы фиксированного размера. В ТОН размер символа составляет 768 байт.
-Для этого давайте разделим массив на части 768 байт. В последней части, если он выходит меньше, чем 768, то его нужно подкрепить нулевыми байтами к требуемому размеру.
+Let's create an encoder, for this we need to turn the resulting byte array into symbols of a fixed size. In TON, the symbol size is 768 bytes.
+To do this, let's split the array into pieces of 768 bytes. In the last piece, if it comes out smaller than 768, it will need to be padded with zero bytes to the required size.
 
-Наш массив размером 156 байт, это значит, что будет только 1 кусок, и нам нужно поместить его на 612 нулевых байтах в размере 768.
+Our array is 156 bytes in size, which means there will be only 1 piece, and we need to pad it with 612 zero bytes to a size of 768.
 
-Также для кодировщика выбираются константы в зависимости от размера данных и символа, подробнее об этом вы можете узнать в документации самого RaptorQ, но для того, чтобы не попасть в математический джунгль, я рекомендую использовать готовую библиотеку, которая реализует такую кодировку.
-[[Пример создания кодировки]](https://github.com/xssnick/tonutils-go/blob/46dbf5f820af066ab10c5639a508b4295e5aa0fb/adnl/rldp/raptorq/encoder.go#L15) и [[пример кодирования символов]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/raptorq/solver.go#L26).
+Also, constants are selected for the encoder, depending on the size of the data and the symbol, you can learn more about this in the documentation of RaptorQ itself, but in order not to get into mathematical jungle, I recommend using a ready-made library that implements such encoding.
+[[Example of creating an encoder]](https://github.com/xssnick/tonutils-go/blob/46dbf5f820af066ab10c5639a508b4295e5aa0fb/adnl/rldp/raptorq/encoder.go#L15) and [[Symbol encoding example]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/raptorq/solver.go#L26).
 
-Символы закодированы и посылаются в стиле округления: мы сначала определяем «seqno», что равно 0, и increment его на 1 для каждого последующего закодированного пакета. Например, если у нас 2 символа, то мы кодируем и высылаем первое, увеличить seqno на 1, затем второй и увеличить seqno на 1, затем снова первый и увеличить seqno, который в данный момент уже равен 2, другой 1.
-И так до тех пор, пока мы не получим сообщение о том, что узел принял данные.
+Symbols are encoded and sent in a round-robin style: we initially define `seqno` which is 0, and increment it by 1 for each successive encoded packet. For example, if we have 2 symbols, then we encode and send the first one, increase seqno by 1, then the second and increase seqno by 1, then again the first one and increase seqno, which at this moment is already equal to 2, by another 1.
+And so until we receive a message that the peer has accepted the data.
 
-Теперь, когда мы создали кодировщик, мы готовы отправить данные, для этого мы заполним схему TL:
+Now, when we have created the encoder, we are ready to send data, for this we will fill in the TL schema:
 
 ```tlb
 fec.raptorQ data_size:int symbol_size:int symbols_count:int = fec.Type;
@@ -148,61 +148,61 @@ fec.raptorQ data_size:int symbol_size:int symbols_count:int = fec.Type;
 rldp.messagePart transfer_id:int256 fec_type:fec.Type part:int total_size:long seqno:int data:bytes = rldp.MessagePart;
 ```
 
-- `transfer_id` - случайный int256, одинаковый для всех messageParts в рамках одной передачи данных.
-- `fec_type` — `fec.raptorQ`.
+- `transfer_id` - random int256, the same for all messageParts within the same data transfer.
+- `fec_type` is `fec.raptorQ`.
 - - `data_size` = 156
 - - `symbol_size` = 768
 - - `symbols_count` = 1
-- `part` в нашем случае всегда 0, может быть использован для переводов, которые превышают лимит размера.
-- `total_size` = 156. Размер наших передаваемых данных.
-- `seqno` - для первого пакета будет равен 0, и для каждого последующего пакета он увеличится на 1, будет использоваться в качестве параметра декодирования и символа кодирования.
-- `data` - наш кодированный символ, размер 768 байт.
+- `part` in our case always 0, can be used for transfers that hit the size limit.
+- `total_size` = 156. The size of our transfer data.
+- `seqno` - for the first packet will be equal to 0, and for each subsequent packet it will increase by 1, will be used as parameter to decode and encode symbol.
+- `data` - our encoded symbol, 768 bytes in size.
 
-После сериализации `rldp.messagePart`, оберните его в `adnl.message.custom` и отправьте его по ADNL UDP.
+After serializing `rldp.messagePart`, wrap it in `adnl.message.custom` and send it over ADNL UDP.
 
-Мы отправляем пакеты в цикле, увеличивая seqno все время, пока не ждем `rldp. omplete` сообщение от узла, или мы останавливаемся в тайм-ауте. После того, как мы отправили количество пакетов, равное количеству наших символов, мы можем замедлить и отправить дополнительный пакет, например, один раз в 10 миллисекунд или меньше.
-Дополнительные пакеты используются для восстановления в случае потери данных, так как UDP является быстрым, но ненадежным протоколом.
+We send packets in a loop, increasing seqno all the time, until we wait for the `rldp.complete` message from the peer, or we stop on a timeout. After we have sent a number of packets equal to the number of our symbols, we can slow down and send an additional packet, for example, once every 10 milliseconds or fewer.
+The extra packets are used for recovery in case of data loss, since UDP is a fast but unreliable protocol.
 
-[[Пример реализации]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/rldp.go#L249)
+[[Implementation example]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/rldp.go#L249)
 
-### Обработка ответа от 'foundation.ton'
+### Processing the response from `foundation.ton`
 
-Во время отправки мы уже можем ожидать ответа от сервера, в нашем случае ожидаем `rldp.answer` с `http.response` внутри.
-Он придет к нам таким же образом, в виде передачи RLDP, так как он был отправлен на момент запроса, но `transfer_id` будет инвертирован (каждый байт XOR 0xFF).
-Мы получим сообщения `adnl.message.custom`, содержащие `rldp.messagePart`.
+During the sending, we can already expect a response from the server, in our case we are waiting for `rldp.answer` with `http.response` inside.
+It will come to us in the same way, in the form of an RLDP transfer, as it was sent at the time of the request, but `transfer_id` will be inverted (each byte XOR 0xFF).
+We will get `adnl.message.custom` messages containing `rldp.messagePart`.
 
-Сначала нам нужно получить информацию FEC от первого полученного сообщения о переводе, параметры `data_size`, `symbol_size` и `symbols_count` из \`fec. Структура сообщения aptorQ.
-Нам нужны их для инициализации декодера RaptorQ. [[Example]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/rldp.go#L137)
+First we need to get the FEC information from the first received message of the transfer, specifically the `data_size`, `symbol_size` and `symbols_count` parameters from the `fec.raptorQ` messagePart structure.
+We need them to initialize the RaptorQ decoder. [[Example]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/rldp.go#L137)
 
-После инициализации добавляем принятые символы с их `seqno` в наш декодер, и как только мы накопим минимальное требуемое число, равное `symbols_count`, мы можем попробовать декодировать полное сообщение. В результате мы отправим `rldp.complete`. [[Example]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/rldp.go#L168)
+After initialization, we add the received symbols with their `seqno` to our decoder, and once we have accumulated the minimum required number equal to `symbols_count`, we can try to decode the full message. On success, we will send `rldp.complete`. [[Example]](https://github.com/xssnick/tonutils-go/blob/be3411cf412f23e6889bf0b648904306a15936e7/adnl/rldp/rldp.go#L168)
 
-Результатом будет сообщение `rldp.answer` с тем же query_id, что и в отправленном нами `rldp.query`. Данные должны содержать `http.response`.
+The result will be a `rldp.answer` message with the same query_id as in the `rldp.query` we sent. The data must contain `http.response`.
 
 ```tlb
 http.response http_version:string status_code:int reason:string headers:(vector http.header) no_payload:Bool = http.Response;
 ```
 
-С основными полями, я думаю, что все понятно, суть такая же, как в HTTP.
-Интересным флагом здесь является `no_payload`, если это правда, то в ответе нет тела (`Content-Length` = 0).
-Ответ от сервера можно считать полученным.
+With the main fields, I think everything is clear, the essence is the same as in HTTP.
+An interesting flag here is `no_payload`, if it is true, then there is no body in the response, (`Content-Length` = 0).
+The response from the server can be considered received.
 
-Если `no_payload` = false, то содержимое в ответе, и нам нужно его получить.
-Для этого нам нужно отправить запрос с `http.getNextPayloadPart` схемой TL в `rldp.query`.
+If `no_payload` = false, then there is content in the response, and we need to get it.
+To do this, we need to send a request with a TL schema `http.getNextPayloadPart` wrapped in `rldp.query`.
 
 ```tlb
 http.getNextPayloadPart id:int256 seqno:int max_chunk_size:int = http.PayloadPart;
 ```
 
-`id` должен быть таким же, как мы отправили в `http.request`, `seqno` - 0, и +1 для каждой следующей части. `max_chunk_size` — это максимальный размер чанка, который мы готовы принять, обычно используется 128 КБ (131072 байта).
+`id` should be the same as we sent in `http.request`, `seqno` - 0, and +1 for each next part. `max_chunk_size` is the maximum chunk size we are ready to accept, typically 128 KB (131072 bytes) is used.
 
-В ответ мы получим:
+In response, we will receive:
 
 ```tlb
-http.payloadPart данные:байты трейлера:(vector http.header) last:Bool = http.PayloadPart;
+http.payloadPart data:bytes trailer:(vector http.header) last:Bool = http.PayloadPart;
 ```
 
-Если `last` = true, то мы достигли конца, мы можем собрать все части вместе и получить полное тело ответа, например, html.
+If `last` = true, then we have reached the end, we can put all the pieces together and get a complete response body, for example, html.
 
-## Справочная литература
+## References
 
-_Здесь [ссылка на оригинальную статью](https://github.com/xssnick/ton-deep-doc/blob/master/RLDP.md) от [Oleg Baranov](https://github.com/xssnick)._
+_Here a [link to the original article](https://github.com/xssnick/ton-deep-doc/blob/master/RLDP.md) by [Oleg Baranov](https://github.com/xssnick)._
