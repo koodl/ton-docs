@@ -1,61 +1,61 @@
-# Адрес смарт-контракта
+# Smart Contract Addresses
 
-[//]: # "TODO, это gpt"
+[//]: # "TODO, this is gpt"
 
-В блокчейне TON каждый персонаж, включая кошельки и смарт-контракты, представлен адресом. Эти адреса имеют решающее значение для приема и отправки сообщений и транзакций. Существует два основных формата для смарт-адресов: **необработанные адреса** и **дружественные адреса**.
+On the TON Blockchain, every actor, including wallets and smart contracts, is represented by an address. These addresses are critical for receiving and sending messages and transactions. There are two main formats for smart contract addresses: **raw addresses** and **user-friendly addresses**.
 
-## Компоненты адресов
+## Address Components
 
-Каждый адрес TON состоит из двух основных компонентов:
+Each address on TON consists of two main components:
 
-- **ID рабочей цепочки**: Подписанное 32-битное целое, обозначающее ту цепочку, которая принадлежит контракту (например, `-1` для Masterchain и `0` для Basechain).
-- **ID счета**: уникальный идентификатор контракта, обычно длиной 256 бит для Masterchain и Basechain.
+- **Workchain ID**: A signed 32-bit integer that denotes which workchain the contract belongs to (e.g., `-1` for the Masterchain and `0` for the Basechain).
+- **Account ID**: A unique identifier for the contract, generally 256 bits in length for the Masterchain and Basechain.
 
-## Сырье и удобные для пользователя адреса
+## Raw vs. User-Friendly Addresses
 
-### Исходный адрес
+### Raw Address
 
-**Необработанный адрес** содержит только основные элементы:
+A **raw address** contains only the basic elements:
 
-- **Рабочая цепочка** (например, `-1` для Masterchain)
-- **ID аккаунта**: 256-битный идентификатор
+- **Workchain ID** (e.g., `-1` for Masterchain)
+- **Account ID**: A 256-bit unique identifier
 
 Example:\
 `-1:fcb91a3a3816d0f7b8c2c76108b8a9bc5a6b7a55bd79f8ab101c52db29232260`
 
-Однако необработанные адреса касаются двух основных вопросов:
+However, raw addresses have two main issues:
 
-1. Они не имеют встроенной проверки ошибок, что означает, что ошибка в копировании может привести к потере средств.
-2. Они не поддерживают дополнительные функции, такие как отскочиваемые/необременимые флага.
+1. They lack built-in error checking, meaning a mistake in copying can lead to loss of funds.
+2. They do not support additional features like bounceable/non-bounceable flags.
 
-### Удобный адрес
+### User-Friendly Address
 
-**Удобный пользовательский адрес** решает эти проблемы, включая:
+A **user-friendly address** solves these problems by incorporating:
 
-1. **Флаги**: Указывает, является ли адрес отскакиваемым (для контрактов) или не отскакиваемым (для кошельков).
-2. **Checksum**: Двухбайтный механизм проверки ошибок (CRC16), который помогает обнаружить ошибки перед отправкой.
-3. **Кодирование**: Преобразует исходный адрес в читаемой, компактной форме с использованием base64 или base64url.
+1. **Flags**: Indicates if the address is bounceable (for contracts) or non-bounceable (for wallets).
+2. **Checksum**: A 2-byte error-checking mechanism (CRC16) that helps detect errors before sending.
+3. **Encoding**: Transforms the raw address into a readable, compact form using base64 or base64url.
 
-Например, такой же адрес можно преобразовать в удобный для пользователя адрес:\
+For example, the same raw address can be converted into a user-friendly address like:\
 `kf/8uRo6OBbQ97jCx2EIuKm8Wmt6Vb15+KsQHFLbKSMiYIny` (base64)
 
-Удобные для пользователя адреса делают транзакции более безопасными, предотвращая ошибки и позволяя возвращать средства в случае неудачных транзакций.
+User-friendly addresses make transactions safer by preventing errors and allowing the return of funds in case of failed transactions.
 
-## Области адреса
+## Address States
 
-Каждый адрес в TON может быть в одном из следующих состояний:
+Each address on TON can be in one of the following states:
 
-- **Не существует**: адрес не имеет данных (начальное состояние для всех адресов).
-- **Uninit**: У адреса есть баланс, но нет смарт-кода контракта.
-- **Активный**: Адрес находится в прямом эфире с помощью смарт-кода и баланса.
-- **Frozen**: Адрес заблокирован из-за расходов на хранение, превышающих его баланс.
+- **Nonexist**: The address has no data (initial state for all addresses).
+- **Uninit**: The address has a balance but no smart contract code.
+- **Active**: The address is live with smart contract code and balance.
+- **Frozen**: The address is locked due to storage costs exceeding its balance.
 
-## Преобразование между форматами адресов
+## Converting Between Address Formats
 
-Чтобы преобразовать между сырыми и удобными для пользователя адресами, вы можете использовать TON API или инструменты разработчика, такие как [ton.org/address](https://ton.org/address). Эти утилиты позволяют конвертировать и обеспечить правильное форматирование перед отправкой транзакций.
+To convert between raw and user-friendly addresses, you can use TON APIs or developer tools like [ton.org/address](https://ton.org/address). These utilities allow seamless conversion and ensure proper formatting before sending transactions.
 
-Для получения более подробной информации о том, как обрабатывать эти адреса, включая примеры кодировок и безопасность транзакций, обратитесь к полному руководству в [Документация по Адресам](/v3/documentation/smart-contracts/addresses).
+For more details on how to handle these addresses, including encoding examples and transaction security, you can refer to the full guide in [Addresses Documentation](/v3/documentation/smart-contracts/addresses).
 
-## Смотреть также
+## See Also
 
-- [Документация по "Умным контрактам](/v3/documentation/smart-contracts/addresses)
+- [Smart Contracts Addresses Documentation](/v3/documentation/smart-contracts/addresses)
