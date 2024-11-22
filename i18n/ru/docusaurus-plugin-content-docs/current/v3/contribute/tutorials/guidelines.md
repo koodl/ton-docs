@@ -1,99 +1,99 @@
-# Руководство по стилю обучения
+# Tutorial Styling Guidelines
 
-Итак, вы решили написать учебник для документации TON?
+So you've decided to write a tutorial for TON Documentation?
 
-Мы рады видеть Вас среди наших участников! Пожалуйста, ознакомьтесь с рекомендациями ниже, чтобы убедиться, что ваш учебник следовал стилю и качеству уже существующего содержания TON Docs.
+We're excited to have you among our contributors! Please review the guidelines below to make sure your tutorial follows the style and quality of the pre-existing content on TON Docs.
 
-Важно уделить некоторое время ознакомлению с структурой обучения и с тем, как следует использовать заголовки. Пожалуйста, прочтите некоторые из наших предыдущих уроков, а также посмотрите [предыдущие запросы Pull Requests](https://github.com/ton-community/ton-docs/pulls?q=is%3Apr+is%3A), прежде чем отправлять свои уроки.
+It is important that you take some time to become familiar with the tutorial structure and how headings should be used. Please read through some of our pre-existing tutorials and also have a look at [previous Pull Requests](https://github.com/ton-community/ton-docs/pulls?q=is%3Apr+is%3Aclosed) before submitting your own.
 
-## Обработка
+## Process
 
-:::info ВАЖНОЕ
-Перед тем, как начать писать письмо, _прочтите инструкцию ниже_! Они помогут вам обеспечить уровень стандартизации и качества, что сделает процесс обзора намного быстрее.
+:::info IMPORTANT
+Before you start writing, _read the guidelines below_! They will help you ensure the level of standardization and quality that will make the review process much faster.
 :::
 
-Также не забудьте обратиться к [**образцу структуры руководства**](/v3/contribute/tutorials/sample-tutorial) .
+Also, be sure to refer to the [**sample tutorial structure**](/v3/contribute/tutorials/sample-tutorial) we have provided.
 
-1. Чтобы начать, форк и затем клонировать [ton-docs](https://github.com/ton-community/ton-docs/) репозиторий на GitHub и создать новую ветку в вашем локальном репозитории.
-2. Напиши свой учебный материал с учетом качества и читаемости! Ознакомьтесь с существующими учебниками, чтобы увидеть, что вы должны быть нацелены.
-3. Когда вы готовы отправить его для проверки, [откройте запрос Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) из вашей ветки. Мы будем уведомлены, и процесс рассмотрения начнет:
-   1. **Пожалуйста, приложите все усилия, чтобы отправить только окончательный черновик вашего урока**. Некоторые опечатки и грамматические исправления являются приемлемыми, но если будут внесены значительные изменения, прежде чем мы сможем опубликовать учебник, вам понадобится больше времени для просмотра и внесения необходимых изменений.
-4. После того, как мы проверили вашу заявку и сделали все необходимые изменения, мы объединим Pull Request и опубликуем руководство по документации TON. Мы свяжемся с вами вскоре после этого для организации платежа!
-5. Как только он будет опубликован, не забудьте **промо-** ваш урок по социальным сетям! [Создатели документации](/v3/contribute/maintainers) могут помочь усилить промо-акцию до тех пор, пока вы сотрудничаете с нами.
+1. To begin, fork and then clone the [ton-docs](https://github.com/ton-community/ton-docs/) repository on GitHub and create a new branch in your local repository.
+2. Write your tutorial keeping quality and readability in mind! Have a look at the existing tutorials to see what you should aim for.
+3. When you're ready to submit it for review, [open a Pull Request](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request) from your branch. We will be notified, and the review process will begin:
+   1. **Please make every effort to submit only the final draft of your tutorial**. Some typos and grammar fixes are acceptable, but if there are significant changes to be made before we can publish the tutorial, it will take much longer to review and have you make the necessary changes.
+4. Once we've reviewed your submission and you've made all necessary changes, we'll merge the Pull Request and publish the tutorial on TON Documentation. We'll contact you shortly after this to arrange your payment!
+5. Once it is published, remember to **promote** your tutorial on social media! The [documentation maintainers](/v3/contribute/maintainers) can help to amplify this promotion as long as you cooperate with us.
 
-Таким образом, рабочий процесс является следующим:
+To summarize, the workflow is as follows:
 
-1. _**Форк и Клонировать**_ репозиторий **`ton-docs`**
-2. _**Напишите и шлифовайте**_ ваше обучение
-3. _**Оставьте Pull Request**_ для отзыва
-4. _**внесите необходимые изменения**_
-5. Учебник **объединить и опубликовать**\*
-6. _**Продвигайте урок**_ в социальных сетях!
+1. _**Fork and Clone**_ the **`ton-docs`** repository
+2. _**Write and polish**_ your tutorial
+3. _**Submit a Pull Request**_ for review
+4. _**Make any necessary changes**_
+5. The tutorial is _**merged and published**_
+6. _**Promote your tutorial**_ on social media!
 
-## Контекст
+## Context
 
-Главной проблемой при добавлении "THE" перед "TON" является то, что при разработке документации и редакционной политики TON различные подразделения, такие как маркетинг, поставщики, и разработчики присоединились к обсуждению, чтобы заглавные слова, такие как "Блокчейн", "Экосистема, и другие в сочетании с "TON", чтобы создать сильный образ одной системы, сети и бренда. После продолжительных обсуждений мы пришли к выводу о том, что для изображения с сильным брендом, мы должны создать глоссарий слов и фраз, которые могут быть написаны без "THE" и заглавные. Если она может быть заглавной, то статья ненужна. В настоящее время существуют две такие комбинации слов: TON Blockchain и TON Ecosystem.
+The primary issue with adding "THE" before "TON" is that during the development of TON documentation and editorial policy, various departments such as marketing, vendors, and developers joined the discussion to capitalize words such as "Blockchain," "Ecosystem," and others in conjunction with "TON" to create a strong image of a single system, network, and brand. After lengthy discussions, we concluded that for a strong brand image, we should create a glossary of words and phrases that can be written without "THE" and capitalized. If it can be capitalized, the article is unnecessary. Currently, there are two such word combinations: TON Blockchain and TON Ecosystem.
 
-Для других имен модулей TON, таких как TON Connect, TON SDK, TON Grants, и т.д., он зависит от контекста. Мы применяем правило капитализации, но гибко в соответствии с правилом статьи. Если имя компонента стоит в одиночку, то лучше без статьи. Однако, если он сочетается с общим существительным, таким как протокол TON Connect, статья необходима, потому что она относится к протоколу сущности.
+For other TON module names such as TON Connect, TON SDK, TON Grants, etc., it depends on the context. We apply the capitalization rule but are flexible with the article rule. If the component name stands alone, it is better without the article. However, if it is combined with a common noun, such as the TON Connect protocol, the article is needed because it refers to the entity protocol.
 
-Что касается других комбинаций слов, таких как "TON + noun" (например, "мир TON", "сообщество TON" и т.д. , мы не ограничиваем использование этой статьи, потому что естественным образом мы ожидаем увидеть ее в сочетании с существительным.
+Regarding other word combinations like "TON + noun" (e.g., "the TON world," "the TON community," etc.), we do not restrict the use of the article because we naturally expect to see the article in combination with a noun.
 
-## Общие советы
+## General tips
 
-- **Не копируйте и не вставляйте существующее содержимое**. Плагиаризм является серьезной проблемой и не будет терпимым. Если учебник вдохновлен некоторым существующим содержанием, сослаться на него и связать с ним. При соединении с другими учебниками/ресурсами используйте ресурсы TON Docs, если это возможно.
-- **Включите любое видео или видеоконтент** в PR, загрузив его на Google Drive.
-- **Пополнение счета через краны должно быть четко объяснено**, в том числе о том, какой аккаунт будет пополнен, откуда и почему. Не предполагайте, что слушатели могут самостоятельно выполнять эту задачу!
-- **Отображение примеров** в виде фрагментов терминала или скриншотов, чтобы помочь учащимся понять, что ожидать. Обрезать длинные выводы.
-- **Возьмите на себя подход с учетом ошибок** с целью научить учащихся, как их отлаживать. Например, если вам нужно пополнить счет, чтобы иметь возможность развернуть контракт, сначала попробуйте и разверните его без финансирования, наблюдайте за возвращенной ошибкой и исправьте ошибку (пополнив счет) и повторите попытку.
-- \*\*Добавляйте возможные ошибки и устранение неполадок. \* Конечно, в руководстве не следует перечислять все возможные ошибки, но необходимо приложить усилия для того, чтобы поймать важные или наиболее распространенные из них.
-- **Используйте React или Vue** для клиентской стороны.
-- **Перед тем как сделать PR, сначала запустите код**, чтобы избежать очевидных ошибок и убедиться, что он работает как ожидалось.
-- **Избегайте включения внешних ссылок** из различных источников в учебники. Если ваш учебник длиннее, мы можем обсудить, как превратить его в более длинный курс или Pathway.
-- **Профиль** **изображения или скриншоты** для иллюстрации сложных процессов, где это необходимо.
-- Загрузите ваши изображения в папку `static` репозитория learn-tutorials — **НЕТ** используйте горячие ссылки на внешние сайты, так как это может привести к повреждению изображений.
-- **Ссылки изображений должны** быть в формате markdown\*\* и вы должны \*\*ТОЛЬКО \*\* использовать необработанный URL-адрес GitHub в хранилище: `! имя вашего изображения](https://raw. ithubusercontent.com/ton-community/ton-docs/main/static/img/tutorials/<your image filename>.png?raw=true)`
-  - Не забудьте добавить `?raw=true` в конце URL.
+- **Do not copy and paste pre-existing content**. Plagiarism is a serious issue and will not be tolerated. If the tutorial is inspired by some existing content, reference it and link to it. When linking to other tutorials/resources, use TON Docs resources if possible.
+- **Include any walkthrough videos or video content** in the PR by uploading it to Google Drive.
+- **Account funding from faucets must be clearly explained**, including which account is being funded, from where, and why. Do not assume learners can accomplish this task on their own!
+- **Display sample outputs** in the form of Terminal snippets or screenshots to help learners understand what to expect. Trim long outputs.
+- **Take an error-driven approach** where you bump into errors on purpose to teach learners how to debug them. For example, if you need to fund an account to be able to deploy a contract, first try and deploy without funding, observe the error that is returned, then fix the error (by funding the account) and try again.
+- **Add potential errors and troubleshooting.** Of course, the tutorial shouldn't list every possible error, but it should make an effort to catch the important or most common ones.
+- **Use React or Vue** for the client-side.
+- **Before making the PR, run the code by yourself first** to avoid any obvious errors and make sure it works as expected.
+- **Avoid including external/cross-links** to different sources between tutorials. If your tutorial is longer, we can discuss how to turn it into a longer course or Pathway.
+- **Provide** **pictures or screenshots** to illustrate the complicated processes where needed.
+- Upload your images to the `static` directory of the learn-tutorials repository — **DO NOT** use hotlinks to external sites, as this can result in broken images.
+- **Image links must** **be in markdown format** and you must **ONLY** use the raw GitHub URL of the static directory in the repository: `![name of your image](https://raw.githubusercontent.com/ton-community/ton-docs/main/static/img/tutorials/<your image filename>.png?raw=true)`
+  - Remember to add `?raw=true` at the end of the URL.
 
-## Как структурировать ваш учебник
+## How to structure your tutorial
 
-:::info Структура обучения образца
-Вы можете посмотреть [образец структуры обучения](/v3/contribute/tutorials/sample-tutorial), чтобы увидеть его своими глазами.
+:::info Sample tutorial structure
+Feel free to check out the [sample tutorial structure](/v3/contribute/tutorials/sample-tutorial) to see it with your own eyes.
 :::
 
-- **Название** должно быть прямым и четким, итоговая цель урока. Не добавляйте название учебника в качестве заголовка внутри документа; вместо этого используйте имя файла markdown.
-  - \*: Если ваш учебник был назван "_Шаг за пошаговое руководство для написания первого смарт-контракта в FunC_," то имя файла должно быть:\
+- The **Title** should be direct and clear, summarizing the tutorial's goal. Do not add the tutorial title as a heading inside the document; instead, use the markdown document filename.
+  - _For example_: If your tutorial was titled "_Step by step guide for writing your first smart contract in FunC_," the filename should be:\
     `step-by-step-guide-for-writing-your-first-smart-contract-in-func.md`
-- Включите раздел **Введение** и опишите _почему_ значение этого урока и контекст урока. Не предполагайте, что это очевидно.
-- Включите раздел **Предпосылки**, в котором объясняются необходимые _предыдущие знания_ или существующие уроки, которые необходимо сначала завершить, любые необходимые фишки и т.д.
-- Включите раздел **Требования**, в котором описаны _технологии, которые должны быть установлены_ **раньше** для начала обучения и что урок не будет пройден, такие как расширение TON Wallet Node. и т.д. Не перечисляйте пакеты, которые будут установлены во время обучения.
-- Используйте **подзаголовки** (H2: ##), чтобы разбить пояснения на тему. При использовании подзаголовков учитывайте содержание и старайтесь держать их в точке.
-  - Если содержимое ниже подзаголовок коротко (например, только один абзац и блок кода), рассмотреть возможность использования живого текста вместо подзаголовка.
-- Включите раздел **Заключение**, в котором подытожены основные моменты обучения, а также поздравляем слушателя с завершением обучения.
-- (_**Необязательно**_) Включить раздел **Что дальше** указывает на хорошие последующие уроки или другие ресурсы (проекты, статьи и т.д.).
-- (_**Необязательно**_) Включите в конце раздел **О теме** **Автор**. Ваша биография должна содержать ссылку на ваш профиль GitHub (имя вашего сайта, и т. д.) и ссылка на ваш профиль Telegram (чтобы пользователи могли связаться с вами/пометить вас для получения помощи и вопросов).
-- Раздел **Ссылки** **должен** присутствовать, если вы сделали какую-либо помощь в написании этого руководства из других документов, репозитория GitHub или других уроков. Кредитные источники путем добавления их имени и ссылки на документ по возможности (если это не цифровой документ, включить ISBN или другие референционные средства).
+- Include an **Introduction** section explaining _why_ this tutorial matters and what the context of the tutorial is. Don't assume that it is obvious.
+- Include a **Prerequisites** section explaining any _prior knowledge_ required or any existing tutorials that need to be completed first, any tokens that are needed, etc.
+- Include a **Requirements** section explaining any _technologies that must be installed_ **prior** to starting the tutorial and that the tutorial will not cover, such as the TON Wallet extension, Node.js, etc. Do not list packages that will be installed during the tutorial.
+- Use **subheadings** (H2: ##) to break down your explanations within the body of the tutorial. Keep the Table of Contents in mind when using subheadings, and try to keep them on point.
+  - If the content below a subheading is short (for example, only a single paragraph and a code block), consider using bold text instead of a subheading.
+- Include a **Conclusion** section that summarizes what was learned, reinforces key points, and also congratulates the learner for completing the tutorial.
+- (_**Optional**_) Include a **What's Next** section pointing to good follow-up tutorials or other resources (projects, articles, etc.).
+- (_**Optional**_) Include an **About The** **Author** section at the end. Your bio should include a link to your GitHub profile (which will have your name, website, etc.) and a link to your Telegram profile (so that users can contact/tag you for help and questions).
+- A **References** section **must** be present if you have taken any help in writing this tutorial from other documents, GitHub repos, or other tutorials. Credit sources by adding their name and a link to the document when possible (if it is not a digital document, include an ISBN or other means of reference).
 
 ## Style Guide
 
-- **Написание тона -** Руководства написаны участниками сообщества для своих коллег.
-  - С учетом этого мы рекомендуем создать тон включения и взаимодействия на протяжении всего обучения. Используйте такие слова, как "мы", "нас", "нас".
-    - _Например_: "Мы успешно развернули наш договор."
-  - Предоставляя прямые инструкции, не стесняйтесь пользоваться «вы», «вашей» и т.д.
-    - _Пример_: “Ваш файл должен выглядеть так:\*”.
+- **Writing Tone -** Tutorials are written by community contributors for their peers.
+  - Given this, we recommend creating a tone of inclusion and interaction throughout the tutorial. Use words such as “we”, “us”, “our”.
+    - _For example_: "We have successfully deployed our contract."
+  - When providing direct instructions, feel free to use “you”, “your”, etc.
+    - _For example_: “_Your file should look like this:_”.
 
-- **Используйте Markdown правильно** в ходе обучения. См. [Руководство по маркировке GitHub](https://guides.github.com/features/mastering-markdown/), а также [пример структуры руководства](/v3/contribute/tutorials/sample-tutorial).
+- **Use Markdown properly** throughout your tutorial. Refer to [GitHub's markdown guide](https://guides.github.com/features/mastering-markdown/) as well as the [sample tutorial structure](/v3/contribute/tutorials/sample-tutorial).
 
-- **Не используйте преформатированный текст для подчеркивания**, _например_:
-  - ❌ "TON counter `smart contract` с именем `counter.fc`" неправильно.
-  - ✅ "TON counter **smart contract** под именем `counter.fc`" верен.
+- **Do not use pre-formatted text for emphasis**, _for example_:
+  - ❌ "TON counter `smart contract` named `counter.fc`" is incorrect.
+  - ✅ "TON counter **smart contract** named `counter.fc`" is correct.
 
-- **Не используйте форматирование разметки в заголовке раздела**, _например_:
-  - ❌ # **Введение** неверно.
-  - ✅ # Введение правильно.
+- **Do not use any markdown formatting in a section heading**, _for example_:
+  - ❌ # **Introduction** is incorrect.
+  - ✅ # Introduction is correct.
 
-- **Объясните свой код!** Не просто попросите слушателей вслепую скопировать и вставить.
-  - Имена функций, переменные и константы **должны** быть последовательными во всем документе.
-  - Используйте комментарий в начале блока кода, чтобы показать путь и имя файла, где существует код. \* Например:
+- **Explain your code!** Don't just ask learners to blindly copy and paste.
+  - Function names, variables, and constants **must** be consistent across the entire document.
+  - Use a comment at the beginning of a code block to show the path and filename where the code exists. _For example_:
 
     ```jsx
     // test-application/src/filename.jsx
@@ -103,16 +103,17 @@
     ...
     ```
 
-- **Выберите соответствующий язык** для подсветки синтаксиса блока кода!
-  - Все блоки кода _должны_ иметь подсветку синтаксиса. Используйте **\`text**, если вы не уверены, какой синтаксис подчёркивать для применения.
+- **Select the appropriate language** for code block syntax highlighting!
+  - All code blocks _must_ have syntax highlighting. Use **\`\`\`text** if you are not sure what kind of syntax highlighting to apply.
 
-- **Не используйте кодовый блок синтаксис для заранее отформатированного текста** _например_:
-  - ❌ \`filename.jsx\` неправильно.
-  - ✅ \`filename.jsx\` верен.
+- **Do not use code block syntax for pre-formatted text,** _for example_:
+  - ❌ \`filename.jsx\` is incorrect.
+  - ✅ \`filename.jsx\` is correct.
 
-- **Ваши блоки кода должны быть хорошо прокомментированы**. Комментарии должны быть короткими (обычно двух-трех строк одновременно) и эффективными. Если вам нужно больше места, чтобы объяснить фрагмент кода, сделайте это за пределами блока кода.
+- **Your code blocks should be well commented**. Comments should be short (usually two or three lines at a time) and effective. If you need more space to explain a piece of code, do it outside of the code block.
 
-- **Не забудьте оставить пустую строку** до и после всех блоков кода.* Например:
+- **Remember to leave a blank line** before and after all code blocks.\
+  _For example_:
 
 ```jsx
   
@@ -122,13 +123,13 @@ import { useEffect, useState } from 'react';
   
 ```
 
-- **Используйте линтер и красивое** перед вставкой кода в блоки кода. Мы рекомендуем `eslint` для JavaScript/React. Используйте `prettier` для форматирования кода.
-- **Избегайте чрезмерного использования пуль точек**, нумерованных списков или сложного форматирования текста. Использование **жирного** или _курсива_ акцента разрешено, но должно быть сведено к минимуму.
+- **Use a linter & prettifier** before pasting your code into the code blocks. We recommend `eslint` for JavaScript/React. Use `prettier` for code formatting.
+- **Avoid the overuse of bullet points**, numbered lists, or complicated text formatting. The use of **bold** or _italic_ emphasis is allowed but should be kept to a minimum.
 
-# **Настройка приложения**
+# **App setup**
 
-- Проекты Web3 обычно включают в себя несколько существующих библиотек кода. Обязательно учтите это при написании руководства. Где это возможно, предоставьте GitHub репозиторий в качестве отправной точки, чтобы упростить процесс начала.
-- Если вы _не_ используете репозиторий GitHub, чтобы содержать код, используемый в вашем руководстве, не забудьте объяснить читателям, как создать папку, чтобы сохранить код организованным.
-  _Пример_: пример `mkdir && cd example`
-- Если вы используете `npm init` для инициализации каталога проекта, объясните запрос или используйте флаг `-y`.
-- Если вы используете `npm install`, используйте `-save`.
+- Web3 projects will typically include several existing code libraries. Be sure to account for this when writing your tutorial. Where possible, provide a GitHub repository as a starting point to make it easier for learners to get started.
+- If you are _not_ using a GitHub repo to contain the code used in your tutorial, remember to explain to readers how to create a folder to keep the code organized.
+  _For example_: `mkdir example && cd example`
+- If you use `npm init` to initialize a project directory, explain the prompts or use the `-y` flag.
+- If you use `npm install` use the `-save` flag.
