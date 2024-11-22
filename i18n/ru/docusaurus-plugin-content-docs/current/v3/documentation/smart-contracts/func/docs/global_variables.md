@@ -1,14 +1,14 @@
-# Глобальные переменные
+# Global variables
 
-Программа FunC представляет собой список объявлений/определений функций и глобальных объявлений переменных. Этот раздел посвящен второй теме.
+The FunC program is essentially a list of function declarations/definitions and global variable declarations. This section covers the second topic.
 
-Глобальная переменная может быть объявлена с ключевым словом `global`, за которым следует тип переменной и имя переменной. Например,
+A global variable can be declared with the `global` keyword followed by the variable type and the variable name. For example,
 
 ```func
-глобальная (int, int) -> int) оп;
+global ((int, int) -> int) op;
 
 int check_assoc(int a, int b, int c) {
-  return op(a, b), c) == op(a, op(b, c));
+  return op(op(a, b), c) == op(a, op(b, c));
 }
 
 int main() {
@@ -17,11 +17,11 @@ int main() {
 }
 ```
 
-— это простая программа, которая записывает в глобальную функциональную переменную `op` оператор добавлений `_+_` и проверяет совместимость добавок с тремя целыми числами; 2 и 9.
+is a simple program that writes to a global functional variable `op` the addition operator `_+_` and checks the associativity of addition on three sample integers; 2, 3, and 9.
 
-Во внутреннем плане глобальные переменные хранятся в Реестре управления c7 ТВ.
+Internally, global variables are stored in the c7 control register of TVM.
 
-Тип глобальной переменной может быть опущен. Если да, то это будет сделано из использования переменной. Например, мы можем переписать программу как:
+The type of a global variable can be omitted. If so, it will be inferred from the usage of the variable. For example, we can rewrite the program as:
 
 ```func
 global op;
@@ -36,19 +36,19 @@ int main() {
 }
 ```
 
-Можно объявить несколько переменных после того же `global` ключевого слова. Следующие коды эквивалентны:
+It is possible to declare several variables after the same `global` keyword. The following codes are equivalent:
 
 ```func
-глобальная int A;
-глобальная ячейка B;
-глобальная C;
+global int A;
+global cell B;
+global C;
 ```
 
 ```func
-глобальный int A, cell B, C;
+global int A, cell B, C;
 ```
 
-Нельзя объявить локальную переменную с таким же именем как уже объявленную глобальную переменную. Например, этот код не компилируется:
+It is not allowed to declare a local variable with the same name as an already-declared global variable. For example, this code wouldn't compile:
 
 ```func
 global cell C;
@@ -59,7 +59,7 @@ int main() {
 }
 ```
 
-Обратите внимание, что следующий код верен:
+Note that the following code is correct:
 
 ```func
 global int C;
@@ -70,4 +70,4 @@ int main() {
 }
 ```
 
-но здесь `int C = 3;` эквивалентна `C = 3;`, т.е. это назначение глобальной переменной «C», не объявление локальной переменной `C` (объяснение этого эффекта можно найти в [statements](/v3/documentation/smart-contracts/func/docs/statements#variable-declaration)).
+but here `int C = 3;` is equivalent to `C = 3;`, i.e., that is an assignment to global variable `C`, not a declaration of local variable `C` (you can find an explanation of this effect in [statements](/v3/documentation/smart-contracts/func/docs/statements#variable-declaration)).
