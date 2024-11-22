@@ -163,11 +163,11 @@ You can get the current `election_id` (if elections are ongoing) or the past one
 Each value in the arguments is determined by the `uint32` data type.
 :::
 
-### Примеры
+### Examples
 
 In the TON Blockchain, it is customary to conventionally divide validation periods into even and odd ones. These rounds follow one another. Since voting for the next round takes place during the previous one, a validator needs to divide funds into two pools to have the opportunity to participate in both rounds.
 
-#### Мауннет
+#### Mainnet
 
 Current values:
 
