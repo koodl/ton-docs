@@ -1,59 +1,59 @@
-# Literals and Identifiers
+# Литературы и идентификаторы
 
-## Number literals
+## Числовые знаки
 
-FunC allows decimal and hexadecimal integer literals (leading zeros are allowed).
+FunC позволяет десятичным и шестнадцатеричным числовым буквам (разрешены ведущие нули).
 
-For example, `0`, `123`, `-17`, `00987`, `0xef`, `0xEF`, `0x0`, `-0xfFAb`, `0x0001`, `-0`, `-0x0` are valid number literals.
+Например, `0`, `123`, `-17`, `00987`, `0xef`, `0xEF`, `0x0`, `-0xfFAb`, `0x0001`, `-0`, `-0x0` — допустимые числовые знаки.
 
 ## String literals
 
-Strings in FunC are quoted in double quotes `"` like `"this is a string"`. Special symbols like `\n` and multi-line strings are not supported.
-Optionally, string literals may specify a type after them, such as `"string"u`.
+Строки в FunC цитируются в двойных кавычках \`\`, как `это строка`. Специальные символы, такие как `\nи многострочные строки, не поддерживаются.
+Необязательно, строковые литералы могут указывать тип после них, например `"string"u\`.
 
-The following string types are supported:
+Поддерживаются следующие типы строк:
 
-- without type—used for asm function definitions and to define a slice const by ASCII string
-- `s`—defines a raw slice const by its contents (hex-encoded and optionally bit-padded)
-- `a`—creates a slice const containing `MsgAddressInt` structure from a specified address
-- `u`—creates an int const that corresponds to the hex values of the provided ASCII string
-- `h`—creates an int const that is the first 32 bits of the SHA256 hash of the string
-- `H`—creates an int const that is all 256 bits of the SHA256 hash of the string
-- `c`—creates an int const that is crc32 value of the string
+- без типа - используется для определения функций asm и для определения узла узла по ASCII строке
+- `s`- определяет сырую часть конста по его содержимому (hex-encoded и опционально bit-padded)
+- `a` - создает кост, содержащий структуру `MsgAddressInt` из указанного адреса
+- `u` - создает int const, который соответствует шестнадцатеричным значениям предоставленной ASCII строки
+- `h`— создает int const - это первые 32 биты SHA256 хеша строки
+- H\`—создает int const, который составляет все 256 бит хеша SHA256
+- `c` - создает int const значение crc32 строки
 
-For example, the following values result in the corresponding consts:
+Например, следующие значения в соответствующих константах:
 
-- `"string"` becomes `x{737472696e67}` slice const
-- `"abcdef"s` becomes `x{abcdef}` slice const
-- `"Ef8zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM0vF"a` becomes `x{9FE6666666666666666666666666666666666666666666666666666666666666667_}` slice const (`addr_std$10 anycast:none$0 workchain_id:int8=0xFF address:bits256=0x33...33`)
-- `"NstK"u` becomes `0x4e73744b` int const
-- `"transfer(slice, int)"h` becomes `0x7a62e8a8` int const
-- `"transfer(slice, int)"H` becomes `0x7a62e8a8ebac41bd6de16c65e7be363bc2d2cbc6a0873778dead4795c13db979` int const
-- `"transfer(slice, int)"c` becomes `2235694568` int const
+- `"string"` становится \`x{737472696e67}кусочеком
+- `"abcdef"s` становится `x{abcdef}` ломтиком
+- `"Ef8zMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM0vF"a` становится `x{9FE6666666666666666666666666666666666666666666666666666666666666667_}`const (`addr_std$10 anycast:none$0 workchain_id:int8=0xFF address:bits256=0x33...33`)
+- `NstK"u` становится `0x4e73744b` int const
+- `"transfer(slice, int)"h` становится `0x7a62e8a8` int const
+- `"transfer(slice, int)"H` становится `0x7a62e8a8ebac41bd6de16c65e7be363bc2d2cbc6a0873778dead4795c13db979` int const
+- `"transfer(slice, int)"c` становится `2235694568` int const
 
-## Identifiers
+## Идентификаторы
 
-FunC allows a really wide class of identifiers (functions and variable names). Namely, any (single-line) string which doesn't contain special symbols `;`, `,`, `(`, `)`, ` ` (space or tab), `~` and `.`, doesn't start as a comment or string literal (with `"`), isn't a number literal, isn't an underscore `_` and isn't a keyword is a valid identifier (with the only exception that if it starts with `` ` ``, it must end with the same `` ` `` and can't contain any other `` ` `` except for these two).
+Функция позволяет очень широкий класс идентификаторов (функций и имен переменных). В частности, любая (однострочная) строка, не содержащая специальных символов `;`, `, `(`, `)`, `, `, `, `, ` (пробел или таб), `~` и `. , не запускается как комментарий или строковый литерал (с ``), не является числовым буквами, не подчеркивание `_` и не ключевое слово является допустимым идентификатором (с единственным исключением, если оно начинается с `` `, он должен заканчиваться тем же `и не может содержать каких-либо других` \`, кроме этих двух).
 
-Also, function names in function definitions may start with `.` or `~`.
+Также, имена функций в определениях функций могут начинаться с `.` или `~`.
 
-For example, those are valid identifiers:
+Например, это допустимые идентификаторы:
 
-- `query`, `query'`, `query''`
+- `запрос`, `query'`, `query''`
 - `elem0`, `elem1`, `elem2`
 - `CHECK`
 - `_internal_value`
 - `message_found?`
 - `get_pubkeys&signatures`
 - `dict::udict_set_builder`
-- `_+_` (the standard addition operator of type `(int, int) -> int` in prefix notation, although it is already defined)
+- `_+_` (стандартный оператор добавок типа `(int, int) -> int` в нотации префикса, хотя он уже определен)
 - `fatal!`
 
-`'` at the end of the name of a variable is conventionally used when some modified version of the old value is introduced. For example, almost all modifying built-in primitives for hashmap manipulation (except ones with the prefix `~`) take a hashmap and return a new version of the hashmap along with some other data, if necessary. It is convenient to name those values with the same name suffixed by `'`.
+`'` в конце имени переменной обычно используется при вводе некоторых измененных версий старого значения. Например, почти все модификации встроенных примитивов для манипуляций с хэшпаном (за исключением префикса `~`) принимают хэшкарту и возвращают новую версию хэшкарты вместе с некоторыми другими данными, при необходимости. Удобно называть эти значения одним и тем же именем, суффиксом «».
 
-Suffix `?` is usually used for boolean variables (TVM doesn't have a built-in type bool; bools are represented by integers: 0 is false and -1 is true) or for functions that return some flag, usually indicating success of the operation (like `udict_get?` from [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib)).
+Суффикс `? обычно используется для логических переменных (TVM не имеет встроенного була типа; bools представлены целыми числами: 0 - false и -1 - истинно), или для функций, которые возвращают некоторые флаги, обычно указывает на успех операции (например, `udict_get? от [stdlib.fc](/v3/documentation/smart-contracts/func/docs/stdlib)).
 
-These are invalid identifiers:
+Это недопустимые идентификаторы:
 
 - `take(first)Entry`
 - `"not_a_string`
@@ -61,44 +61,44 @@ These are invalid identifiers:
 - `send_message,then_terminate`
 - `_`
 
-Some more uncommon examples of valid identifiers:
+Другие редкие примеры допустимых идентификаторов:
 
 - `123validname`
 - `2+2=2*2`
 - `-alsovalidname`
 - `0xefefefhahaha`
-- `{hehehe}`
-- ``pa{--}in"`aaa`"``
+- \`{hehehe}
+- \`\`pa{--}в"\`aaa\`\`\`
 
-These are also invalid identifiers:
+Это также недопустимые идентификаторы:
 
-- ``pa;;in"`aaa`"`` (because `;` is prohibited)
-- `{-aaa-}`
+- \`\`pa;;in"`aaa``` (потому что `;\` запрещен)
+- \`{-aaa-}
 - `aa(bb`
-- `123` (it's a number)
+- `123` (это число)
 
-Also, FunC has a special type of identifiers which is quoted in back quotes `` ` ``.
-In the quotes, any symbols are allowed except for `\n` and the quotes themselves.
+Кроме того, у FunC есть специальный тип идентификаторов, которые цитируются в обратных кавычках ` `.
+В кавычках допускаются любые символы, кроме «\n» и самих кавычек.
 
-For example, `` `I'm a variable too` `` is a valid identifier, as well as `` `any symbols ; ~ () are allowed here...` ``
+Например, `«Я тоже переменная» является допустимым идентификатором, а также` «любые символы; ~ () разрешены здесь...»
 
-## Constants
+## Константы
 
-FunC allows to define compile-time constants that are substituted and precalculated during compilation.
+FunC позволяет определить скомпилированные константы, которые подставляются и прекалируются во время компиляции.
 
-Constants are defined as `const optional-type identifier = value-or-expression;`
+Константы определяются как «const optional-type identifier = value-or-expression;»
 
-`optional-type` can be used to force a specific type of constant and for better readability.
+`opal-type` может быть использован для принудительного применения определенного типа константы и для лучшей читаемости.
 
-As of now, `int` and `slice` types are supported.
+На данный момент поддерживаются типы `int` и `slice`.
 
-`value-or-expression` can be a literal or a pre-computable expression of literals and constants.
+`value-or-expression` может быть буквальным или предварительно вычислительным выражением литералов и констант.
 
-For example, constants can be defined as follows:
+Например, константы могут определяться следующим образом:
 
-- `const int101 = 101;` defines `int101` constant that is equivalent to the numeric literal `101`
-- `const str1 = "const1", str2 = "aabbcc"s;` defines two constants that are equal to their corresponding strings
-- `const int int240 = ((int1 + int2) * 10) << 3;` defines `int240` constant that equals the result of calculation
-- `const slice str2r = str2;` defines `str2r` constant that is equal to the value of `str2` constant
+- `const int101 = 101;` определяет константу `int101` эквивалентной числовой букве `101`
+- `const str1 = "константа 1", str2 = "aabbcc"s;` определяет две константы, равные соответствующим строкам
+- `const int int240 = (int1 + int2) * 10) << 3;` определяет константу `int240`, которая равняется результату вычисления
+- `const slice str2r = str2;` определяет константу `str2r`, равную значению константы `str2`
 
-Since numeric constants are substituted during compilation, all optimization and pre-computations performed during the compilation are successfully performed (unlike the old method of defining constants via inline asm `PUSHINT`s).
+Поскольку во время компиляции заменяются числовые константы, все выполненные в процессе компиляции оптимизации и предварительные вычисления успешно выполняются (в отличие от старого метода определения констант через встроенный asm `PUSHINT`).
