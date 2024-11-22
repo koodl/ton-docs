@@ -1,509 +1,509 @@
 # Glossary
 
-## Introduction
+## Введение
 
-In this glossary, you can find any TON- and crypto-related buzzwords.
+В этом глоссарии, вы можете найти любые тональные и крипто-связанные слова.
 
 ____________
 
-## A
+## А
 
 ### Airdrop
 
-**Airdrop** — a free distribution of tokens among specific participants.
+**Airdrop** — бесплатное распространение токенов среди конкретных участников.
 
 ### Altcoin
 
-**Altcoin** — all cryptocurrencies, except Bitcoin, are called altcoins.
+**Altcoin** — все криптовалюты, кроме Bitcoin, называются алткойнами.
 
-### AMA
+### АМА
 
-**AMA** — an online Q&A called “ask me anything” where project leaders answer questions from the community about a product or service.
+**AMA** — онлайн-группы по вопросам и вопросам «задавать мне что-нибудь», где лидеры проекта отвечают на вопросы сообщества о продукте или услугах.
 
 ### API
 
-**API** — Application Programming Interface, a mechanism that allows two programs to interact with each other through a series of protocols.
+**API** — механизм прикладного программирования, позволяющий двум программам взаимодействовать друг с другом по ряду протоколов.
 
 ### APY
 
-**APY** — Annual Percentage Yield, a calculated yearly interest rate for a given asset.
+**APY** — годовая процентная выгода, рассчитываемая ежегодная процентная ставка за данный актив.
 
 ____________
 
-## B
+## В
 
-### Bearish
+### Болото
 
-**Bearish** — the term “bearish” is used when the price of an asset has declined due to investors selling. (The term is often used to describe the overall market sentiment.)
+**Bearish** — термин «медведь» используется, когда цена актива снизилась из-за продажи инвесторами. (Термин часто используется для описания общего настроения рынка.)
 
-### Binance
+### Бинанс
 
-**Binance** — the world’s biggest cryptocurrency exchange by daily trading volume.
+**Binance** — крупнейшая в мире биржа криптовалют по объему ежедневной торговли.
 
-### Bitcoin (BTC)
+### Биткоин (BTC)
 
-**Bitcoin (BTC)** — the preeminent cryptocurrency and the first decentralized network with open-source code, which laid the groundwork for the proliferation of blockchain technology.
+**Биткоин (BTC)** — первостепенная криптовалюта и первая децентрализованная сеть с открытым кодом, которая заложила основу для распространения технологии блокчейна.
 
-### Blockchain
+### Блокчейн
 
-**Blockchain** — a distributed ledger of data in the form of a chain of blocks recording transaction information for every event on the network.
+**Блокчейн** — распределенная бухгалтерская книга данных в виде цепочки блоков для записи информации о транзакциях для каждого события в сети.
 
-### Bloodbath
+### Кровавая ванна
 
-**Bloodbath** — a colloquial term often used to describe a severe and sustained market crash, which results in multiple deep red bars on price charts.
+**Кровавая ванна** — термин в коллоквиуме часто используется для описания серьезного и устойчивого рыночного краха, который приводит к множеству глубинных красных баров на диаграммах цен.
 
 ### BoC
 
-**BoC** — Bag of Cells. Usually, used in code.
+**Бок** — Мешок клеток. Обычно используется в коде.
 
-### BoF
+### БФ
 
-**BoF** — Bag of Files. Usually, used in code.
+**BoF** — Мешок файлов. Обычно используется в коде.
 
 ### Bot
 
-**Bot** — a program written for two ecosystems to interact with each other — e.g., The Open Network and the Telegram messenger. On Telegram, bots are accounts in the messenger operated by software.
+**Бот** — программа, написанная для двух экосистем для взаимодействия друг с другом, например, Открытая сеть и Посланник Telegram. На Телеграмме боты являются аккаунтами в посыльщике, управляемым программным обеспечением.
 
-### Bridge
+### Мост
 
-**Bridge** — a program connecting various blockchains to transfer tokens and data from one network to another. TON Bridge is available at this [link](https://ton.org/bridge/).
+**Bridge** — программа, соединяющая различные блокчейны для передачи токенов и данных из одной сети в другую. TON Bridge доступен на этой [link](https://ton.org/bridge/).
 
-### Bullish
+### Бычья
 
-**Bullish** — the term “bullish” is used to describe an asset whose value is appreciating. (“Bullish” is the opposite of “bearish” — i.e. when the market’s overall value is increasing.)
+**Буллиш** — термин «быль» используется для описания актива, ценность которого ценится. ("Буллиш" - это противоположность "медведю", т.е. когда общая стоимость рынка растет.)
 
-### Burning
+### Горящее
 
-**Burning** — the act of burning or removing a number of tokens from the circulating and total supply, which often results in increased demand.
+**Сожжение** — это акт сжигания или удаления ряда жетонов с циркулирующего и общего предложения, что часто приводит к повышенному спросу.
 
 ___________
 
-## C
+## С
 
 ### CEX
 
-**CEX** — a centralized cryptocurrency exchange to trade tokens.
+**CEX** — централизованная криптовалютная биржа для торговли токенами.
 
-### CMC
+### КМК
 
-**CMC** — CoinMarketCap, a crypto information aggregator that closely follows changes in token prices and market capitalization.
+**CMC** — CoinMarketCap, криптовалютный агрегатор информации, который внимательно следит за изменениями цен на токены и капитализации рынка.
 
 ### Coinbase
 
-**Coinbase** — the biggest crypto exchange in the United States.
+**Coinbase** — крупнейшая криптовалютная биржа в США.
 
-### Cryptobot
+### Криптобот
 
-**Cryptobot** — a peer-to-peer (P2P) bot service for buying, trading, and selling Toncoin and other cryptocurrencies without Know Your Customer (KYC) verification.
+**Cryptobot** — сервис пира (P2P) для покупки, торговли и продажи Toncoin и других криптовалют без знания своего клиента (KYC).
 
-### Custodial
+### Хранилище
 
-**Custodial** — a type of crypto wallet where a third party stores cryptocurrencies, and not their true owner.
+**Хранилище** — тип криптовалютного кошелька, где третья сторона хранит криптовалюты, а не их истинного владельца.
 
 ___________
 
-## D
+## Д
 
 ### DApps
 
-**DApps** — decentralized applications made for blockchains supported by a group of nodes instead of a centralized server.
+**DApps** — децентрализованные приложения для блокчейнов, поддерживаемые группой узлов вместо централизованного сервера.
 
-### DCA
+### ДХА
 
-**DCA** — dollar-cost averaging, an investment strategy whereby investors buy crypto assets at a low yet fixed price to reduce exposure to risks.
+**ДХА** — средняя цена в долларе, инвестиционная стратегия, при которой инвесторы покупают криптовалютные активы по небольшой, но фиксированной цене, чтобы уменьшить подверженность рискам.
 
-### Decentralization
+### Децентрализация
 
-**Decentralization** — one of the main tenets behind TON and other blockchains. Without decentralization, Web3 would be impossible to achieve; therefore, every element of the TON Ecosystem revolves around maximizing decentralization.
+**Децентрализация** — один из основных принципов за TON и другими блокчейнами. Без децентрализации «Веб3» невозможно было бы достичь, поэтому каждый элемент экосистемы TON Ecosystem вращается вокруг максимизации децентрализации.
 
 ### DeFi
 
-**DeFi** — the decentralized analog to traditional finance, it includes accessible financial services and applications based on smart contracts.
+**DeFi** — децентрализованный аналог на традиционные финансы, он включает доступные финансовые услуги и приложения, основанные на смарт-контрактах.
 
-### DEX
+### ДЕКС
 
-**DEX** — a decentralized exchange (DEX) where users can trade cryptocurrencies without any intermediaries. The online entity needed to guarantee safe transactions is the blockchain itself.
+**DEX** — децентрализованная биржа (DEX), в которой пользователи могут торговать криптовалютами без посредников. Сущность в сети, необходимая для гарантии безопасных транзакций - это сам блокчейн.
 
-### Diamond hands
+### Алмазные руки
 
-**Diamond hands** — a colloquial term describing an investor who has no intention of selling their assets regardless of the state of the market — even if there’s a crash or the market is bearish.
+**Алмазные руки** — понятие коллоквиума, описывающее инвестора, который не намерен продавать свои активы независимо от состояния рынка — даже если на рынке есть крах или рынок.
 
 ### DNS
 
-**DNS** — Domain Name System, a technology that allows users to make transactions between human-readable domain names (ton.org) and machine-readable IP addresses (192.0.2.44).
+**DNS** — технология доменных имен, позволяющая пользователям совершать операции между человекочитаемыми доменными именами (ton.org) и машиночитаемыми IP адресами (192.0.2.44).
 
-### Dolphin
+### Дельфин
 
-**Dolphin** — an investor who has low-level capital but has an influence on the community.
+**Дельфин** — инвестор, имеющий капитал низкого уровня, но оказывающий влияние на сообщество.
 
-### Donate
+### Пожертвовать
 
-**Donate** — a bot service on Telegram through which people can either donate money or content creators can monetize their channels and services on Telegram, with a payment option in Toncoin.
+**Пожертвовать** — сервис бота в Telegram, через который люди могут либо пожертвовать деньги, либо создатели контента могут монетизировать свои каналы и услуги в Telegram, с помощью способа оплаты в Toncoin.
 
-### Dump
+### Дамп
 
-**Dump** — manipulating the increase in value of a token or cryptocurrency and then cashing out.
+**Дамп** — манипулирование увеличением значения токена или криптовалюты, а затем кэширование.
 
 ### Durov
 
-**Durov** — Pavel Durov, a Russian entrepreneur who is famous for having founded the VK social network and Telegram messenger. Nikolai Durov is Pavel's brother who participated in developing VK, Telegram and also TON.
+**Дюров** — Павел Дуров — российский предприниматель, который славится основанием социальной сети ВК и посланника телеграммы. Николай Дюров - брат Павел, принимавший участие в развитии ВК, Телеграммы, а также TON.
 
-### DYOR
+### ДИОР
 
-**DYOR** — _Do Your Own Research_, the process by which you do research on a project, company or cryptocurrency before deciding to invest.
+**DYOR** — Прежде чем принять решение о инвестировании, _Сделайте свое собственное исследование_, процесс, с помощью которого вы проводите исследования по проекту, компании или криптовалюте.
 
 ___________
 
-## E
+## В
 
 ### EVM
 
-**EVM** — Ethereum Virtual Machine, a machine behaving like a decentralized computer, it computes the state of the Ethereum blockchain after each new block and executes smart contracts.
+**EVM** — Виртуальная машина Ethereum ведет себя как децентрализованный компьютер, вычисляет состояние блокчейна Ethereum после каждого нового блока и выполняет смарт-контракты.
 
-### Exchange
+### Обмен
 
-**Exchange** — a place for trading and using other market instruments.
+**Обмен** — это место для торговли и использования других рыночных инструментов.
 
 ___________
 
-## F
+## П
 
-### Farming
+### Сельское хозяйство
 
-**Farming** — lending your crypto assets to receive rewards.
+**Земледелие** — выдача криптовалютных активов для получения награды.
 
-### Fiat
+### Фиат
 
-**Fiat** — regular money issued by central banks or financial authorities.
+**Фиат** — регулярные денежные средства, выданные центральными банками или финансовыми органами.
 
 ### FOMO
 
-**FOMO** — “fear of missing out,” a psychological state that consumes some investors when the idea of losing potential gains from an opportunity is present. It usually appears during a bull market and when traders don’t do their due diligence analyzing a particular project.
+**FOMO** — «боязнь пропать», психологическое состояние, которое потребляет несколько инвесторов, когда присутствует идея потерять потенциальные выгоды от возможности. Обычно это происходит во время быкового рынка и когда трейдеры не проводят анализа due diligence конкретного проекта.
 
-### Fungible tokens
+### Фундаментальные токены
 
-**Fungible tokens** — cryptocurrencies that carry the same value as any other token of the same kind at any given moment.
+**Фундаментальные токены** — криптовалюты, имеющие те же значения, что и любой другой токен подобного рода в любой заданный момент.
 
 ### FUD
 
-**FUD** — “Fear, uncertainty and doubt,” market sentiments based on many factors.
+**FUD** — «Бог, неопределенность и сомнения», рыночные настроения, основанные на многих факторах.
 
-### Full Node
+### Полный узел
 
-**Full Node** — a computer on TON Blockchain that synchronizes and copies the entire TON Blockchain.
+**Полный Node** — компьютер на TON Blockchain, который синхронизирует и копирует весь TON Blockchain.
 
 ### FunC
 
-**FunC** — the smart contract language on TON.
+**FunC** — умный язык контракта на TON.
 
 ___________
 
-## G
+## Г
 
-### Gas
+### Газ
 
-**Gas** — the fee paid for transactions on the blockchain.
+**Газ** — комиссия, оплаченная за транзакции в блокчейне.
 
 ### GitHub
 
-**GitHub** — a platform where developers gather to create base code for programs.
+**GitHub** — платформа, где разработчики собираются для создания базового кода для программ.
 
 ___________
 
-## H
+## Н
 
 ### Hackathon
 
-**Hackathon** — a gathering of programmers to develop software, programs, applications, etc.
+**Hackathon** — собрание программистов для разработки программного обеспечения, программ, приложений и т.д.
 
-### Hash
+### Хэш
 
-**Hash** — information about transaction data, created by a hashing algorithm.
+**Хэш** — информация о данных транзакций, созданная алгоритмом хэширования.
 
-### Hash rate
+### Скорость хэша
 
-**Hash rate** — the indication of how much computational power is being used on a network for crypto mining.
+**Скорость хэширования** — индикация того, сколько вычислительной мощности используется в сети для криптовалютной добычи.
 
-### Hold
+### Удерживать
 
-**Hold** — saving — i.e. not selling — an asset or assets from your portfolio.
+**Hold** — экономия, то есть не продажа — актива или активов из вашего портфеля.
 
 ___________
 
-## I
+## В
 
 ### ICO
 
-**ICO** — initial coin offering, a method for crypto projects to attract capital in the early stages.
+**ICO** — начальное предложение монет, метод криптовалютных проектов для привлечения капитала на ранних стадиях.
 
 ### IDO
 
-**IDO** — initial decentralized exchange offering, another method of attracting capital when launching a cryptocurrency or token on a decentralized exchange.
+**IDO** — децентрализованная биржа, другой способ привлечения капитала при запуске криптовалюты или токена на децентрализованной бирже.
 
-### Inflation
+### Инфляция
 
-**Inflation** — the process when the value of a currency — e.g., U.S. dollar or the euro — decreases. Toncoin (and other cryptocurrencies) are emitted with a high degree of transparency and a predictable issuance, which has deflationary properties.
+**Инфляция** — процесс, когда ценность валюты — например, в США. доллар или евро — уменьшается. Тонкон (и другие криптовалюты) эмитированы с высокой степенью прозрачности и предсказуемым эмитентом, обладающим дефляционными свойствами.
 
 ___________
 
-## K
+## К
 
 ### KYC
 
-**KYС** — _Know Your Customer_, the process by which a user verifies their identity when creating an account for a crypto service.
+**KYС** — _Know Your Customer_, процесс, с помощью которого пользователь проверяет свою личность при создании учетной записи в криптовалюте.
 
 ___________
 
-## L
+## Л
 
-### Launchpad
+### Запуск
 
-**Launchpad** — a platform for crypto startups that brings investors and projects together. The main launchpad in the TON Ecosystem is Tonstarter.
+**Launchpad** — платформа криптовалютных стартапов, которая объединяет инвесторов и проекты. Главной загрузкой в TON Ecosystem является Tonstarter.
 
-### Liquidity pool
+### Пул ликвидности
 
-**Liquidity pool** — grouping together crypto assets and freezing them in a smart contract. Liquidity pools are used for decentralized trading, loans, and other endeavors.
-
-__________
-
-## M
-
-### Mainnet
-
-**Mainnet** — the main network of a blockchain.
-
-### Market cap (capitalization)
-
-**Market cap (capitalization)** — the total value of a cryptocurrency’s combined number of tokens.
-
-### Masterchain
-
-**Masterchain** — in a multi-layered blockchain, the masterchain is the most important. For TON, the masterchain is the main chain of the network. When operations happen on the blockchain, they do so on the masterchain.
-
-### Metaverse
-
-**Metaverse** — a digital universe similar to a video game where users create avatars and interact with the digital representations of other people or users.
-
-### Moon
-
-**Moon** — a crypto term that describes a crypto asset’s vertical trajectory on a price chart — i.e. it quickly gains value.
+**Ликвидность пула** — объединение криптовалют активов и замораживание их в смарт-контракте. Пулы ликвидности используются для децентрализованной торговли, займов и других начинаний.
 
 __________
 
-## N
+## М
+
+### Мауннет
+
+**Mainnet** — основная сеть блокчейна.
+
+### Ограничение рынка (заглавная)
+
+**Market cap (capitalization)** — общее значение комбинированного количества токенов криптовалюты.
+
+### Шедевральная сеть
+
+**Masterchain** — на многоуровневом блокчейне, самое важное — шедевр. Для ТОН главным звеном сети является шедевр. Когда на блокчейне происходят операции, они делают это на шедевре.
+
+### Медверс
+
+**Metaverse** — цифровая вселенная похожа на видеоигру, где пользователи создают аватары и взаимодействуют с цифровыми представлениями других людей или пользователей.
+
+### Луна
+
+**Луна** — криптовалютный термин, описывающий вертикальную траекторию криптовалютного актива на ценовом графике, то есть быстро увеличивает ценность.
+
+__________
+
+## Н
 
 ### NFA
 
-**NFA** — not financial advice, this acronym is used as a disclaimer to avoid liability or responsibility when investors discuss cryptocurrencies or projects with other people.
+**NFA** — не финансовый совет, эта акроним используется в качестве оговорки для избежания ответственности или ответственности, когда инвесторы обсуждают криптовалюты или проекты с другими людьми.
 
 ### NFT
 
-**NFT** — non-fungible token, a unique digital token on a blockchain that cannot be duplicated or minted more than once.
+**NFT** — нефункциональный токен, уникальный цифровой токен на блокчейне, который не может быть дублирован или обработан более одного раза.
 
-### Nominator
+### Знаменатель
 
-**Nominator** — those who provide financial resources to validators so the latter can confirm blocks on TON Blockchain.
+**Нумератор** — те, кто предоставляет финансовые ресурсы валидаторам, чтобы последние могли подтвердить блоки в TON Blockchain.
 
-### Non-custodial
+### Нетюремное заключение
 
-**Non-custodial** — a kind of crypto wallet that gives full control over assets to the owner/user.
-
-__________
-
-## O
-
-### Off-ramp
-
-**Off-ramp** — ways to convert cryptocurrencies into fiat money.
-
-### On-ramp
-
-**On-ramp** — ways to convert (buy) cryptocurrency by spending fiat money.
-
-### Onion routing
-
-**Onion routing** — a technology similar to TOR that allows anonymous interactions on a network. All messages are encrypted in various layers akin to an onion. TON Proxy applies such a technique.
+**Не хранитель** — своего рода криптовалютный кошелек, который обеспечивает полный контроль над активами владельцам/пользователем.
 
 __________
 
-## P
+## О
 
-### Paper hands
+### Оф-рампа
 
-**Paper hands** — an investor who’s inclined to panic-sell — an inexperienced investor.
+**Off-ramp** — способы конвертировать криптовалюты в фиатные деньги.
 
-### Proof-of-stake
+### На рампе
 
-**Proof-of-stake** — a consensus mechanism to process transactions in new blocks on the blockchain.
+**On-ramp** — способы конвертировать (купить) криптовалюту путем расходования фиатных денег.
 
-### Proof-of-work
+### Маршрут лука
 
-**Proof-of-work** — a consensus algorithm where one party proves to another that a specific amount of computational work was spent. By expending a little energy, a party can verify this.
+**Онионная маршрутизация** — технология, подобная TOR, которая позволяет анонимно взаимодействовать в сети. Все сообщения зашифрованы в различных слоях, подобно луку. TON Proxy применяет такую технику.
 
-### Proxy
+__________
 
-**Proxy** — a service on a computer network that allows clients to install indirect network connections with other network services.
+## П
 
-### Pump
+### Бумажные руки
 
-**Pump** — artificially inflating the price of a cryptocurrency or asset.
+**Бумажные руки** — инвестор, склоненный к паническим продажам — неопытный инвестор.
+
+### Доказательство:
+
+**Доказательство** — консенсусный механизм обработки транзакций в новых блоках на блокчейне.
+
+### Доказательство работы
+
+**Доказательство работы** — алгоритм консенсуса, в котором одна сторона докажет другой, что было потрачено определенное количество вычислительной работы. Расходя немного энергии, отряд может проверить это.
+
+### Прокси
+
+**Proxy** — сервис в компьютерной сети, позволяющий клиентам устанавливать непрямые сетевые соединения с другими сетевыми сервисами.
+
+### Насос
+
+**Помп** — искусственно раздувая цену на криптовалюту или актив.
 
 ### P2P
 
-**P2P** — _peer-to-peer_, transactions among users without the help of a third party or intermediary.
+**P2P** — транзакции между пользователями без помощи третьих лиц или посредников.
 
 __________
 
-## R
+## Р
 
-### Roadmap
+### Дорожная карта
 
-**Roadmap** — a project’s strategic plan that displays when its products, services, updates, etc. will be released.
+**Roadmap** — стратегический план проекта, показывающий, когда будут выпущены его продукты, услуги, обновления и т.д.
 
 ### ROI
 
-**ROI** — _return on investment_, the profits made from investments.
+**ROI** — _return on investment_, прибыль от инвестиций.
 
 _________
 
-## S
+## С
 
 ### SBT
 
-**SBT** — _Soulbound token_, an NFT that can never be transferred because it contains information about its owner and their accomplishments.
+**SBT** — _Soulbound token_, NFT который никогда не может быть передан, так как содержит информацию о владельце и его достижениях.
 
-### Scalability
+### Масштабирование
 
-**Scalability** — the ability of a blockchain network to process complex transactions as well as a large number of them.
+**Масштабирование** — способность сети блокчейна обрабатывать сложные транзакции, а также большое количество из них.
 
 ### SEC
 
-**SEC** — Securities and Exchange Commission, a financial regulator in the United States.
+**SEC** — Комиссия по ценным бумагам и биржам, действующая в Соединенных Штатах.
 
-### Shard
+### Осколок
 
-**Shard** — a mechanism that helps a blockchain network to scale by breaking into smaller blockchains to relieve network congestion — something which TON Blockchain does.
+**Шард** — механизм, который помогает сети блокчейна масштабироваться, разбив на меньшие блокчейны, чтобы облегчить перегруженность сети — то, что делает TON Blockchain.
 
-### Smart contract
+### Умный контракт
 
-**Smart contract** — self-executing code that oversees and enables operations with the help of mathematical algorithms and without human intervention.
+**Умный контракт** — исполняемый код, который управляет и позволяет выполнять операции с помощью математических алгоритмов и без вмешательства человека.
 
-### Spot trading
+### Торговля Spot
 
-**Spot trading** — trading a financial asset for money.
+**Спот трейдинг** — торговля финансовым активом за деньги.
 
 ### Stablecoin
 
-**Stablecoin** — a cryptocurrency whose value is stable (usually pegged to a fiat currency) and does not crash.
+**Стабле** — стабильная криптовалюта, ценность которой (обычно привязана к фиатной валюте) и не падает.
 
-### Staking
+### Разбивка
 
-**Staking** — a way for users to earn a passive income by storing coins or tokens in a proof-of-stake algorithm, which, in turn, ensures the blockchain runs smoothly. For this, they earn rewards as an incentive.
+**Разбивание** — способ получения пользователям пассивного дохода, хранив монеты или жетоны в алгоритме лотереи, что, в свою очередь, обеспечивает бесперебойную работу блокчейна. За это они получают вознаграждения в качестве стимула.
 
-### Swap
+### Поменять
 
-**Swap** — the exchange of two financial assets — e.g. Toncoin for USDT.
+**Swap** — обмен двух финансовых активов, например Toncoin для USDT.
 
 ________
 
-## T
+## Т
 
 ### TEP
 
-**TEP** — [TON Enhancement Proposals](https://github.com/ton-blockchain/TEPs), a standard set of ways to interact with various parts of the TON ecosystem.
+**TEP** — Предложения [TON Enhancement Proposals](https://github.com/ton-blockchain/TEPs), стандартный набор способов взаимодействия с различными частями экосистемы TON.
 
 ### Testnet
 
-**Testnet** — a network for testing projects or services before launching on the mainnet.
+**Testnet** — сеть для тестирования проектов или служб перед запуском на mainnet.
 
-### Ticker
+### Тикер
 
-**Ticker** — the short form of a cryptocurrency, asset, or token on exchanges, trading services, or other DeFi solutions — e.g. TON for Toncoin.
+**Ticker** — короткая криптовалюта, актива или токена на бирже, торговых услугах или других решениях DeFi, например, TON для Toncoin.
 
-### The Merge
+### Слияние
 
-**The Merge** — the transition process of Ethereum switching from proof-of-work to proof-of-stake.
+**Объединить** — процесс перехода Ethereum с проверки работоспособности на достоверность.
 
-### Token
+### Токен
 
-**Token** — a form of digital asset; it can have multiple functions.
+**Токен** — это цифровой медиафайл; он может иметь несколько функций.
 
-### Tokenomics
+### Токеномика
 
-**Tokenomics** — the economic plan and distribution strategy of a cryptocurrency (or token).
+**Токеномики** — экономический план и стратегия распределения криптовалюты (или токен).
 
-### To the moon
+### На Луну
 
-**To the moon** — a colloquial phrase used when people create FOMO. It refers to hopefuls wanting the value of a cryptocurrency rapidly gaining a lot of value — hence its trajectory to the moon.
+**На Луну** — разговорная фраза используемая при создании FOMO. Это относится к надеждам, желающим ценность криптовалюты, быстро получая большую ценность — поэтому ее траектория на Луну.
 
 ### Toncoin
 
-**Toncoin** — the native cryptocurrency of the TON Ecosystem, which is used to develop services and pay for fees and services. It can be bought, sold, and traded.
+**Тонкоин** — родная криптовалюта Экосистемы TON, которая используется для развития сервисов и оплаты вознаграждений и услуг. Он может быть куплен, продан и продан.
 
-### Trading
+### Торговля
 
-**Trading** — buying and selling cryptocurrencies with the goal of making a profit.
+**Торговля** — покупка и продажа криптовалют с целью получения прибыли.
 
 ### TVL
 
-**TVL** (Total Value Locked) — Total value locked represents the number of assets currently being staked in a specific protocol.
+**TVL** (Total Value Locked) — Общее значение заблокировано показывает количество активов, размещаемых в конкретном протоколе.
 
 ### TVM
 
-**TVM** — Ton Virtual Machine, a machine behaving like a decentralized computer, it computes the state of the Ton blockchain after each new block and executes smart contracts.
+**ТВМ** — Тонная Виртуальная машина, машина ведет себя как децентрализованный компьютер, вычисляет состояние блокчейна Тон после каждого нового блока и выполняет смарт-контракты.
 
 ___________
 
-## V
+## В
 
 ### Validator
 
-**Validator** — those who verify new blocks on TON Blockchain.
+**Валидатор** — те, кто верифицирует новые блоки в TON Blockchain.
 
 ___________
 
-## W
+## В
 
-### WAGMI
+### ВАГМИ
 
-**WAGMI** — “we’re all gonna make it,” a sentence often used in the crypto community to express the aspirations of becoming rich one day by investing in cryptocurrencies.
+**ВАГМИ** — «мы все будем делать это, предложение часто используется в криптовалютном сообществе для того, чтобы выразить желание стать богатым в один день, инвестируя в криптовалюты.
 
-### Wallet
+### Кошелек
 
-**Wallet** — software that stores cryptocurrencies through a system of private keys needed to buy or sell cryptocurrencies and tokens. It is also a bot in the TON ecosystem for buying and selling Toncoin.
+**Wallet** — программное обеспечение, которое хранит криптовалюты через систему приватных ключей, необходимых для покупки или продажи криптовалют и токенов. Это также бот в экосистеме TON для покупки и продажи Toncoin.
 
-### Web3
+### Веб3
 
-**Web3** — a new generation of the internet based on blockchain technology that includes decentralization and tokenomics.
+**Web3** — новое поколение интернет-технологий, основанных на блокчейне, включающее децентрализацию и токеномику.
 
-### Whale
+### Кит
 
-**Whale** — an investor who owns a large number of cryptocurrencies and tokens.
+**Кито** — инвестор, владеющий большим количеством криптовалют и токенов.
 
-### Whitelist
+### Белый список
 
-**Whitelist** — a list awarding people special perks.
+**Белый список** — список специальных прав людей.
 
-### White paper
+### Белая бумага
 
-**White paper** — the main document of a project written by its developers. It explains the technology and the project’s goals.
+**Белый документ** — основной документ проекта, написанный разработчиками. Это объясняет технологию и цели проекта.
 
-### Watchlist
+### Список наблюдения
 
-**Watchlist** — a customizable list of cryptocurrencies whose price action an investor wishes to follow.
+**Watchlist** — настраиваемый список криптовалют, чье ценовое действие следует инвестору.
 
-### Workchain
+### Цепочка работ
 
-**Workchain** — secondary chains that connect to the masterchain. They can contain a massive number of different connected chains that have their own consensus rules. They can also contain address and transaction information and virtual machines for smart contracts. Additionally, they can be compatible with the masterchain and interact with one another.
+**Сеть работы** — вторичные цепи, соединяющиеся с шестеренкой. Они могут содержать большое число различных связанных сетей, у которых есть свои собственные правила консенсуса. Они также могут содержать информацию об адресах и сделках, а также виртуальные машины для смарт-контрактов. Кроме того, они могут быть совместимы с мастерством и взаимодействовать друг с другом.
 
 ___________
 
-## Y
+## П
 
-### Yield farming
+### Усвоение урожая
 
-**Yield farming** — lending or placing cryptocurrencies or tokens in a smart contract to earn rewards in the form of transaction fees.
+**Усвоение урожая** — кредитование или размещение криптовалют или токенов в смарт-контракт, чтобы заработать вознаграждение в виде платы за транзакции.
 
 ### Yolo
 
-**Yolo** — “you only live once,” a slang acronym used as a call to live life to the fullest without taking into account the risk of the given endeavor.
+**Голо** — «Вы живете только один раз, акроним сленга, который использовался в качестве призыва к жизни в полной мере без учета риска данного начинания.
