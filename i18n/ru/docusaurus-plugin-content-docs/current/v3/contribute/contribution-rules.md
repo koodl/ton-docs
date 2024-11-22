@@ -1,44 +1,44 @@
-# Contribution Guidelines
+# Руководство по взносам
 
-Before contributing any docs.ton.org page, please review the following list of general and important requirements to guarantee a smooth experience.
+Прежде чем вносить вклад в создание какой-либо страницы docs.ton.org, пожалуйста, просмотрите следующий список общих и важных требований, чтобы гарантировать гладкий опыт.
 
-## Naming
+## Именование
 
-- It is essential to ensure the correct use of _THE_ in the TON documentation. _TON Blockchain_ and _TON Ecosystem_ are capitalized terms, and therefore, do not require _THE_ in their usage.
-- We write _TON_ with regular nouns, and if it requires _THE_ according to English grammar, we use it. For instance: "_The_ TON Connect _protocol_ is a..."
+- Важно убедиться в правильности использования _THE_ в документации TON. _TON Blockchain_ и _TON Ecosystem_ являются заглавными терминами, поэтому не требуйте _THE_ в их использовании.
+- Мы пишем _TON_ с обычными существительными, и если для этого требуется _THE_ в соответствии с английской грамматикой, мы используем его. Например: "_The_ TON Connect _protocol_ это a..."
 
 :::info
 TON Blockchain...
 
 TON Ecosystem...
 
-The TON Connect protocol...
+Протокол TON Connect...
 :::
 
-Please refer to the actual TON brand assets [here](https://ton.org/en/brand-assets).
+Пожалуйста, обратитесь к фактическим активам марки TON [here](https://ton.org/en/brand-assets).
 
-## Documentation References
+## Ссылки на документацию
 
-Every page in TON documentation should be finished with See Also section. Place there page, you think relates to current page without additional description.
+Каждая страница в документации TON должна быть закончена с подробным описанием. Поместите там страницу, которую вы считаете, относится к текущей странице без дополнительного описания.
 
 :::info
 
 ```
-## See Also
-* [TON Contribution Guidelines](/v3/contribute/contribution-rules)
-* [Tutorial Styling Guidelines](/v3/contribute/tutorials/guidelines)
+## См. также
+* [Руководящие принципы участия в работе TON](/v3/contribute/contribution-rules)
+* [Руководство по стилю обучения](/v3/contribute/tutorials/guidelines)
 ```
 
 :::
 
-## English Helpful Sources
+## Russian Helpful Sources
 
-The TON Ecosystem is being built for the entire world, so it's crucial that it's understandable for everyone on Earth. Here, we provide materials that are helpful for junior tech writers who want to improve their English skills.
+Экосистема TON строится для всего мира, поэтому очень важно, чтобы она была понятной для всех на Земле. Here we provide materials that are useful for junior tech wriers, who want to improve their Russian skills.
 
-- [Plural Nouns](https://www.grammarly.com/blog/plural-nouns/)
-- [Articles: A versus An](https://owl.purdue.edu/owl/general_writing/grammar/articles_a_versus_an.html)
+- [Множественные существительные](https://www.grammarly.com/blog/plural-nouns/)
+- [Статьи: против а](https://owl.purdue.edu/owl/general_writing/grammar/articles_a_versus_an.html)
 
-## See Also
+## Смотреть также
 
-- [TON Contribution Guidelines](/v3/contribute/contribution-rules)
-- [Tutorial Styling Guidelines](/v3/contribute/tutorials/guidelines)
+- [Руководящие принципы участия TON](/v3/contribute/contribution-rules)
+- [Руководство по стилю](/v3/contribute/tutorials/guidelines)
