@@ -1,62 +1,62 @@
-импортировать кнопку из '@site/src/components/button'
-импортировать вкладки из '@theme/Tabs';
-импортировать вкладки из '@theme/TabItem';
+import Button from '@site/src/components/button'
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
 
-# Обзор обработки активов
+# Asset Processing Overview
 
-Здесь вы можете найти **краткий обзор** о [как работают передачи TON](/v3/documentation/dapps/assets/overview#overview-on-messages-and-transactions), какие [типы активов](/v3/documentation/dapps/assets/overview#digital-asset-types-on-ton) вы можете найти в TON (и что насчет того, что вы читаете [next](/v3/documentation/dapps/assets/overview#read-next)) и как [взаимодействовать с тоном](/v3/documentation/dapps/assets/overview#interaction-with-ton-blockchain) с использованием вашего языка программирования, рекомендуется понять всю информацию, полученную ниже, перед тем как перейти на следующие страницы.
+Here you can find a **short overview** on [how TON transfers work](/v3/documentation/dapps/assets/overview#overview-on-messages-and-transactions), what [asset types](/v3/documentation/dapps/assets/overview#digital-asset-types-on-ton) can you find in TON (and what about will you read [next](/v3/documentation/dapps/assets/overview#read-next)) and how to [interact with ton](/v3/documentation/dapps/assets/overview#interaction-with-ton-blockchain) using your programming language, it's recommended to understand all information, discovered below, before going to the next pages.
 
-## Обзор сообщений и транзакций
+## Overview on messages and transactions
 
-Внедрение полностью асинхронного подхода TON Blockchain включает в себя несколько концепций, которые редки традиционным блокчейнам. Particularly, each interaction of any actor with the blockchain consists of a graph of asynchronously transferred [messages](/v3/documentation/smart-contracts/message-management/messages-and-transactions) between smart contracts and/or the external world. Каждая транзакция состоит из одного входящего сообщения и до 255 исходящих сообщений.
+Embodying a fully asynchronous approach, TON Blockchain involves a few concepts which are uncommon to traditional blockchains. Particularly, each interaction of any actor with the blockchain consists of a graph of asynchronously transferred [messages](/v3/documentation/smart-contracts/message-management/messages-and-transactions) between smart contracts and/or the external world. Each transaction consists of one incoming message and up to 255 outgoing messages.
 
-Есть 3 типа сообщений, которые полностью описаны [here](/v3/documentation/smart-contracts/message-management/sending-messages#types-of-messages). Коротко положить его:
+There are 3 types of messages, that are fully described [here](/v3/documentation/smart-contracts/message-management/sending-messages#types-of-messages). To put it briefly:
 
-- [внешнее сообщение](/v3/documentation/smart-contracts/message-management/external-messages):
-  - `external in message` (иногда называется просто `external message`) это сообщение, которое отправляется из _outside_ блокчейна на смарт-контракт _inside_ блокчейна.
-  - `external out message` (обычно называется `logs message`) отправляется из _blockchain entity_ в _внешний мир_.
-- [внутреннее сообщение](/v3/documentation/smart-contracts/message-management/internal-messages) отправляется из одной _blockchain entity_ на _другой_, может переносить некоторое количество цифровых активов и произвольную часть данных.
+- [external message](/v3/documentation/smart-contracts/message-management/external-messages):
+  - `external in message` (sometimes called just `external message`) is message that is sent from _outside_ of the blockchain to a smart contract _inside_ the blockchain.
+  - `external out message` (usually called `logs message`) is sent from a _blockchain entity_ to the _outer world_.
+- [internal message](/v3/documentation/smart-contracts/message-management/internal-messages) is sent from one _blockchain entity_ to _another_, can carry some amount of digital assets and arbitrary portion of data.
 
-Общий путь любого взаимодействия начинается с внешнего сообщения, отправленного в «кошелёк» смарт-контракт, , который аутентифицирует отправителя сообщения с помощью публичной криптографии, принимает оплату за оплату и посылает внутренние блокчейн сообщения. Очередь сообщений формирует направленный циклический график, или дерево.
+The common path of any interaction starts with an external message sent to a `wallet` smart contract, which authenticates the message sender using public-key cryptography, takes charge of fee payment, and sends internal blockchain messages. That messages queue form directional acyclic graph, or a tree.
 
-Например:
+For example:
 
 ![](/img/docs/asset-processing/alicemsgDAG.svg)
 
-- `Alice` используйте например [Tonkeeper](https://tonkeeper.com/) для отправки `external message` на её кошелёк.
-- `внешнее сообщение` — это входящее сообщение для контракта `кошелек A v4` с пустым источником (сообщение из нигде не было, например [Tonkeeper](https://tonkeeper.com/)).
-- `исходящее сообщение` - это выходное сообщение для контракта `кошелек A v4` и входящее сообщение для контракта `кошелек B v4` с источником `кошелек A v4` и `кошелек B v4`.
+- `Alice` use e.g [Tonkeeper](https://tonkeeper.com/) to send an `external message` to her wallet.
+- `external message` is the input message for `wallet A v4` contract with empty source (a message from nowhere, such as [Tonkeeper](https://tonkeeper.com/)).
+- `outgoing message` is the output message for `wallet A v4` contract and input message for `wallet B v4` contract with `wallet A v4` source and `wallet B v4` destination.
 
-В результате есть 2 транзакции с набором входящих и выходящих сообщений.
+As a result there are 2 transactions with their set of input and output messages.
 
-Каждое действие, когда контракт принимает сообщение как входное (инициируемое имя), обрабатывает его и генерирует или не генерирует исходящие сообщения как выходные, называемые «транзакция». Read more about transactions [here](/v3/documentation/smart-contracts/message-management/messages-and-transactions#what-is-a-transaction).
+Each action, when contract take message as input (triggered by it), process it and generate or not generate outgoing messages as output, called `transaction`. Read more about transactions [here](/v3/documentation/smart-contracts/message-management/messages-and-transactions#what-is-a-transaction).
 
-Эта «транзакция» может длиться **длительный период** времени. Технически транзакции с очередями сообщений агрегируются в блоки, обрабатываемые валидаторами. Асинхронный характер цепочки TON Blockchain **не позволяет предсказать хэш и lt (логическое время) транзакции** на этапе отправки сообщения.
+That `transactions` can span a **prolonged period** of time. Technically, transactions with queues of messages are aggregated into blocks processed by validators. The asynchronous nature of the TON Blockchain **does not allow to predict the hash and lt (logical time) of a transaction** at the stage of sending a message.
 
-«Транзакция» принята к блоку окончательной и не может быть изменена.
+The `transaction` accepted to the block is final and cannot be modified.
 
-:::info Подтверждение транзакции
-TON транзакции необратимы после одного подтверждения. Для лучшего удобства пользователя рекомендуется избегать ожидания дополнительных блоков после завершения транзакций на TON Blockchain. Read more in the [Catchain.pdf](https://docs.ton.org/catchain.pdf#page=3).
+:::info Transaction Confirmation
+TON transactions are irreversible after just one confirmation. For the best user experience, it is suggested to avoid waiting on additional blocks once transactions are finalized on the TON Blockchain. Read more in the [Catchain.pdf](https://docs.ton.org/catchain.pdf#page=3).
 :::
 
-Smart contracts pay several types of [fees](/v3/documentation/smart-contracts/transaction-fees/fees) for transactions (usually from the balance of an incoming message, behavior depends on [message mode](/v3/documentation/smart-contracts/message-management/sending-messages#message-modes)). Сумма вознаграждения зависит от конфигурации рабочей цепочки с максимальными комиссиями на «masterchain» и значительно меньшими комиссиями на «basechain».
+Smart contracts pay several types of [fees](/v3/documentation/smart-contracts/transaction-fees/fees) for transactions (usually from the balance of an incoming message, behavior depends on [message mode](/v3/documentation/smart-contracts/message-management/sending-messages#message-modes)). Amount of fees depends on workchain configs with maximal fees on `masterchain` and substantially lower fees on `basechain`.
 
-## Типы цифровых активов на TON
+## Digital asset types on TON
 
-TON имеет три типа цифровых активов.
+TON has three types of digital assets.
 
-- Toncoin, главный токен сети. Он используется для всех основных операций на блокчейне, например, для оплаты газовых сборов или размещения на проверку.
-- Контрактные активы, такие как токены и NFT, которые схожи со стандартами ERC-20/ERC-721 и управляются произвольными контрактами и поэтому могут потребовать таможенных правил для обработки. Вы можете найти больше информации о его обработке в [process NFTs](/v3/guidelines/dapps/asset-processing/nft-processing/nfts) и [process Jettons](/v3/guidelines/dapps/asset-processing/jettons) статьях.
-- Родной токен, который является особым видом активов, которые могут быть прикреплены к любому сообщению в сети. Но эти активы в настоящее время не используются, поскольку функциональность для выпуска новых родных токенов закрыта.
+- Toncoin, the main token of the network. It is used for all basic operations on the blockchain, for example, paying gas fees or staking for validation.
+- Contract assets, such as tokens and NFTs, which are analogous to the ERC-20/ERC-721 standards and are managed by arbitrary contracts and thus can require custom rules for processing. You can find more info on it's processing in [process NFTs](/v3/guidelines/dapps/asset-processing/nft-processing/nfts) and [process Jettons](/v3/guidelines/dapps/asset-processing/jettons) articles.
+- Native token, which is special kind of assets that can be attached to any message on the network. But these asset is currently not in use since the functionality for issuing new native tokens is closed.
 
-## Взаимодействие с TON блокчейном
+## Interaction with TON blockchain
 
-Основные операции по TON Blockchain могут проводиться через TonLib. Это общая библиотека, которая может быть скомпилирована вместе с узлом TON и раскрыта API для взаимодействия с блокчейном через так называемые литовые сервера (сервера для простых клиентов). TonLib придерживается бездостоверного подхода, проверяя достоверность всех входящих данных; поэтому нет необходимости в надежном поставщике данных. Доступные методы TonLib перечислены [в схеме TL](https://github.com/ton-blockchain/ton/blob/master/tl/generate/scheme/tonlib_api.tl#L234). Они могут использоваться либо в качестве общей библиотеки через [wrappers](/v3/guidelines/dapps/asset-processing/payments-processing/#sdks).
+Basic operations on TON Blockchain can be carried out via TonLib. It is a shared library which can be compiled along with a TON node and expose APIs for interaction with the blockchain via so-called lite servers (servers for lite clients). TonLib follows a trustless approach by checking proofs for all incoming data; thus, there is no necessity for a trusted data provider. Methods available to TonLib are listed [in the TL scheme](https://github.com/ton-blockchain/ton/blob/master/tl/generate/scheme/tonlib_api.tl#L234). They can be used either as a shared library via [wrappers](/v3/guidelines/dapps/asset-processing/payments-processing/#sdks).
 
-## Читать далее
+## Read next
 
-После прочтения этой статьи вы можете проверить:
+After reading this article you can check:
 
-1. [Процесс платежей](/v3/guidelines/dapps/asset-processing/payments-processing), чтобы узнать, как работать с `TON coins`
-2. [Процесс Jetton](/v3/guidelines/dapps/asset-processing/jettons), чтобы узнать, как работать с `jettons` (то есть `tokens`)
-3. [NFT обработка](/v3/guidelines/dapps/asset-processing/nft-processing/nfts) чтобы узнать, как работать с `NFT` (это особый тип `jetton`)
+1. [Payments processing](/v3/guidelines/dapps/asset-processing/payments-processing) to get how to work with `TON coins`
+2. [Jetton processing](/v3/guidelines/dapps/asset-processing/jettons) to get how to work with `jettons` (sometime called `tokens`)
+3. [NFT processing](/v3/guidelines/dapps/asset-processing/nft-processing/nfts) to get how to work with `NFT` (that is the special type of `jetton`)
